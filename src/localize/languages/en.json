@@ -1,0 +1,60 @@
+{
+  "common": {
+    "version": "v",
+    "invalid_configuration": "Invalid configuration",
+    "show_warning": "Show Warning",
+    "show_error": "Show Error"
+  },
+  "tabs": {
+    "general": {
+      "title": "General",
+      "entity": "Entity (Required)",
+      "name": "Name (Optional)",
+      "show_name": "Show name?",
+      "show_state": "Show state?"
+    },
+    "icon": {
+      "title": "Icon",
+      "icon": "Icon (Optional)",
+      "show_icon": "Show icon?",
+      "use_state_color": "Use state color?",
+      "tap_action": "Tap action"
+    },
+    "slider": {
+      "title": "Slider",
+      "direction": "Direction",
+      "background": "Background",
+      "use_brightness": "Use brightness?",
+      "show_track": "Show track?",
+      "force_square": "Force square?"
+    },
+    "action_button": {
+      "title": "Action button",
+      "mode": "Mode",
+      "icon": "Icon",
+      "show_button": "Show button?",
+      "show_spinner": "Show spinner?",
+      "tap_action": "Tap action"
+    }
+  },
+  "state": {
+    "off": "Off",
+    "on": "On"
+  },
+  "direction": {
+    "left-right": "Left to right",
+    "top-bottom": "Top to bottom",
+    "bottom-top": "Bottom to top"
+  },
+  "background": {
+    "striped": "Striped",
+    "gradient": "Gradient",
+    "solid": "Solid",
+    "triangle": "Triangle",
+    "custom": "Custom"
+  },
+  "mode": {
+    "toggle": "Toggle",
+    "custom": "Custom"
+  }
+}

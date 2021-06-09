@@ -1,0 +1,6 @@
+{
+    "name": "Slider Button Card",
+    "render_readme": true,
+    "filename": "slider-button-card.js",
+    "domains": ["light", "fan", "cover", "switch"]
+}

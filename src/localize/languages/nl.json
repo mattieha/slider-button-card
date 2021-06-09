@@ -1,0 +1,60 @@
+{
+  "common": {
+    "version": "v",
+    "invalid_configuration": "Ongeldige configuratie",
+    "show_warning": "Toon waarschuwing",
+    "show_error": "Toon fout"
+  },
+  "tabs": {
+    "general": {
+      "title": "Algemeen",
+      "entity": "Entiteit (Verplicht)",
+      "name": "Naam (Optioneel)",
+      "show_name": "Toon naam?",
+      "show_state": "Toon status?"
+    },
+    "icon": {
+      "title": "Icoon",
+      "icon": "Icoon (Optioneel)",
+      "show_icon": "Toon icoon?",
+      "use_state_color": "Gebruik status kleur?",
+      "tap_action": "Tap actie"
+    },
+    "slider": {
+      "title": "Schuifregelaar",
+      "direction": "Richting",
+      "background": "Actergrond",
+      "use_brightness": "Gebruik helderheid?",
+      "show_track": "Toon spoor?",
+      "force_square": "Forceer vierkant?"
+    },
+    "action_button": {
+      "title": "Actie button",
+      "mode": "Modus",
+      "icon": "Icoon",
+      "show_button": "Toon button?",
+      "show_spinner": "Toon spinner?",
+      "tap_action": "Tap actie"
+    }
+  },
+  "state": {
+    "off": "Uit",
+    "on": "Aan"
+  },
+  "direction": {
+    "left-right": "Links naar rechts",
+    "top-bottom": "Boven naar onder",
+    "bottom-top": "Onder naar boven"
+  },
+  "background": {
+    "striped": "Gestreept",
+    "gradient": "Verloop",
+    "solid": "Vast",
+    "triangle": "Driehoek",
+    "custom": "Aangepast"
+  },
+  "mode": {
+    "toggle": "Schakelaar",
+    "custom": "Aangepast"
+  }
+}
