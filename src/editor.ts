@@ -10,7 +10,7 @@ import {
   css,
   internalProperty,
 } from 'lit-element';
-import { HomeAssistant, fireEvent, LovelaceCardEditor, stateIcon } from 'custom-card-helpers';
+import { HomeAssistant, fireEvent, LovelaceCardEditor, stateIcon, computeDomain } from 'custom-card-helpers';
 import { localize } from './localize/localize';
 import { ActionButtonConfig, ActionButtonConfigDefault, ActionButtonMode, Domain, IconConfig, IconConfigDefault, SliderBackground, SliderButtonCardConfig, SliderConfig, SliderConfigDefault, SliderDirections } from './types';
 import { getEnumValues, getSliderDefaultForEntity, propByPath } from './utils';
@@ -341,9 +341,12 @@ export class SliderButtonCardEditor extends LitElement implements LovelaceCardEd
   private _valueChangedEntity(ev): void {
     const target = ev.target;
     const value = ev.detail?.value;
+    const updateDefaults = computeDomain(value) !== computeDomain(this._config?.entity || 'light.dummy');
     this._changeValue(target.configValue, value);
-    propByPath(this._config, 'slider', getSliderDefaultForEntity(value));
-    fireEvent(this, 'config-changed', { config: this._config });
+    if (updateDefaults) {
+      propByPath(this._config, 'slider', getSliderDefaultForEntity(value));
+      fireEvent(this, 'config-changed', { config: this._config });
+    }
   }
 
   private _valueChanged(ev): void {
