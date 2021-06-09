@@ -4,6 +4,11 @@ A button card with integrated slider for `light, switch, fan, cover` entities.
 
 #### Please ⭐️ this repo if you find it useful
 
+## Installation instructions
+
+**HACS installation:**
+1. Go to the HACS store > Settings (dots in right upper corner) > Custom repositories > Fill in the repo url `https://github.com/mattieha/slider-button-card` and choose `Lovelace` as category.
+2. Click install on the added card in HACS
 ## Options
 
 | Name              | Type    | Requirement  | Description                                 | Default             |
