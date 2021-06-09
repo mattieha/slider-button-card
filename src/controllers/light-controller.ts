@@ -114,7 +114,7 @@ export class LightController extends Controller {
       case 'effect':
         return 1;
       default:
-        return 5;
+        return 1;
     }
   }
 
