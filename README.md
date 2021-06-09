@@ -21,9 +21,6 @@ A button card with integrated slider for `light, switch, fan, cover` entities.
 | icon        | object  | **Optional** | Icon options                       |  |
 | slider        | object  | **Optional** | Slider options                       |  |
 | action_button        | object  | **Optional** | Action button options                       |  |
-| tap_action        | object  | **Optional** | Action to take on tap                       | `action: more-info` |
-| hold_action       | object  | **Optional** | Action to take on hold                      | `none`              |
-| double_tap_action | object  | **Optional** | Action to take on double tap                | `none`              |
 
 ## Icon Options
 
