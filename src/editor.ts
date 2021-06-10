@@ -342,6 +342,8 @@ export class SliderButtonCardEditor extends LitElement implements LovelaceCardEd
     const target = ev.target;
     const value = ev.detail?.value;
     const updateDefaults = computeDomain(value) !== computeDomain(this._config?.entity || 'light.dummy');
+    this._changeValue('name', '');
+    this._changeValue('icon.icon', '');
     this._changeValue(target.configValue, value);
     if (updateDefaults) {
       propByPath(this._config, 'slider', getSliderDefaultForEntity(value));

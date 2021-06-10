@@ -423,8 +423,8 @@ export class SliderButtonCard extends LitElement implements LovelaceCard {
       --slider-value: 0%;
       --slider-transition-duration: 0.2s;
       /*--label-text-shadow: rgb(255 255 255 / 10%) -1px -1px 1px, rgb(0 0 0 / 50%) 1px 1px 1px;*/
-      /*--label-color-on: #fff;*/
-      /*--label-color-off: #626569;*/
+      --label-color-on: var(--primary-text-color, white);
+      --label-color-off: var(--primary-text-color, white);
       --icon-filter: brightness(100%);
       --icon-color: var(--paper-item-icon-color);
       --icon-rotate-speed: 0s;
@@ -433,9 +433,9 @@ export class SliderButtonCard extends LitElement implements LovelaceCard {
       /*--state-text-shadow: rgb(255 255 255 / 10%) -1px -1px 1px, rgb(0 0 0 / 50%) 1px 1px 1px;*/
       --btn-bg-color-off: rgba(43,55,78,1);
       --btn-bg-color-on: #20293c;
-      /*--action-icon-color-on: auto;*/
-      /*--action-icon-color-off: auto;*/      
-      /*--action-spinner-color: #fff;*/
+      --action-icon-color-on: var(--paper-item-icon-color, black);
+      --action-icon-color-off: var(--paper-item-icon-color, black);      
+      --action-spinner-color: var(--label-badge-text-color, white);
     }
     .button {
       position: relative;
@@ -480,14 +480,14 @@ export class SliderButtonCard extends LitElement implements LovelaceCard {
       /*text-shadow: rgb(255 255 255 / 10%) -1px -1px 1px, rgb(0 0 0 / 50%) 1px 1px 1px;*/
     }
     .name {
-      color: var(--label-color-on, var(--primary-text-color, white));      
+      color: var(--label-color-on);      
       text-overflow: ellipsis;
       overflow: hidden;
       white-space: nowrap;
       text-shadow: var(--label-text-shadow, none);
     }
     .off .name {
-      color: var(--label-color-off, var(--primary-text-color, white));
+      color: var(--label-color-off);
     }
     .state {      
       color: var(--state-color-on, var(--label-badge-text-color, white));      
@@ -678,7 +678,7 @@ export class SliderButtonCard extends LitElement implements LovelaceCard {
       float: right;
       width: var(--mdc-icon-size, 24px);
       height: var(--mdc-icon-size, 24px);
-      color: var(--action-icon-color-on, var(--paper-item-icon-color, black));
+      color: var(--action-icon-color-on);
       cursor: pointer;
       outline: none;
       -webkit-tap-highlight-color: transparent;
@@ -691,7 +691,7 @@ export class SliderButtonCard extends LitElement implements LovelaceCard {
     }
     
     .off .action {
-      color: var(--action-icon-color-off, var(--paper-item-icon-color, black));
+      color: var(--action-icon-color-off);
     }
 
     .action.loading .circular-loader {
@@ -712,7 +712,7 @@ export class SliderButtonCard extends LitElement implements LovelaceCard {
     .loader-path {
       fill: none;
       stroke-width: 2px;
-      stroke: var(--action-spinner-color, var(--label-badge-text-color, white));
+      stroke: var(--action-spinner-color);
       animation: animate-stroke 1.5s ease-in-out infinite both;        
       stroke-linecap: round;
     }
