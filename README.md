@@ -1,4 +1,4 @@
-# Slider button card
+# Slider button card by [@mattieha](https://www.github.com/mattieha)
 
 A button card with integrated slider for `light, switch, fan, cover` entities.
 
@@ -6,19 +6,52 @@ A button card with integrated slider for `light, switch, fan, cover` entities.
 
 #### Please ⭐️ this repo if you find it useful
 
-## Installation instructions
+## TOC
+- [Installation](#installation)
+    - [HACS](#hacs)
+    - [Manual](#manual)
+- [Configuration](#configuration)
+    - [Visual Editor](#visual-editor)
+    - [Options](#options)
+        - [Icon options](#icon-options)
+        - [Slider options](#slider-options)
+        - [Action button options](#action-button-options)
+        - [Tap action](#action-options)
+    - [Styles](#styles)
+- [Languages](#languages)
+- [Support](#support)
+- [Credits](#credits)
 
-**HACS installation:**
+## Installation
+
+### HACS
 1. Go to the HACS store > Settings (dots in right upper corner) > Custom repositories > Fill in the repo url `https://github.com/mattieha/slider-button-card` and choose `Lovelace` as category.
 2. Click install on the added card in HACS
 
-## Using the card
+### Manual
+
+1. Download `select-button-card.js` file from the [latest-release].
+2. Put `select-button-card.js` file into your `config/www` folder.
+3. Add reference to `select-button-card.js` in Lovelace. There's two way to do that:
+    1. **Using UI:** _Configuration_ → _Lovelace Dashboards_ → _Resources_ → Click Plus button → Set _Url_ as `/local/select-button-card.js` → Set _Resource type_ as `JavaScript Module`.
+    2. **Using YAML:** Add following code to `lovelace` section.
+       ```yaml
+       resources:
+         - url: /local/select-button-card.js
+           type: module
+       ```
+4. Add `custom:select-button-card` to Lovelace UI as any other card (using either editor or YAML configuration).
+
+## Configuration
 
 ### Visual Editor
 
-Slider Button Card supports Lovelace's Visual Editor. Click the + button to add a card and search for Slider button card.
+Slider Button Card supports Lovelace's Visual Editor. 
+<details>
+  <summary>Show screenshot</summary>
 
 ![Visual Editor][visual-editor]
+</details>
 
 
 ### Options
@@ -35,8 +68,6 @@ Slider Button Card supports Lovelace's Visual Editor. Click the + button to add 
 | action_button        | object  | **Optional** | [Action button options](#action-button-options)                     |  |
 
 ### Icon Options
-<details>
-  <summary>Show options</summary>
 
 | Name              | Type    | Requirement  | Description                                 | Default             |
 | ----------------- | ------- | ------------ | ------------------------------------------- | ------------------- |
@@ -44,13 +75,8 @@ Slider Button Card supports Lovelace's Visual Editor. Click the + button to add 
 | show        | boolean | **Optional** | Show icon  | `true`             |
 | use_state_color        | boolean | **Optional** | Use state color  | `true`             |
 | tap_action        | object  | **Optional** | [Action](#action-options) to take on tap                       | `action: more-info` |
-</details>
-
 
 ### Slider Options
-<details>
-  <summary>Show options</summary>
-
 
 | Name              | Type    | Requirement  | Description                                 | Default             |
 | ----------------- | ------- | ------------ | ------------------------------------------- | ------------------- |
@@ -60,13 +86,8 @@ Slider Button Card supports Lovelace's Visual Editor. Click the + button to add 
 | use_percentage_bg_opacity        | boolean | **Optional** | Apply opacity to background based on percentage  | `true`             |
 | show_track        | boolean | **Optional** | Show track when state is on  | `false`             |
 | force_square        | boolean | **Optional** | Force the button as a square  | `false`             |
-</details>
-
 
 ### Action button Options
-<details>
-  <summary>Show options</summary>
-
 
 | Name              | Type    | Requirement  | Description                                 | Default             |
 | ----------------- | ------- | ------------ | ------------------------------------------- | ------------------- |
@@ -75,14 +96,11 @@ Slider Button Card supports Lovelace's Visual Editor. Click the + button to add 
 | icon        | string | **Optional** | Icon when mode is `custom`  | `mdi:power`             |
 | show_spinner        | boolean | **Optional** | Show spinner when mode is `custom`  | `true`             |
 | tap_action        | object  | **Optional** | [Action](#action-options) to take on tap                       | `action: toggle` |
-</details>
+
 
 
 
 ### Action Options
-<details>
-  <summary>Show options</summary>
-
 
 | Name            | Type   | Requirement  | Description                                                                                                                            | Default     |
 | --------------- | ------ | ------------ | -------------------------------------------------------------------------------------------------------------------------------------- | ----------- |
@@ -93,10 +111,27 @@ Slider Button Card supports Lovelace's Visual Editor. Click the + button to add 
 | service_data    | object | **Optional** | Service data to include (e.g. entity_id: media_player.bedroom) when action defined as call-service                                     | `none`      |
 | haptic          | string | **Optional** | Haptic feedback for the [Beta IOS App](http://home-assistant.io/ios/beta) _success, warning, failure, light, medium, heavy, selection_ | `none`      |
 | repeat          | number | **Optional** | How often to repeat the `hold_action` in milliseconds.                                                                                 | `non`       |
-</details>
+### Styles
+Custom styles can be set by using [Card mod](https://github.com/thomasloven/lovelace-card-mod) 
+```yaml
+    style: |
+      :host {
+        --VARIABLE: VALUE;
+      }
+```
 
+| Variable                   | Description                                 | Default             |
+| -----------------------    | ------------------------------------------- | ------------------- |
+|  `--icon-color`  | Color of the icon when `icon.use_state_color === false`     | `var(--paper-item-icon-color)`       |
+|  `--label-color-on`  | Color of the label when state is on     | `var(--primary-text-color, white)`       |
+|  `--label-color-off`  | Color of the label when state is off    | `var(--primary-text-color, white)`       |
+|  `--state-color-on`  | Color of the state value when state is on    | `var(--label-badge-text-color, white)`       |
+|  `--state-color-off`  | Color of the state value when state is off    | `var(--disabled-text-color)`       |
+|  `--action-icon-color-on`  | Color of the action button icon when state is on     | `var(--paper-item-icon-color, black)`       |
+|  `--action-icon-color-off`  | Color of the action button icon when state is off     | `var(--paper-item-icon-color, black)`       |
+|  `--action-spinner-color`  | Color of the spinner action button     | `var(--label-badge-text-color, white)`       |
 
-## Supported languages
+## Languages
 
 This card supports translations. Please, help to add more translations and improve existing ones. Here's a list of supported languages:
 
@@ -104,15 +139,17 @@ This card supports translations. Please, help to add more translations and impro
 - Nederlands (Dutch)
 - [_Your language?_][add-translation]
 
-
-
 ## Support
 
 Hey dude! Help me out for a couple of :beers: or a :coffee:!
 
 [![beer](https://www.buymeacoffee.com/assets/img/custom_images/black_img.png)](https://www.buymeacoffee.com/mattijsha)
 
+## Credits
+- Inspired by [Slider entity row](https://github.com/thomasloven/lovelace-slider-entity-row)
+
 <!-- References -->
-[add-translation]: https://github.com/mattieha/slider-button-card/tree/master/src/localize/languages
+[add-translation]: https://github.com/mattieha/slider-button-card/tree/main/src/localize/languages
 [visual-editor]: https://raw.githubusercontent.com/mattieha/slider-button-card/main/assets/card-editor.png
 [preview]: https://raw.githubusercontent.com/mattieha/slider-button-card/main/assets/preview.gif
+[latest-release]: https://github.com/mattieha/slider-button-card/releases/latest
