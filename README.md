@@ -2,6 +2,8 @@
 
 A button card with integrated slider for `light, switch, fan, cover` entities.
 
+![Preview][preview]
+
 #### Please ⭐️ this repo if you find it useful
 
 ## Installation instructions
@@ -33,6 +35,8 @@ Slider Button Card supports Lovelace's Visual Editor. Click the + button to add 
 | action_button        | object  | **Optional** | [Action button options](#action-button-options)                     |  |
 
 ### Icon Options
+<details>
+  <summary>Show options</summary>
 
 | Name              | Type    | Requirement  | Description                                 | Default             |
 | ----------------- | ------- | ------------ | ------------------------------------------- | ------------------- |
@@ -40,8 +44,13 @@ Slider Button Card supports Lovelace's Visual Editor. Click the + button to add 
 | show        | boolean | **Optional** | Show icon  | `true`             |
 | use_state_color        | boolean | **Optional** | Use state color  | `true`             |
 | tap_action        | object  | **Optional** | [Action](#action-options) to take on tap                       | `action: more-info` |
+</details>
+
 
 ### Slider Options
+<details>
+  <summary>Show options</summary>
+
 
 | Name              | Type    | Requirement  | Description                                 | Default             |
 | ----------------- | ------- | ------------ | ------------------------------------------- | ------------------- |
@@ -51,8 +60,13 @@ Slider Button Card supports Lovelace's Visual Editor. Click the + button to add 
 | use_percentage_bg_opacity        | boolean | **Optional** | Apply opacity to background based on percentage  | `true`             |
 | show_track        | boolean | **Optional** | Show track when state is on  | `false`             |
 | force_square        | boolean | **Optional** | Force the button as a square  | `false`             |
+</details>
+
 
 ### Action button Options
+<details>
+  <summary>Show options</summary>
+
 
 | Name              | Type    | Requirement  | Description                                 | Default             |
 | ----------------- | ------- | ------------ | ------------------------------------------- | ------------------- |
@@ -61,8 +75,14 @@ Slider Button Card supports Lovelace's Visual Editor. Click the + button to add 
 | icon        | string | **Optional** | Icon when mode is `custom`  | `mdi:power`             |
 | show_spinner        | boolean | **Optional** | Show spinner when mode is `custom`  | `true`             |
 | tap_action        | object  | **Optional** | [Action](#action-options) to take on tap                       | `action: toggle` |
+</details>
+
+
 
 ### Action Options
+<details>
+  <summary>Show options</summary>
+
 
 | Name            | Type   | Requirement  | Description                                                                                                                            | Default     |
 | --------------- | ------ | ------------ | -------------------------------------------------------------------------------------------------------------------------------------- | ----------- |
@@ -73,6 +93,9 @@ Slider Button Card supports Lovelace's Visual Editor. Click the + button to add 
 | service_data    | object | **Optional** | Service data to include (e.g. entity_id: media_player.bedroom) when action defined as call-service                                     | `none`      |
 | haptic          | string | **Optional** | Haptic feedback for the [Beta IOS App](http://home-assistant.io/ios/beta) _success, warning, failure, light, medium, heavy, selection_ | `none`      |
 | repeat          | number | **Optional** | How often to repeat the `hold_action` in milliseconds.                                                                                 | `non`       |
+</details>
+
+
 ## Supported languages
 
 This card supports translations. Please, help to add more translations and improve existing ones. Here's a list of supported languages:
@@ -80,6 +103,8 @@ This card supports translations. Please, help to add more translations and impro
 - English
 - Nederlands (Dutch)
 - [_Your language?_][add-translation]
+
+
 
 ## Support
 
@@ -90,3 +115,4 @@ Hey dude! Help me out for a couple of :beers: or a :coffee:!
 <!-- References -->
 [add-translation]: https://github.com/mattieha/slider-button-card/tree/master/src/localize/languages
 [visual-editor]: https://raw.githubusercontent.com/mattieha/slider-button-card/main/assets/card-editor.png
+[preview]: https://raw.githubusercontent.com/mattieha/slider-button-card/main/assets/preview.gif
