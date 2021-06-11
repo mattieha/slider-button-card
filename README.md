@@ -34,17 +34,17 @@ A button card with integrated slider for `light, switch, fan, cover, input_boole
 
 ### Manual
 
-1. Download `select-button-card.js` file from the [latest-release].
-2. Put `select-button-card.js` file into your `config/www` folder.
-3. Add reference to `select-button-card.js` in Lovelace. There's two way to do that:
-    1. **Using UI:** _Configuration_ → _Lovelace Dashboards_ → _Resources_ → Click Plus button → Set _Url_ as `/local/select-button-card.js` → Set _Resource type_ as `JavaScript Module`.
+1. Download `slider-button-card.js` file from the [latest-release].
+2. Put `slider-button-card.js` file into your `config/www` folder.
+3. Add reference to `slider-button-card.js` in Lovelace. There's two way to do that:
+    1. **Using UI:** _Configuration_ → _Lovelace Dashboards_ → _Resources_ → Click Plus button → Set _Url_ as `/local/slider-button-card.js` → Set _Resource type_ as `JavaScript Module`.
     2. **Using YAML:** Add following code to `lovelace` section.
        ```yaml
        resources:
-         - url: /local/select-button-card.js
+         - url: /local/slider-button-card.js
            type: module
        ```
-4. Add `custom:select-button-card` to Lovelace UI as any other card (using either editor or YAML configuration).
+4. Add `custom:slider-button-card` to Lovelace UI as any other card (using either editor or YAML configuration).
 
 ## Usage
 ### Grid
