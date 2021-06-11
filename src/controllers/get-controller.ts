@@ -3,6 +3,7 @@ import { Domain, SliderButtonCardConfig } from '../types';
 import { Controller } from './controller';
 import { CoverController } from './cover-controller';
 import { FanController } from './fan-controller';
+import { InputBooleanController } from './input-boolean-controller';
 import { LightController } from './light-controller';
 import { SwitchController } from './switch-controller';
 
@@ -14,6 +15,7 @@ export class ControllerFactory {
       [Domain.FAN]: FanController,
       [Domain.SWITCH]: SwitchController,
       [Domain.COVER]: CoverController,
+      [Domain.INPUT_BOOLEAN]: InputBooleanController,
     };
     if (typeof mapping[domain] === 'undefined') {
       throw new Error(`Unsupported entity type: ${domain}`)
