@@ -18,8 +18,8 @@ A button card with integrated slider for `light, switch, fan, cover` entities.
         - [Action button options](#action-button-options)
         - [Tap action](#action-options)
     - [Styles](#styles)
+- [Known issues](#known-issues)
 - [Languages](#languages)
-- [Support](#support)
 - [Credits](#credits)
 
 ## Installation
@@ -131,6 +131,13 @@ Custom styles can be set by using [Card mod](https://github.com/thomasloven/love
 |  `--action-icon-color-off`  | Color of the action button icon when state is off     | `var(--paper-item-icon-color, black)`       |
 |  `--action-spinner-color`  | Color of the spinner action button     | `var(--label-badge-text-color, white)`       |
 
+## Known issues
+- No support for firefox
+- Mobile
+    - With `slider.direction` set to `top-bottom` or `bottom-top` scrolling is triggered
+
+When you discover any bugs please open an [issue](https://github.com/mattieha/slider-button-card/issues).
+
 ## Languages
 
 This card supports translations. Please, help to add more translations and improve existing ones. Here's a list of supported languages:
@@ -139,14 +146,11 @@ This card supports translations. Please, help to add more translations and impro
 - Nederlands (Dutch)
 - [_Your language?_][add-translation]
 
-## Support
-
-Hey dude! Help me out for a couple of :beers: or a :coffee:!
-
-[![beer](https://www.buymeacoffee.com/assets/img/custom_images/black_img.png)](https://www.buymeacoffee.com/mattijsha)
-
 ## Credits
 - Inspired by [Slider entity row](https://github.com/thomasloven/lovelace-slider-entity-row)
+
+---
+[![beer](https://www.buymeacoffee.com/assets/img/custom_images/black_img.png)](https://www.buymeacoffee.com/mattijsha)
 
 <!-- References -->
 [add-translation]: https://github.com/mattieha/slider-button-card/tree/main/src/localize/languages
