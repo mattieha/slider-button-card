@@ -10,6 +10,9 @@ A button card with integrated slider for `light, switch, fan, cover` entities.
 - [Installation](#installation)
     - [HACS](#hacs)
     - [Manual](#manual)
+- [Usage](#usage)
+    - [Grid](#grid)
+    - [Standalone](#standalone)
 - [Configuration](#configuration)
     - [Visual Editor](#visual-editor)
     - [Options](#options)
@@ -41,6 +44,24 @@ A button card with integrated slider for `light, switch, fan, cover` entities.
            type: module
        ```
 4. Add `custom:select-button-card` to Lovelace UI as any other card (using either editor or YAML configuration).
+
+## Usage
+### Grid
+In most cases the card is best used in combination with the default grid card.  
+The width and height of the slider button card is determined by the `columns` option of the grid card and the `Render cards as squares` option.
+
+
+Example `columns: 2` and `Render cards as squares: false`
+
+![Grid][grid]
+
+Example `columns: 1` and `Render cards as squares: false`
+
+![Full width][full-width]
+
+### Standalone
+Used as standalone card the width will be 100% of the column, and the height will be as needed.
+With the option `slider.force_square` it's possible to force the height to be the same as the width.
 
 ## Configuration
 
@@ -156,4 +177,6 @@ This card supports translations. Please, help to add more translations and impro
 [add-translation]: https://github.com/mattieha/slider-button-card/tree/main/src/localize/languages
 [visual-editor]: https://raw.githubusercontent.com/mattieha/slider-button-card/main/assets/card-editor.png
 [preview]: https://raw.githubusercontent.com/mattieha/slider-button-card/main/assets/preview.gif
+[grid]: https://raw.githubusercontent.com/mattieha/slider-button-card/main/assets/grid-not-square.png
+[full-width]: https://raw.githubusercontent.com/mattieha/slider-button-card/main/assets/grid-full-width.png
 [latest-release]: https://github.com/mattieha/slider-button-card/releases/latest
