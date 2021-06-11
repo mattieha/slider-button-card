@@ -1,4 +1,5 @@
 # Slider button card by [@mattieha](https://www.github.com/mattieha)
+[![GitHub Release][releases-shield]][releases]
 
 A button card with integrated slider for `light, switch, fan, cover` entities.
 
@@ -180,3 +181,5 @@ This card supports translations. Please, help to add more translations and impro
 [grid]: https://raw.githubusercontent.com/mattieha/slider-button-card/main/assets/grid-not-square.png
 [full-width]: https://raw.githubusercontent.com/mattieha/slider-button-card/main/assets/grid-full-width.png
 [latest-release]: https://github.com/mattieha/slider-button-card/releases/latest
+[releases-shield]: https://img.shields.io/github/release/mattieha/slider-button-card.svg?style=for-the-badge
+[releases]: https://github.com/mattieha/slider-button-card/releases
