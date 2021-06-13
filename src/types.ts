@@ -51,6 +51,7 @@ export interface SliderConfig {
   use_percentage_bg_opacity?: boolean;
   use_state_color?: boolean;
   show_track?: boolean;
+  toggle_on_click?: boolean;
   force_square: boolean;
 }
 

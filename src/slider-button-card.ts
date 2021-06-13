@@ -160,13 +160,14 @@ export class SliderButtonCard extends LitElement implements LovelaceCard {
              })}
              >
           <div class="range-holder"
+               @click=${this.handleClick}
                data-show-track="${this.config.slider?.show_track}"
                data-mode="${this.config.slider?.direction}"
                data-background="${this.config.slider?.background}"
           >
             <input
               type="range"
-              .disabled=${this.ctrl.isUnavailable}
+              .disabled=${this.ctrl.isSliderDisabled}
               @input=${(e): void => this.setTargetValue(parseInt(e.target.value))}
               @change=${(e): void => this.setStateValue(parseInt(e.target.value))}
               min="${this.ctrl.min}"
@@ -289,6 +290,13 @@ export class SliderButtonCard extends LitElement implements LovelaceCard {
         this.animateActionStart();
       }
       handleAction(this, this.hass, {...config, entity: this.config.entity}, ev.detail.action);
+    }
+  }
+
+  private handleClick(ev: Event): void {
+    if (this.ctrl.hasToggle && !this.ctrl.isUnavailable) {
+      ev.preventDefault();
+      this.setStateValue(this.ctrl.toggleValue);
     }
   }
 
