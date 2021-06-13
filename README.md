@@ -108,7 +108,7 @@ Slider Button Card supports Lovelace's Visual Editor.
 | use_percentage_bg_opacity        | boolean | **Optional** | Apply opacity to background based on percentage  | `true`             |
 | show_track        | boolean | **Optional** | Show track when state is on  | `false`             |
 | force_square        | boolean | **Optional** | Force the button as a square  | `false`             |
-| toggle_on_click        | boolean | **Optional** | Force the slider to act as a toggle  | `false`             |
+| toggle_on_click        | boolean | **Optional** | Force the slider to act as a toggle, if `true` sliding is disabled  | `false`             |
 
 ### Action button Options
 
