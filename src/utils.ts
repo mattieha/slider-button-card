@@ -37,3 +37,6 @@ export function getLightColorBasedOnTemperature(current: number, min: number, ma
       .toRgbString();
   }
 }
+ export function toPercentage(value: number, min: number, max: number): number {
+  return (((value - min) / max) * 100); //.toFixed(2);
+};

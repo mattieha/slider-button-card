@@ -62,6 +62,7 @@ export abstract class Controller {
   set value(value: number) {
     if (value !== this.value) {
       this._value = value;
+      // this._value = Math.round(value / this.step) * this.step;
     }
   }
 
@@ -80,7 +81,8 @@ export abstract class Controller {
 
   set targetValue(value: number) {
     if (value !== this.targetValue) {
-      this._targetValue = value;
+      //this._targetValue = value;
+      this._targetValue = Math.round(value / this.step) * this.step;
     }
   }
 
@@ -212,6 +214,10 @@ export abstract class Controller {
       }
     }
     return 'inherit';
+  }
+
+  applyStep(value: number): number {
+    return  Math.round(value / this.step) * this.step;
   }
 
   log(name = '', value: string | number | object = ''): void {

@@ -13,7 +13,7 @@ import { localize } from './localize/localize';
 
 import type { SliderButtonCardConfig } from './types';
 import { ActionButtonConfigDefault, ActionButtonMode, IconConfigDefault, SliderDirections } from './types';
-import { getSliderDefaultForEntity } from './utils';
+import { getSliderDefaultForEntity, toPercentage } from './utils';
 
 /* eslint no-console: 0 */
 console.info(
@@ -40,7 +40,7 @@ export class SliderButtonCard extends LitElement implements LovelaceCard {
   @query('.state') stateText;
   @query('.button') button;
   @query('.action') action;
-  @query('.range') range;
+  @query('.slider') slider;
   private changing = false;
   private changed = false;
   private ctrl!: Controller;
@@ -133,9 +133,6 @@ export class SliderButtonCard extends LitElement implements LovelaceCard {
 
   protected firstUpdated(_changedProperties: PropertyValues): void {
     super.firstUpdated(_changedProperties);
-    setTimeout((): void => {
-      this.handleResize();
-    }, 1)
   }
 
   protected render(): TemplateResult | void {
@@ -159,27 +156,22 @@ export class SliderButtonCard extends LitElement implements LovelaceCard {
                '--icon-color': this.ctrl.style.icon.color,
              })}
              >
-          <div class="range-holder"
+          <div class="slider"
                data-show-track="${this.config.slider?.show_track}"
                data-mode="${this.config.slider?.direction}"
                data-background="${this.config.slider?.background}"
                data-is-toggle="${this.ctrl.hasToggle}"
+               @pointerdown=${this.onPointerDown}
+               @pointermove=${this.onPointerMove}
+               @pointerup=${this.onPointerUp}
           >
             ${this.ctrl.hasToggle
               ? html`
                 <div class="toggle-overlay" @click=${this.handleClick}></div>
                 `
               : ''}
-            <input
-              type="range"
-              .disabled=${this.ctrl.isUnavailable}
-              @input=${(e): void => this.setTargetValue(parseInt(e.target.value))}
-              @change=${(e): void => this.setStateValue(parseInt(e.target.value))}
-              min="${this.ctrl.min}"
-              max="${this.ctrl.max}"
-              step="${this.ctrl.step}"
-              class="range"
-            >
+            <div class="slider-bg"></div>
+            <div class="slider-thumb"></div>           
           </div>
           ${this.renderText()}
           ${this.renderAction()}
@@ -217,9 +209,6 @@ export class SliderButtonCard extends LitElement implements LovelaceCard {
   }
 
   private renderIcon(): TemplateResult {
-    /*style=${styleMap({
-     color: this.ctrl.style.icon.color,
-     })}*/
     if (this.config.icon?.show === false) {
       return html``;
     }
@@ -339,6 +328,7 @@ export class SliderButtonCard extends LitElement implements LovelaceCard {
   private updateValue(value: number, changing = true): void {
     this.changing = changing;
     this.changed = !changing;
+    this.ctrl.log('updateValue', value);
     this.ctrl.targetValue = value;
     if (!this.button) {
       return
@@ -355,7 +345,6 @@ export class SliderButtonCard extends LitElement implements LovelaceCard {
     if (this.stateText) {
       this.stateText.innerHTML = this.ctrl.isUnavailable ? `${this.hass.localize('state.default.unavailable')}` : this.ctrl.label;
     }
-    this.range.value = value.toString();
     this.button.style.setProperty('--slider-value', `${this.ctrl.percentage}%`);
     this.button.style.setProperty('--slider-bg-filter', this.ctrl.style.slider.filter);
     this.button.style.setProperty('--icon-filter', this.ctrl.style.icon.filter);
@@ -389,25 +378,67 @@ export class SliderButtonCard extends LitElement implements LovelaceCard {
     return color;
   }
 
-  private handleResize = (): void => {
-    if (this.config.slider?.direction === SliderDirections.LEFT_RIGHT || !this.button) {
-      return
+  private onPointerDown(event: PointerEvent): void {
+    event.preventDefault();
+    event.stopPropagation();
+    if (this.ctrl.isSliderDisabled) {
+      return;
     }
-    const {width, height} = this.button.getBoundingClientRect();
-    const half = (width - height) / 2;
-    this.range.style.setProperty('width', `${height}px`);
-    this.range.style.setProperty('height', `${width}px`);
-    this.range.style.setProperty('top', `${half * -1}px`);
-    this.range.style.setProperty('left', `${half}px`);
+    this.slider.setPointerCapture(event.pointerId);
+  }
+
+  private onPointerUp(): void {
+    if (this.ctrl.isSliderDisabled) {
+      return;
+    }
+    this.ctrl.log('onPointerUp', this.ctrl.targetValue);
+    this.setStateValue(this.ctrl.targetValue);
+  }
+
+  private onPointerMove(event: any): void {
+    if (this.ctrl.isSliderDisabled) {
+      return;
+    }
+    if (!event.target.hasPointerCapture(event.pointerId)) return;
+    const {left, top, width, height} = this.slider.getBoundingClientRect();
+    let per;
+    const minEdge = 0;
+    const maxEdge = 100;
+    if (this.config.slider?.direction === SliderDirections.LEFT_RIGHT) {
+      per = toPercentage(
+        event.clientX,
+        left,
+        width
+      );
+    } else if (this.config.slider?.direction === SliderDirections.TOP_BOTTOM) {
+      per = toPercentage(
+        event.clientY,
+        top,
+        height
+      );
+    } else if (this.config.slider?.direction === SliderDirections.BOTTOM_TOP) {
+      per = maxEdge - toPercentage(
+        event.clientY,
+        top,
+        height
+      );
+    }
+    per = this.ctrl.applyStep(per);
+    if (per < minEdge) {
+      per = minEdge;
+    }
+    if (per > maxEdge) {
+      per = maxEdge;
+    }
+    this.ctrl.log('onPointerMove', per);
+    this.updateValue(per);
   }
 
   connectedCallback(): void {
     super.connectedCallback();
-    window.addEventListener('resize', this.handleResize);
   }
 
   disconnectedCallback(): void {
-    window.removeEventListener('resize', this.handleResize);
     super.disconnectedCallback();
   }
 
@@ -421,6 +452,7 @@ export class SliderButtonCard extends LitElement implements LovelaceCard {
       display: flex;
       flex-direction: column;
       justify-content: space-between;
+      touch-action: none;
       overflow: hidden;      
       --mdc-icon-size: 2.2em;
     }
@@ -431,10 +463,11 @@ export class SliderButtonCard extends LitElement implements LovelaceCard {
       --slider-bg-default-color: var(--primary-color, rgb(95, 124, 171));
       --slider-bg: var(--slider-color);
       --slider-bg-filter: brightness(100%);
+      --slider-bg-direction: to right;
       --slider-track-color: #2b374e; 
       --slider-tracker-color: transparent;
       --slider-value: 0%;
-      --slider-transition-duration: 0.2s;
+      --slider-transition-duration: 0.2s;      
       /*--label-text-shadow: rgb(255 255 255 / 10%) -1px -1px 1px, rgb(0 0 0 / 50%) 1px 1px 1px;*/
       --label-color-on: var(--primary-text-color, white);
       --label-color-off: var(--primary-text-color, white);
@@ -460,6 +493,7 @@ export class SliderButtonCard extends LitElement implements LovelaceCard {
       display: block;
       overflow: hidden;           
       transition: all 0.2s ease-in-out;
+      touch-action: none;
     }
     .button.off {
       background-color: var(--btn-bg-color-off);
@@ -515,15 +549,17 @@ export class SliderButtonCard extends LitElement implements LovelaceCard {
     .off .state {
       color: var(--state-color-off, var(--disabled-text-color));
     }
-    .range-holder {
+    .slider {
       position: absolute;      
       top: 0px;
       left: 0px;
       height: 100%;
       width: 100%;
+      background-color: var( --ha-card-background, var(--card-background-color, var(--btn-bg-color-on, black)) );
+      cursor: ew-resize;
       z-index: 0;
     }
-    .range-holder .toggle-overlay {
+    .slider .toggle-overlay {
       position: absolute;      
       top: 0px;
       left: 0px;
@@ -533,92 +569,70 @@ export class SliderButtonCard extends LitElement implements LovelaceCard {
       opacity: 0;
       z-index: 999;    
     }
-    .range-holder .range {
+    .slider-bg {       
       position: absolute;
-      left: 0;
-      right: 0;
-      width: 100% ;
-      height: 100% ;
-      outline: 0;
-      margin: 0;
-      border: 0;
-      -webkit-transform: rotate(0deg);
-      -moz-transform: rotate(0deg);
-      -o-transform: rotate(0deg);
-      -ms-transform: rotate(0deg);
-      transform: rotate(0deg);
-      overflow: hidden;
-      -webkit-appearance: none;
-      background-color: var( --ha-card-background, var(--card-background-color, var(--btn-bg-color-on, black)) );
-      opacity: 1;
-      /*transition: all 0.1s ease-in;*/
-      pointer-events: none;
-      
+      top: 0;
+      left: 0px;
+      height: 100%;
+      width: 100%;
+      background: var(--slider-bg);
+      background-size: var(--slider-bg-size, 100% 100%);
+      background-color: var(--slider-bg-color, transparent);
+      background-position: var(--slider-bg-position, 0 0);
+      filter: var(--slider-bg-filter, brightness(100%));
     }
-    .off .range-holder .range {
+    .slider-thumb {
+      position: relative;
+      width: 100%;
+      height: 100%;      
+      transform: translateX(var(--slider-value));
+      background: transparent;
+      transition: transform var(--slider-transition-duration) ease-in;
+    }
+    .slider[data-mode="top-bottom"] .slider-thumb {
+      transform: translateY(var(--slider-value)) !important;
+    }
+    .slider[data-mode="bottom-top"] .slider-thumb {
+      transform: translateY(calc(var(--slider-value) * -1))  !important;
+    }
+    .slider-thumb:after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0px;
+      height: 100%;
+      width: 100%;          
+      background: var( --ha-card-background, var(--card-background-color, var(--btn-bg-color-on, black)) );
+      opacity: 1;            
+    }
+    .slider[data-show-track="true"] .slider-thumb:after {
+      opacity: 0.9;
+    }
+
+    .off .slider[data-show-track="true"] .slider-thumb:after {
+      opacity: 1;
+    }
+
+    .changing .slider .slider-thumb {
+      transition: none;
+    }
+    
+    .off .slider .slider-bg {
       background-color: var( --ha-card-background, var(--card-background-color, var(--btn-bg-color-off, black)) );
     }
    
-    .range-holder[data-mode="left-right"] .range {
-      left: 0 !important;
-      right: 0 !important;
-      width: 100% !important;
-      height: 100% !important;      
-    }
-    
-    .range-holder[data-mode="bottom-top"] .range {
-      -webkit-transform: rotate(270deg);
-      -moz-transform: rotate(270deg);
-      -o-transform: rotate(270deg);
-      -ms-transform: rotate(270deg);
-      transform: rotate(270deg);
+    .slider[data-mode="bottom-top"] {
       cursor: ns-resize;
      
     }
-    .range-holder[data-mode="top-bottom"] .range {
-      -webkit-transform: rotate(90deg);
-      -moz-transform: rotate(90deg);
-      -o-transform: rotate(90deg);
-      -ms-transform: rotate(90deg);
-      transform: rotate(90deg);
-      cursor: ns-resize;
-     
-    }
-    
-    /*.range-holder .range::-moz-range-track,*/
-    .range-holder .range::-webkit-slider-runnable-track {
-      height: 100%;
-      -webkit-appearance: none;
-      color: var(--slider-track-color);
-      margin-top: 0px;      
-    }
-    
-    /*.range-holder .range::-moz-range-thumb,*/
-    .range-holder .range::-webkit-slider-thumb {
-      pointer-events: auto;
-      position: relative;
-      top: 0;
-      left: 0px;
-      cursor: ew-resize;
-      width: 15%;
-      height: 100%;
-      transform: scaleX(20);
-      background: var(--slider-tracker-color);
-      -webkit-appearance: none;
-    }
-    
-    /*.range-holder[data-mode="bottom-top"] .range::-moz-range-thumb,
-    .range-holder[data-mode="top-bottom"] .range::-moz-range-thumb,*/
-    .range-holder[data-mode="bottom-top"] .range::-webkit-slider-thumb,
-    .range-holder[data-mode="top-bottom"] .range::-webkit-slider-thumb {
+    .slider[data-mode="top-bottom"] {
       cursor: ns-resize;
     }
-    
-    .unavailable .range-holder .toggle-overlay,
+       
+    .unavailable .slider .toggle-overlay,
     .unavailable .action,
-    .unavailable .action ha-switch,
-    /*.unavailable .range-holder .range::-moz-range-thumb,*/
-    .unavailable .range-holder .range::-webkit-slider-thumb {
+    .unavailable .action ha-switch,    
+    .unavailable .slider {
       cursor: not-allowed !important;
     }
     
@@ -627,77 +641,43 @@ export class SliderButtonCard extends LitElement implements LovelaceCard {
         transform: scaleX(2.5);        
       } 
     }
-    /*.range-holder:active .range::-moz-range-thumb,*/
-    .range-holder:active .range::-webkit-slider-thumb {
+    
+    .slider:active {
       cursor: grabbing;
     }
-    .range-holder .range:before {
-      content: " ";
-      height: 100%;
-      width: 100%;      
-      background: var(--slider-bg);
-      background-size: var(--slider-bg-size, 100% 100%);
-      background-color: var(--slider-bg-color, transparent);
-      background-position: var(--slider-bg-position, 0 0);
-      filter: var(--slider-bg-filter, brightness(100%));
-      display: inline-block;      
-      box-sizing: border-box;
-      /*border-right: 1px solid var(--ha-card-background, var(--card-background-color, var(--btn-bg-color-on, black)));      
-      border-top-right-radius: var(--ha-card-border-radius, 4px);
-      border-bottom-right-radius: var(--ha-card-border-radius, 4px);*/
-    }
 
-    .range-holder[data-background="solid"] .range:before {            
+    .slider[data-background="solid"] .slider-bg {            
       --slider-bg-color: var(--slider-color);
     }
-    .range-holder[data-background="triangle"] .range:before {      
+    .slider[data-background="triangle"] .slider-bg {      
       --slider-bg: linear-gradient(to bottom right, transparent 0%, transparent 50%, var(--slider-color) 50%, var(--slider-color) 100%);
       border-right: 0px solid;
     }
-    .range-holder[data-background="custom"] .range:before {    
+    .slider[data-background="custom"] .slider-bg {    
       --slider-bg: repeating-linear-gradient(-45deg, var(--slider-color) 0, var(--slider-color) 1px, var(--slider-color) 0, transparent 10%);
       --slider-bg-size: 30px 30px;
       /*--slider-bg: radial-gradient(circle at 100% 150%, silver 24%, white 24%, white 28%, silver 28%, silver 36%, white 36%, white 40%, transparent 40%, transparent), radial-gradient(circle at 0    150%, silver 24%, white 24%, white 28%, silver 28%, silver 36%, white 36%, white 40%, transparent 40%, transparent), radial-gradient(circle at 50%  100%, white 10%, silver 10%, silver 23%, white 23%, white 30%, silver 30%, silver 43%, white 43%, white 50%, silver 50%, silver 63%, white 63%, white 71%, transparent 71%, transparent), radial-gradient(circle at 100% 50%, white 5%, silver 5%, silver 15%, white 15%, white 20%, silver 20%, silver 29%, white 29%, white 34%, silver 34%, silver 44%, white 44%, white 49%, transparent 49%, transparent), radial-gradient(circle at 0    50%, white 5%, silver 5%, silver 15%, white 15%, white 20%, silver 20%, silver 29%, white 29%, white 34%, silver 34%, silver 44%, white 44%, white 49%, transparent 49%, transparent);
       --slider-bg-size: 100px 50px;*/
     }
-    .range-holder[data-background="gradient"] .range:before {
-      --slider-bg: linear-gradient(to right, rgba(255, 0, 0, 0) -10%, var(--slider-color) 100%);
+    .slider[data-background="gradient"] .slider-bg {
+      --slider-bg: linear-gradient(var(--slider-bg-direction), rgba(255, 0, 0, 0) -10%, var(--slider-color) 100%);
     }
-    .range-holder[data-background="striped"] .range:before {
-      --slider-bg: linear-gradient(to bottom, var(--slider-color), var(--slider-color) 50%, transparent 50%, transparent);
-      --slider-bg-size: 100% 4px;
-    }
-    .range-holder[data-background="striped"][data-mode="top-bottom"] .range:before,
-    .range-holder[data-background="striped"][data-mode="bottom-top"] .range:before {
-      --slider-bg: linear-gradient(to left, var(--slider-color), var(--slider-color) 50%, transparent 50%, transparent);
+    .slider[data-background="striped"] .slider-bg {
+      --slider-bg: linear-gradient(var(--slider-bg-direction), var(--slider-color), var(--slider-color) 50%, transparent 50%, transparent);
       --slider-bg-size: 4px 100%;
     }
-    
-    .range-holder .range:after {
-      content: " ";
-      height: 100%;
-      width: 100%;
-      position: absolute;
-      transform: translateX(var(--slider-value));
-      background: var( --ha-card-background, var(--card-background-color, var(--btn-bg-color-on, black)) );
-      opacity: 1;
-      display: inline-block;
-      transition: transform var(--slider-transition-duration) ease-in;
+    .slider[data-mode="bottom-top"] .slider-bg {
+      --slider-bg-direction: to top;      
+    }
+    .slider[data-mode="top-bottom"] .slider-bg {
+      --slider-bg-direction: to bottom;      
     }
     
-    .range-holder[data-show-track="true"] .range:after {
-      opacity: 0.9;
+    .slider[data-background="striped"][data-mode="bottom-top"] .slider-bg,
+    .slider[data-background="striped"][data-mode="top-bottom"] .slider-bg {      
+      --slider-bg-size: 100% 4px;
     }
-
-    .off .range-holder[data-show-track="true"] .range:after {
-      opacity: 1;
-    }
-
-    .changing .range-holder .range:after,
-    .changing .range-holder .range:before {
-      transition: none;
-    }
-    
+        
     .action {
       position: relative;
       float: right;
