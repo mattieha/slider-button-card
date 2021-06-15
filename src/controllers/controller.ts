@@ -96,6 +96,14 @@ export abstract class Controller {
     return true;
   }
 
+  get hasToggle(): boolean {
+    return this._config.slider?.toggle_on_click ?? false;
+  }
+
+  get toggleValue(): number {
+    return this.value === this.min ? this.max : this.min;
+  }
+
   get state(): string {
     return this.stateObj.state;
   }
@@ -106,6 +114,10 @@ export abstract class Controller {
 
   get isUnavailable(): boolean {
     return this.state ? this.state === 'unavailable' : true;
+  }
+
+  get isSliderDisabled(): boolean {
+    return this.isUnavailable ? this.isUnavailable : this.hasToggle;
   }
 
   get min(): number {

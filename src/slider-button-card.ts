@@ -163,7 +163,13 @@ export class SliderButtonCard extends LitElement implements LovelaceCard {
                data-show-track="${this.config.slider?.show_track}"
                data-mode="${this.config.slider?.direction}"
                data-background="${this.config.slider?.background}"
+               data-is-toggle="${this.ctrl.hasToggle}"
           >
+            ${this.ctrl.hasToggle
+              ? html`
+                <div class="toggle-overlay" @click=${this.handleClick}></div>
+                `
+              : ''}
             <input
               type="range"
               .disabled=${this.ctrl.isUnavailable}
@@ -289,6 +295,13 @@ export class SliderButtonCard extends LitElement implements LovelaceCard {
         this.animateActionStart();
       }
       handleAction(this, this.hass, {...config, entity: this.config.entity}, ev.detail.action);
+    }
+  }
+
+  private handleClick(ev: Event): void {
+    if (this.ctrl.hasToggle && !this.ctrl.isUnavailable) {
+      ev.preventDefault();
+      this.setStateValue(this.ctrl.toggleValue);
     }
   }
 
@@ -508,6 +521,17 @@ export class SliderButtonCard extends LitElement implements LovelaceCard {
       left: 0px;
       height: 100%;
       width: 100%;
+      z-index: 0;
+    }
+    .range-holder .toggle-overlay {
+      position: absolute;      
+      top: 0px;
+      left: 0px;
+      height: 100%;
+      width: 100%;
+      cursor: pointer;
+      opacity: 0;
+      z-index: 999;    
     }
     .range-holder .range {
       position: absolute;
@@ -590,6 +614,7 @@ export class SliderButtonCard extends LitElement implements LovelaceCard {
       cursor: ns-resize;
     }
     
+    .unavailable .range-holder .toggle-overlay,
     .unavailable .action,
     .unavailable .action ha-switch,
     /*.unavailable .range-holder .range::-moz-range-thumb,*/
