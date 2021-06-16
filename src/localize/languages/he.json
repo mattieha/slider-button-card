@@ -1,0 +1,60 @@
+{
+  "common": {
+    "version": "v",
+    "invalid_configuration": "תצורה לא חוקית",
+    "show_warning": "הצג אזהרה",
+    "show_error": "הצג שגיאה"
+  },
+  "tabs": {
+    "general": {
+      "title": "כללי",
+      "entity": "ישיות (נדרש)",
+      "name": "שם (אופציונלי)",
+      "show_name": "להציג שם?",
+      "show_state": "להציג מצב?"
+    },
+    "icon": {
+      "title": "סמליל",
+      "icon": "סמליל (אופציונלי)",
+      "show_icon": "להציג סמליל?",
+      "use_state_color": "להשתמש בצבע מצב?",
+      "tap_action": "פעולה בהקשה"
+    },
+    "slider": {
+      "title": "גלילה",
+      "direction": "כיוון",
+      "background": "רקע",
+      "use_brightness": "להשתמש בבהירות?",
+      "show_track": "להציג מסלול?",
+      "force_square": "כוח מרובע?"
+    },
+    "action_button": {
+      "title": "כפתור פעולה",
+      "mode": "מצב",
+      "icon": "סמליל",
+      "show_button": "להציג כפתור?",
+      "show_spinner": "להציג ספינר?",
+      "tap_action": "פעולה בהקשה"
+    }
+  },
+  "state": {
+    "off": "כבוי",
+    "on": "פועל"
+  },
+  "direction": {
+    "left-right": "שמאל לימין",
+    "top-bottom": "מלמעלה למטה",
+    "bottom-top": "מלמטה למעלה"
+  },
+  "background": {
+    "striped": "מפוספס",
+    "gradient": "שיפוע",
+    "solid": "מוצק",
+    "triangle": "משולש",
+    "custom": "מותאם אישית"
+  },
+  "mode": {
+    "toggle": "החלפה",
+    "custom": "מותאם אישית"
+  }
+}
