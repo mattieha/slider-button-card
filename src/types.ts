@@ -80,6 +80,7 @@ export enum Domain {
   FAN = 'fan',
   COVER = 'cover',
   INPUT_BOOLEAN = 'input_boolean',
+  LOCK = 'lock',
 }
 
 export const ActionButtonConfigDefault: ActionButtonConfig = {
@@ -149,6 +150,15 @@ export const SliderConfigDefaultDomain: Map<string, SliderConfig> = new Map([
     force_square: false,
   }],
   [Domain.INPUT_BOOLEAN, {
+    percentage: true,
+    direction: SliderDirections.LEFT_RIGHT,
+    background: SliderBackground.SOLID,
+    use_state_color: false,
+    use_percentage_bg_opacity: false,
+    show_track: false,
+    force_square: false,
+  }],
+  [Domain.LOCK, {
     percentage: true,
     direction: SliderDirections.LEFT_RIGHT,
     background: SliderBackground.SOLID,
