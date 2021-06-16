@@ -1,6 +1,5 @@
 import { STATES_OFF } from 'custom-card-helpers';
-import { SliderBackground } from '../types';
-import { Controller, ObjectStyle } from './controller';
+import { Controller } from './controller';
 
 const RGB_INDEX = {
   red: 0,

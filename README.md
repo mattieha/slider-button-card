@@ -1,5 +1,6 @@
 # Slider button card by [@mattieha](https://www.github.com/mattieha)
 [![GitHub Release][releases-shield]][releases]
+[![hacs_badge](https://img.shields.io/badge/HACS-default-orange.svg?style=for-the-badge)](https://github.com/custom-components/hacs)
 
 A button card with integrated slider for `light, switch, fan, cover, input_boolean` entities.
 
@@ -29,8 +30,8 @@ A button card with integrated slider for `light, switch, fan, cover, input_boole
 ## Installation
 
 ### HACS
-1. Go to the HACS store > Settings (dots in right upper corner) > Custom repositories > Fill in the repo url `https://github.com/mattieha/slider-button-card` and choose `Lovelace` as category.
-2. Click install on the added card in HACS
+This card is available in [HACS][hacs] (Home Assistant Community Store).
+Just search for `Slider Button Card` in Frontend tab.
 
 ### Manual
 
@@ -155,10 +156,6 @@ Custom styles can be set by using [Card mod](https://github.com/thomasloven/love
 |  `--action-spinner-color`  | Color of the spinner action button     | `var(--label-badge-text-color, white)`       |
 
 ## Known issues
-- No support for firefox
-- Mobile
-    - With `slider.direction` set to `top-bottom` or `bottom-top` scrolling is triggered
-
 When you discover any bugs please open an [issue](https://github.com/mattieha/slider-button-card/issues).
 
 ## Languages
@@ -177,6 +174,7 @@ This card supports translations. Please, help to add more translations and impro
 [![beer](https://www.buymeacoffee.com/assets/img/custom_images/black_img.png)](https://www.buymeacoffee.com/mattijsha)
 
 <!-- References -->
+[hacs]: https://hacs.xyz
 [add-translation]: https://github.com/mattieha/slider-button-card/tree/main/src/localize/languages
 [visual-editor]: https://raw.githubusercontent.com/mattieha/slider-button-card/main/assets/card-editor.png
 [preview]: https://raw.githubusercontent.com/mattieha/slider-button-card/main/assets/preview.gif
