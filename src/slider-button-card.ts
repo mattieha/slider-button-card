@@ -343,7 +343,7 @@ export class SliderButtonCard extends LitElement implements LovelaceCard {
       }
     }
     if (this.stateText) {
-      this.stateText.innerHTML = this.ctrl.isUnavailable ? `${this.hass.localize('state.default.unavailable')}` : this.ctrl.label;
+      // this.stateText.innerHTML = this.ctrl.isUnavailable ? `${this.hass.localize('state.default.unavailable')}` : this.ctrl.label;
     }
     this.button.style.setProperty('--slider-value', `${this.ctrl.percentage}%`);
     this.button.style.setProperty('--slider-bg-filter', this.ctrl.style.slider.filter);
@@ -379,11 +379,13 @@ export class SliderButtonCard extends LitElement implements LovelaceCard {
   }
 
   private onPointerDown(event: PointerEvent): void {
+    this.stateText.innerHTML = 'PRE DOWN';
     event.preventDefault();
     event.stopPropagation();
     if (this.ctrl.isSliderDisabled) {
       return;
     }
+    this.stateText.innerHTML = 'DOWN';
     this.slider.setPointerCapture(event.pointerId);
   }
 
@@ -391,15 +393,19 @@ export class SliderButtonCard extends LitElement implements LovelaceCard {
     if (this.ctrl.isSliderDisabled) {
       return;
     }
+    // this.stateText.innerHTML = 'UP';
     this.ctrl.log('onPointerUp', this.ctrl.targetValue);
     this.setStateValue(this.ctrl.targetValue);
   }
 
   private onPointerMove(event: any): void {
+    this.stateText.innerHTML = 'PRE MOVE 1';
     if (this.ctrl.isSliderDisabled) {
       return;
     }
+    this.stateText.innerHTML = 'PRE MOVE 2';
     if (!event.target.hasPointerCapture(event.pointerId)) return;
+    this.stateText.innerHTML = 'MOVE';
     const {left, top, width, height} = this.slider.getBoundingClientRect();
     let per;
     const minEdge = 0;
