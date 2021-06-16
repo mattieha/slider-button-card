@@ -483,6 +483,8 @@ export class SliderButtonCard extends LitElement implements LovelaceCard {
       --action-icon-color-off: var(--paper-item-icon-color, black);      
       --action-spinner-color: var(--label-badge-text-color, white);
     }
+    /* --- BUTTON --- */
+    
     .button {
       position: relative;
       padding: 0.8rem;
@@ -498,6 +500,9 @@ export class SliderButtonCard extends LitElement implements LovelaceCard {
     .button.off {
       background-color: var(--btn-bg-color-off);
     }
+    
+    /* --- ICON --- */
+    
     .icon {
       position: relative;
       cursor: pointer;
@@ -514,6 +519,9 @@ export class SliderButtonCard extends LitElement implements LovelaceCard {
       color: var(--icon-color);
       transition: color 0.4s ease-in-out 0s, filter 0.2s linear 0s;
     }
+
+    /* --- TEXT --- */
+    
     .text {
       position: absolute;
       bottom: 0;
@@ -526,6 +534,9 @@ export class SliderButtonCard extends LitElement implements LovelaceCard {
       max-width: calc(100% - 2em);
       /*text-shadow: rgb(255 255 255 / 10%) -1px -1px 1px, rgb(0 0 0 / 50%) 1px 1px 1px;*/
     }
+
+    /* --- LABEL --- */
+    
     .name {
       color: var(--label-color-on);      
       text-overflow: ellipsis;
@@ -536,6 +547,9 @@ export class SliderButtonCard extends LitElement implements LovelaceCard {
     .off .name {
       color: var(--label-color-off);
     }
+    
+    /* --- STATE --- */
+    
     .state {      
       color: var(--state-color-on, var(--label-badge-text-color, white));      
       text-overflow: ellipsis;
@@ -549,6 +563,9 @@ export class SliderButtonCard extends LitElement implements LovelaceCard {
     .off .state {
       color: var(--state-color-off, var(--disabled-text-color));
     }
+    
+    /* --- SLIDER --- */    
+    
     .slider {
       position: absolute;      
       top: 0px;
@@ -559,6 +576,18 @@ export class SliderButtonCard extends LitElement implements LovelaceCard {
       cursor: ew-resize;
       z-index: 0;
     }
+    .slider[data-mode="bottom-top"] {
+      cursor: ns-resize;     
+    }
+    .slider[data-mode="top-bottom"] {
+      cursor: ns-resize;
+    }
+    .slider:active {
+      cursor: grabbing;
+    }
+    
+    /* --- SLIDER OVERLAY --- */      
+      
     .slider .toggle-overlay {
       position: absolute;      
       top: 0px;
@@ -569,6 +598,9 @@ export class SliderButtonCard extends LitElement implements LovelaceCard {
       opacity: 0;
       z-index: 999;    
     }
+    
+    /* --- SLIDER BACKGROUND --- */   
+     
     .slider-bg {       
       position: absolute;
       top: 0;
@@ -581,6 +613,47 @@ export class SliderButtonCard extends LitElement implements LovelaceCard {
       background-position: var(--slider-bg-position, 0 0);
       filter: var(--slider-bg-filter, brightness(100%));
     }
+    .off .slider .slider-bg {
+      background-color: var( --ha-card-background, var(--card-background-color, var(--btn-bg-color-off, black)) );
+    }
+    .slider[data-background="solid"] .slider-bg {            
+      --slider-bg-color: var(--slider-color);
+    }
+    .slider[data-background="triangle"] .slider-bg {      
+      --slider-bg-direction: to bottom right;    
+      --slider-bg: linear-gradient(var(--slider-bg-direction), transparent 0%, transparent 50%, var(--slider-color) 50%, var(--slider-color) 100%);
+      border-right: 0px solid;
+    }    
+    .slider[data-background="triangle"][data-mode="bottom-top"] .slider-bg {
+      --slider-bg-direction: to top left;      
+    }    
+    .slider[data-background="triangle"][data-mode="top-bottom"] .slider-bg {
+      --slider-bg-direction: to bottom left;      
+    }
+    .slider[data-background="custom"] .slider-bg {    
+      --slider-bg: repeating-linear-gradient(-45deg, var(--slider-color) 0, var(--slider-color) 1px, var(--slider-color) 0, transparent 10%);
+      --slider-bg-size: 30px 30px;
+    }    
+    .slider[data-background="gradient"] .slider-bg {
+      --slider-bg: linear-gradient(var(--slider-bg-direction), rgba(255, 0, 0, 0) -10%, var(--slider-color) 100%);
+    }    
+    .slider[data-background="striped"] .slider-bg {
+      --slider-bg: linear-gradient(var(--slider-bg-direction), var(--slider-color), var(--slider-color) 50%, transparent 50%, transparent);
+      --slider-bg-size: 4px 100%;
+    }
+    .slider[data-background="striped"][data-mode="bottom-top"] .slider-bg,
+    .slider[data-background="striped"][data-mode="top-bottom"] .slider-bg {      
+      --slider-bg-size: 100% 4px;
+    }    
+    .slider[data-mode="bottom-top"] .slider-bg {
+      --slider-bg-direction: to top;      
+    }    
+    .slider[data-mode="top-bottom"] .slider-bg {
+      --slider-bg-direction: to bottom;      
+    }
+    
+    /* --- SLIDER THUMB --- */        
+    
     .slider-thumb {
       position: relative;
       width: 100%;
@@ -589,12 +662,16 @@ export class SliderButtonCard extends LitElement implements LovelaceCard {
       background: transparent;
       transition: transform var(--slider-transition-duration) ease-in;
     }
+    .changing .slider .slider-thumb {
+      transition: none;
+    }    
     .slider[data-mode="top-bottom"] .slider-thumb {
       transform: translateY(var(--slider-value)) !important;
     }
     .slider[data-mode="bottom-top"] .slider-thumb {
       transform: translateY(calc(var(--slider-value) * -1))  !important;
     }
+    
     .slider-thumb:after {
       content: '';
       position: absolute;
@@ -608,76 +685,12 @@ export class SliderButtonCard extends LitElement implements LovelaceCard {
     .slider[data-show-track="true"] .slider-thumb:after {
       opacity: 0.9;
     }
-
     .off .slider[data-show-track="true"] .slider-thumb:after {
       opacity: 1;
     }
-
-    .changing .slider .slider-thumb {
-      transition: none;
-    }
-    
-    .off .slider .slider-bg {
-      background-color: var( --ha-card-background, var(--card-background-color, var(--btn-bg-color-off, black)) );
-    }
-   
-    .slider[data-mode="bottom-top"] {
-      cursor: ns-resize;
-     
-    }
-    .slider[data-mode="top-bottom"] {
-      cursor: ns-resize;
-    }
-       
-    .unavailable .slider .toggle-overlay,
-    .unavailable .action,
-    .unavailable .action ha-switch,    
-    .unavailable .slider {
-      cursor: not-allowed !important;
-    }
-    
-    @media (pointer: coarse)  {
-      .range-holder .range::-webkit-slider-thumb {
-        transform: scaleX(2.5);        
-      } 
-    }
-    
-    .slider:active {
-      cursor: grabbing;
-    }
-
-    .slider[data-background="solid"] .slider-bg {            
-      --slider-bg-color: var(--slider-color);
-    }
-    .slider[data-background="triangle"] .slider-bg {      
-      --slider-bg: linear-gradient(to bottom right, transparent 0%, transparent 50%, var(--slider-color) 50%, var(--slider-color) 100%);
-      border-right: 0px solid;
-    }
-    .slider[data-background="custom"] .slider-bg {    
-      --slider-bg: repeating-linear-gradient(-45deg, var(--slider-color) 0, var(--slider-color) 1px, var(--slider-color) 0, transparent 10%);
-      --slider-bg-size: 30px 30px;
-      /*--slider-bg: radial-gradient(circle at 100% 150%, silver 24%, white 24%, white 28%, silver 28%, silver 36%, white 36%, white 40%, transparent 40%, transparent), radial-gradient(circle at 0    150%, silver 24%, white 24%, white 28%, silver 28%, silver 36%, white 36%, white 40%, transparent 40%, transparent), radial-gradient(circle at 50%  100%, white 10%, silver 10%, silver 23%, white 23%, white 30%, silver 30%, silver 43%, white 43%, white 50%, silver 50%, silver 63%, white 63%, white 71%, transparent 71%, transparent), radial-gradient(circle at 100% 50%, white 5%, silver 5%, silver 15%, white 15%, white 20%, silver 20%, silver 29%, white 29%, white 34%, silver 34%, silver 44%, white 44%, white 49%, transparent 49%, transparent), radial-gradient(circle at 0    50%, white 5%, silver 5%, silver 15%, white 15%, white 20%, silver 20%, silver 29%, white 29%, white 34%, silver 34%, silver 44%, white 44%, white 49%, transparent 49%, transparent);
-      --slider-bg-size: 100px 50px;*/
-    }
-    .slider[data-background="gradient"] .slider-bg {
-      --slider-bg: linear-gradient(var(--slider-bg-direction), rgba(255, 0, 0, 0) -10%, var(--slider-color) 100%);
-    }
-    .slider[data-background="striped"] .slider-bg {
-      --slider-bg: linear-gradient(var(--slider-bg-direction), var(--slider-color), var(--slider-color) 50%, transparent 50%, transparent);
-      --slider-bg-size: 4px 100%;
-    }
-    .slider[data-mode="bottom-top"] .slider-bg {
-      --slider-bg-direction: to top;      
-    }
-    .slider[data-mode="top-bottom"] .slider-bg {
-      --slider-bg-direction: to bottom;      
-    }
-    
-    .slider[data-background="striped"][data-mode="bottom-top"] .slider-bg,
-    .slider[data-background="striped"][data-mode="top-bottom"] .slider-bg {      
-      --slider-bg-size: 100% 4px;
-    }
-        
+                  
+    /* --- ACTION BUTTON --- */      
+              
     .action {
       position: relative;
       float: right;
@@ -687,22 +700,16 @@ export class SliderButtonCard extends LitElement implements LovelaceCard {
       cursor: pointer;
       outline: none;
       -webkit-tap-highlight-color: transparent;
-    }
-    
+    }    
     .action ha-switch {
       position: absolute;
       right: 0;
       top: 5px;
-    }
-    
+    }    
     .off .action {
       color: var(--action-icon-color-off);
     }
 
-    .action.loading .circular-loader {
-      opacity: 1;      
-    }
-    
     .circular-loader {
       position: absolute;
       left: -8px;
@@ -712,8 +719,11 @@ export class SliderButtonCard extends LitElement implements LovelaceCard {
       opacity: 0;
       transition: opacity 0.2s ease-in-out;
       animation: rotate 2s linear infinite; 
-    }
-   
+    }   
+    .action.loading .circular-loader {
+      opacity: 1;      
+    }    
+
     .loader-path {
       fill: none;
       stroke-width: 2px;
@@ -721,6 +731,16 @@ export class SliderButtonCard extends LitElement implements LovelaceCard {
       animation: animate-stroke 1.5s ease-in-out infinite both;        
       stroke-linecap: round;
     }
+    
+    /* --- MISC --- */    
+    
+    .unavailable .slider .toggle-overlay,
+    .unavailable .action,
+    .unavailable .action ha-switch,    
+    .unavailable .slider {
+      cursor: not-allowed !important;
+    }
+    
     
     @keyframes rotate {
       100% {
