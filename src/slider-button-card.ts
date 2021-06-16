@@ -12,8 +12,8 @@ import './editor';
 import { localize } from './localize/localize';
 
 import type { SliderButtonCardConfig } from './types';
-import { ActionButtonConfigDefault, ActionButtonMode, IconConfigDefault, SliderDirections } from './types';
-import { getSliderDefaultForEntity, toPercentage } from './utils';
+import { ActionButtonConfigDefault, ActionButtonMode, IconConfigDefault } from './types';
+import { getSliderDefaultForEntity } from './utils';
 
 /* eslint no-console: 0 */
 console.info(
@@ -401,37 +401,9 @@ export class SliderButtonCard extends LitElement implements LovelaceCard {
     }
     if (!event.target.hasPointerCapture(event.pointerId)) return;
     const {left, top, width, height} = this.slider.getBoundingClientRect();
-    let per;
-    const minEdge = 0;
-    const maxEdge = 100;
-    if (this.config.slider?.direction === SliderDirections.LEFT_RIGHT) {
-      per = toPercentage(
-        event.clientX,
-        left,
-        width
-      );
-    } else if (this.config.slider?.direction === SliderDirections.TOP_BOTTOM) {
-      per = toPercentage(
-        event.clientY,
-        top,
-        height
-      );
-    } else if (this.config.slider?.direction === SliderDirections.BOTTOM_TOP) {
-      per = maxEdge - toPercentage(
-        event.clientY,
-        top,
-        height
-      );
-    }
-    per = this.ctrl.applyStep(per);
-    if (per < minEdge) {
-      per = minEdge;
-    }
-    if (per > maxEdge) {
-      per = maxEdge;
-    }
-    this.ctrl.log('onPointerMove', per);
-    this.updateValue(per);
+    const percentage = this.ctrl.moveSlider(event, {left, top, width, height});
+    this.ctrl.log('onPointerMove', percentage);
+    this.updateValue(percentage);
   }
 
   connectedCallback(): void {
