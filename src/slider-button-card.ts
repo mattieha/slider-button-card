@@ -386,16 +386,19 @@ export class SliderButtonCard extends LitElement implements LovelaceCard {
       return;
     }
     this.stateText.innerHTML = 'DOWN';
+    // console.log('CAPTURE', event.pointerId);
     this.slider.setPointerCapture(event.pointerId);
   }
 
-  private onPointerUp(): void {
+  private onPointerUp(event: PointerEvent): void {
     if (this.ctrl.isSliderDisabled) {
       return;
     }
     // this.stateText.innerHTML = 'UP';
     this.ctrl.log('onPointerUp', this.ctrl.targetValue);
     this.setStateValue(this.ctrl.targetValue);
+    // console.log('RELEASE', event.pointerId);
+    this.slider.releasePointerCapture(event.pointerId);
   }
 
   private onPointerMove(event: any): void {
@@ -404,7 +407,11 @@ export class SliderButtonCard extends LitElement implements LovelaceCard {
       return;
     }
     this.stateText.innerHTML = 'PRE MOVE 2';
-    if (!event.target.hasPointerCapture(event.pointerId)) return;
+    //console.log('onPointerMove[]', event);
+    // console.log('hasPointerCapture[]', this.slider.hasPointerCapture(event.pointerId));
+    // console.log('HAS', event.pointerId);
+    if (!this.slider.hasPointerCapture(event.pointerId)) return;
+    // if (!event.target.hasPointerCapture(event.pointerId)) return;
     this.stateText.innerHTML = 'MOVE';
     const {left, top, width, height} = this.slider.getBoundingClientRect();
     let per;
