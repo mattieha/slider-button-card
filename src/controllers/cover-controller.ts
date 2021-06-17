@@ -1,3 +1,5 @@
+import { SliderDirections } from '../types';
+import { toPercentage } from '../utils';
 import { Controller } from './controller';
 
 export class CoverController extends Controller {
@@ -56,16 +58,18 @@ export class CoverController extends Controller {
 
   get label(): string {
     const defaultLabel = this._hass.localize(`component.cover.state._.${this.state}`);
+    const closedLabel = this._hass.localize('component.cover.state._.closed');
+    const openLabel = this._hass.localize('component.cover.state._.open');
     if (!this.hasSlider) {
       return defaultLabel;
     }
     switch(this.attribute) {
       case 'position':
         if (this.percentage === 0) {
-          return this._hass.localize('component.cover.state._.closed');
+          return openLabel;
         }
         if (this.percentage === 100) {
-          return this._hass.localize('component.cover.state._.open');
+          return closedLabel;
         }
         return `${this.percentage}%`;
       case 'tilt':
@@ -106,6 +110,40 @@ export class CoverController extends Controller {
 
   get _max(): number {
     return this.hasSlider ? 100 : 1;
+  }
+
+  get percentage(): number {
+    return Math.round(
+      ((this.targetValue - this.max) * 100) / (this.max - this.min) * -1
+    );
+  }
+
+  calcMovementPercentage(event: any, {left, top, width, height}): number {
+    let percentage;
+    switch(this._config.slider?.direction) {
+      case SliderDirections.LEFT_RIGHT:
+        percentage = 100 - toPercentage(
+          event.clientX,
+          left,
+          width
+        );
+        break
+      case SliderDirections.TOP_BOTTOM:
+        percentage = 100 - toPercentage(
+          event.clientY,
+          top,
+          height
+        );
+        break
+      case SliderDirections.BOTTOM_TOP:
+        percentage = toPercentage(
+          event.clientY,
+          top,
+          height
+        );
+
+    }
+    return percentage;
   }
 
 }

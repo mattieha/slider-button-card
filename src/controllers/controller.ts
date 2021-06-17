@@ -1,7 +1,7 @@
 import { computeStateDomain, domainIcon, HomeAssistant } from 'custom-card-helpers';
 import { HassEntity } from 'home-assistant-js-websocket';
-import { SliderBackground, SliderButtonCardConfig } from '../types';
-import { getLightColorBasedOnTemperature } from '../utils';
+import { SliderBackground, SliderButtonCardConfig, SliderDirections } from '../types';
+import { getLightColorBasedOnTemperature, toPercentage } from '../utils';
 
 export interface Style {
   icon: ObjectStyle;
@@ -214,6 +214,48 @@ export abstract class Controller {
       }
     }
     return 'inherit';
+  }
+
+  moveSlider(event: any, {left, top, width, height}): number {
+    let percentage = this.calcMovementPercentage(event, {left, top, width, height});
+    const minEdge = 0;
+    const maxEdge = 100;
+    percentage = this.applyStep(percentage);
+    if (percentage < minEdge) {
+      percentage = minEdge;
+    }
+    if (percentage > maxEdge) {
+      percentage = maxEdge;
+    }
+    return percentage;
+  }
+
+  calcMovementPercentage(event: any, {left, top, width, height}): number {
+    let percentage;
+    switch(this._config.slider?.direction) {
+      case SliderDirections.LEFT_RIGHT:
+        percentage = toPercentage(
+          event.clientX,
+          left,
+          width
+        );
+        break
+      case SliderDirections.TOP_BOTTOM:
+        percentage = toPercentage(
+          event.clientY,
+          top,
+          height
+        );
+        break
+      case SliderDirections.BOTTOM_TOP:
+        percentage = 100 - toPercentage(
+          event.clientY,
+          top,
+          height
+        );
+
+    }
+    return percentage;
   }
 
   applyStep(value: number): number {
