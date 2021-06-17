@@ -343,7 +343,7 @@ export class SliderButtonCard extends LitElement implements LovelaceCard {
       }
     }
     if (this.stateText) {
-      // this.stateText.innerHTML = this.ctrl.isUnavailable ? `${this.hass.localize('state.default.unavailable')}` : this.ctrl.label;
+      this.stateText.innerHTML = this.ctrl.isUnavailable ? `${this.hass.localize('state.default.unavailable')}` : this.ctrl.label;
     }
     this.button.style.setProperty('--slider-value', `${this.ctrl.percentage}%`);
     this.button.style.setProperty('--slider-bg-filter', this.ctrl.style.slider.filter);
