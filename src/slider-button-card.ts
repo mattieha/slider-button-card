@@ -387,19 +387,20 @@ export class SliderButtonCard extends LitElement implements LovelaceCard {
     this.slider.setPointerCapture(event.pointerId);
   }
 
-  private onPointerUp(): void {
+  private onPointerUp(event: PointerEvent): void {
     if (this.ctrl.isSliderDisabled) {
       return;
     }
     this.ctrl.log('onPointerUp', this.ctrl.targetValue);
     this.setStateValue(this.ctrl.targetValue);
+    this.slider.releasePointerCapture(event.pointerId);
   }
 
   private onPointerMove(event: any): void {
     if (this.ctrl.isSliderDisabled) {
       return;
     }
-    if (!event.target.hasPointerCapture(event.pointerId)) return;
+    if (!this.slider.hasPointerCapture(event.pointerId)) return;
     const {left, top, width, height} = this.slider.getBoundingClientRect();
     const percentage = this.ctrl.moveSlider(event, {left, top, width, height});
     this.ctrl.log('onPointerMove', percentage);
