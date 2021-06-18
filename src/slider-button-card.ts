@@ -672,6 +672,32 @@ export class SliderButtonCard extends LitElement implements LovelaceCard {
       transform: translateY(calc(var(--slider-value) * -1))  !important;
     }
     
+    .slider-thumb:before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -2px;
+      height: 100%;
+      width: 2px;          
+      background: var(--slider-color);
+      opacity: 0;       
+      transition: opacity 0.2s ease-in-out 0s;   
+      box-shadow: var(--slider-color) 0px 1px 5px 1px;
+      z-index: 999;
+    }
+    .slider[data-mode="top-bottom"] .slider-thumb:before {
+      top: -2px;
+      left: 0px;
+      height: 2px;
+      width: 100%;              
+    }    
+    .changing .slider-thumb:before {
+      opacity: 0.5;    
+    }
+    .off.changing .slider-thumb:before {
+      opacity: 0;    
+    }
+    
     .slider-thumb:after {
       content: '';
       position: absolute;
