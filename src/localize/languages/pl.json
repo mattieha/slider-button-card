@@ -26,6 +26,7 @@
       "background": "Tło",
       "use_brightness": "Użyć jasności?",
       "show_track": "Pokazać ślad?",
+      "toggle_on_click": "Działaj jako przełącznik (wyłącz przesuwanie)",
       "force_square": "Wymusić kwadrat?"
     },
     "action_button": {

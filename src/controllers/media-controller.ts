@@ -8,7 +8,7 @@ export class MediaController extends Controller {
   _targetValue;
 
   get _value(): number {
-    return this.stateObj.attributes.is_volume_muted
+    return this.isUnavailable || this.stateObj?.attributes?.is_volume_muted
       ? 0
       : Math.floor(parseFloat(Number.parseFloat(this.stateObj.attributes.volume_level).toPrecision(2)) * 100.0);
   }

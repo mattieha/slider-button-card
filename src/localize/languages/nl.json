@@ -26,6 +26,7 @@
       "background": "Actergrond",
       "use_brightness": "Gebruik helderheid?",
       "show_track": "Toon spoor?",
+      "toggle_on_click": "Fungeren als een schakelaar (schuiven uitschakelen)",
       "force_square": "Forceer vierkant?"
     },
     "action_button": {

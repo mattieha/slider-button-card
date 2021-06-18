@@ -26,6 +26,7 @@
       "background": "Background",
       "use_brightness": "Use brightness?",
       "show_track": "Show track?",
+      "toggle_on_click": "Act as a toggle (disable sliding)",
       "force_square": "Force square?"
     },
     "action_button": {
