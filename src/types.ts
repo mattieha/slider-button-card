@@ -80,6 +80,7 @@ export enum Domain {
   FAN = 'fan',
   COVER = 'cover',
   INPUT_BOOLEAN = 'input_boolean',
+  MEDIA_PLAYER = 'media_player',
 }
 
 export const ActionButtonConfigDefault: ActionButtonConfig = {
@@ -155,6 +156,15 @@ export const SliderConfigDefaultDomain: Map<string, SliderConfig> = new Map([
     use_state_color: false,
     use_percentage_bg_opacity: false,
     show_track: false,
+    force_square: false,
+  }],
+  [Domain.MEDIA_PLAYER, {
+    percentage: true,
+    direction: SliderDirections.LEFT_RIGHT,
+    background: SliderBackground.TRIANGLE,
+    use_state_color: false,
+    use_percentage_bg_opacity: false,
+    show_track: true,
     force_square: false,
   }],
 ])
