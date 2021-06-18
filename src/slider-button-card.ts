@@ -279,8 +279,8 @@ export class SliderButtonCard extends LitElement implements LovelaceCard {
   }
 
   private _handleAction(ev: ActionHandlerEvent, config): void {
-    if (this.hass && this.config && ev.detail.action && !this.ctrl.isUnavailable) {
-      if (config.tap_action?.action === 'toggle') {
+    if (this.hass && this.config && ev.detail.action) {
+      if (config.tap_action?.action === 'toggle' && !this.ctrl.isUnavailable) {
         this.animateActionStart();
       }
       handleAction(this, this.hass, {...config, entity: this.config.entity}, ev.detail.action);
