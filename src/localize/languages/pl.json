@@ -1,0 +1,60 @@
+{
+  "common": {
+    "version": "v",
+    "invalid_configuration": "Nieprawidłowa konfiguracja",
+    "show_warning": "Pokaż ostrzeżenia",
+    "show_error": "Pokaż błędy"
+  },
+  "tabs": {
+    "general": {
+      "title": "Ogólne",
+      "entity": "Encja (Wymagana)",
+      "name": "Nazwa (Opcjonalna)",
+      "show_name": "Pokazać nazwę?",
+      "show_state": "Pokazać stan?"
+    },
+    "icon": {
+      "title": "Ikona",
+      "icon": "Ikona (Opcjonalna)",
+      "show_icon": "Pokazać ikonę?",
+      "use_state_color": "Uzyć kolor stanu?",
+      "tap_action": "Akcja kliknięcia"
+    },
+    "slider": {
+      "title": "Suwak",
+      "direction": "Kierunek",
+      "background": "Tło",
+      "use_brightness": "Użyć jasności?",
+      "show_track": "Pokazać ślad?",
+      "force_square": "Wymusić kwadrat?"
+    },
+    "action_button": {
+      "title": "Przycisk akcji",
+      "mode": "Tryb",
+      "icon": "Ikona",
+      "show_button": "Pokazać przycisk?",
+      "show_spinner": "Pokazać spinner?",
+      "tap_action": "Akcja kliknięcia"
+    }
+  },
+  "state": {
+    "off": "Wyłączony",
+    "on": "Włączony"
+  },
+  "direction": {
+    "left-right": "Z lewej do prawej",
+    "top-bottom": "Z góry na dół",
+    "bottom-top": "Z dołu do góry"
+  },
+  "background": {
+    "striped": "W paski",
+    "gradient": "Gradient",
+    "solid": "Pełne tło",
+    "triangle": "Trójkąt",
+    "custom": "Ustawienia własne"
+  },
+  "mode": {
+    "toggle": "Przełącznik",
+    "custom": "Ustawienia własne"
+  }
+}
