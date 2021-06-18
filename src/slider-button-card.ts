@@ -289,7 +289,7 @@ export class SliderButtonCard extends LitElement implements LovelaceCard {
 
   private _handleAction(ev: ActionHandlerEvent, config): void {
     if (this.hass && this.config && ev.detail.action) {
-      if (config.tap_action?.action === 'toggle') {
+      if (config.tap_action?.action === 'toggle' && !this.ctrl.isUnavailable) {
         this.animateActionStart();
       }
       handleAction(this, this.hass, {...config, entity: this.config.entity}, ev.detail.action);
@@ -508,6 +508,10 @@ export class SliderButtonCard extends LitElement implements LovelaceCard {
     .icon.has-picture ha-icon{
       display: none;
     }
+    .unavailable .icon ha-icon {
+      color: var(--disabled-text-color);
+    }
+
 
     /* --- TEXT --- */
     
@@ -536,6 +540,9 @@ export class SliderButtonCard extends LitElement implements LovelaceCard {
     .off .name {
       color: var(--label-color-off);
     }
+    .unavailable .name {
+      color: var(--disabled-text-color);
+    }
     
     /* --- STATE --- */
     
@@ -552,6 +559,10 @@ export class SliderButtonCard extends LitElement implements LovelaceCard {
     .off .state {
       color: var(--state-color-off, var(--disabled-text-color));
     }
+    .unavailable .state {
+      color: var(--disabled-text-color);
+    }
+    
     
     /* --- SLIDER --- */    
     
@@ -698,6 +709,10 @@ export class SliderButtonCard extends LitElement implements LovelaceCard {
     .off .action {
       color: var(--action-icon-color-off);
     }
+    .unavailable .action {
+      color: var(--disabled-text-color);
+    }
+    
 
     .circular-loader {
       position: absolute;
