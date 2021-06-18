@@ -13,7 +13,7 @@ export class CoverController extends Controller {
   get _value(): number {
     switch(this.attribute) {
       case 'position':
-        return this.stateObj.state === 'closed'
+        return this.stateObj?.state === 'closed'
           ? 0
           : this.stateObj.attributes.current_position;
       case 'tilt':

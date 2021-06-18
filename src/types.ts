@@ -109,6 +109,7 @@ export const SliderConfigDefault: SliderConfig = {
   use_percentage_bg_opacity: false,
   use_state_color: false,
   show_track: false,
+  toggle_on_click: false,
   force_square: false,
 };
 
@@ -117,9 +118,10 @@ export const SliderConfigDefaultDomain: Map<string, SliderConfig> = new Map([
     percentage: true,
     direction: SliderDirections.LEFT_RIGHT,
     background: SliderBackground.GRADIENT,
-    use_state_color: false,
+    use_state_color: true,
     use_percentage_bg_opacity: false,
     show_track: false,
+    toggle_on_click: false,
     force_square: false,
   }],
   [Domain.FAN, {
@@ -129,6 +131,7 @@ export const SliderConfigDefaultDomain: Map<string, SliderConfig> = new Map([
     use_state_color: false,
     use_percentage_bg_opacity: false,
     show_track: false,
+    toggle_on_click: false,
     force_square: false,
   }],
   [Domain.SWITCH, {
@@ -138,6 +141,7 @@ export const SliderConfigDefaultDomain: Map<string, SliderConfig> = new Map([
     use_state_color: false,
     use_percentage_bg_opacity: false,
     show_track: false,
+    toggle_on_click: true,
     force_square: false,
   }],
   [Domain.COVER, {
@@ -146,6 +150,7 @@ export const SliderConfigDefaultDomain: Map<string, SliderConfig> = new Map([
     background: SliderBackground.STRIPED,
     use_state_color: false,
     use_percentage_bg_opacity: false,
+    toggle_on_click: false,
     show_track: false,
     force_square: false,
   }],
@@ -156,6 +161,7 @@ export const SliderConfigDefaultDomain: Map<string, SliderConfig> = new Map([
     use_state_color: false,
     use_percentage_bg_opacity: false,
     show_track: false,
+    toggle_on_click: true,
     force_square: false,
   }],
   [Domain.MEDIA_PLAYER, {
@@ -165,6 +171,7 @@ export const SliderConfigDefaultDomain: Map<string, SliderConfig> = new Map([
     use_state_color: false,
     use_percentage_bg_opacity: false,
     show_track: true,
+    toggle_on_click: false,
     force_square: false,
   }],
 ])

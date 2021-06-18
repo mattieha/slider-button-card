@@ -26,6 +26,7 @@
       "background": "רקע",
       "use_brightness": "להשתמש בבהירות?",
       "show_track": "להציג מסלול?",
+      "toggle_on_click": "פעל כמתג (השבת החלקה)",
       "force_square": "כוח מרובע?"
     },
     "action_button": {

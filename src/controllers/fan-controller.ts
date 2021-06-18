@@ -6,9 +6,9 @@ export class FanController extends Controller {
   _targetValue;
 
   get _value(): number {
-    return !STATES_OFF.includes(this.stateObj.state)
-      ? this.stateObj.attributes.percentage
-      : 0;
+    return this.isUnavailable || STATES_OFF.includes(this.state)
+      ? 0
+      : this.stateObj.attributes.percentage;
   }
 
   set _value(value) {
@@ -54,7 +54,7 @@ export class FanController extends Controller {
 
   get iconRotateSpeed(): string {
     let speed = 0;
-    if (this.percentage > 0) {
+    if (this.percentage > 0 && this._config.icon?.rotate) {
       speed = 3 - ((this.percentage / 100) * 2);
     }
     return `${speed}s`

@@ -358,9 +358,7 @@ export class SliderButtonCard extends LitElement implements LovelaceCard {
     this.button.style.setProperty('--slider-bg-filter', this.ctrl.style.slider.filter);
     this.button.style.setProperty('--icon-filter', this.ctrl.style.icon.filter);
     this.button.style.setProperty('--icon-color', this.ctrl.style.icon.color);
-    if (this.config.icon?.rotate) {
-      this.button.style.setProperty('--icon-rotate-speed', this.ctrl.style.icon.rotateSpeed || '0s');
-    }
+    this.button.style.setProperty('--icon-rotate-speed', this.ctrl.style.icon.rotateSpeed || '0s');
   }
 
   private _showError(error: string): TemplateResult {
@@ -540,6 +538,7 @@ export class SliderButtonCard extends LitElement implements LovelaceCard {
     .off .name {
       color: var(--label-color-off);
     }
+    .unavailable.off .name,
     .unavailable .name {
       color: var(--disabled-text-color);
     }
