@@ -10,7 +10,7 @@ export class MediaController extends Controller {
   get _value(): number {
     return this.stateObj.attributes.is_volume_muted
       ? 0
-      : Math.ceil(this.stateObj.attributes.volume_level * 100.0);
+      : Math.floor(parseFloat(Number.parseFloat(this.stateObj.attributes.volume_level).toPrecision(2)) * 100.0);
   }
 
   set _value(value) {
@@ -45,7 +45,7 @@ export class MediaController extends Controller {
     if (this.stateObj.attributes.is_volume_muted) return '-';
     return !!this.stateObj.attributes.volume_level
       ? `${this.percentage}%`
-      : this._hass.localize('component.media_player.state._.off');
+      : this._hass.localize(`component.media_player.state._.${this.state}`);
   }
 
 }

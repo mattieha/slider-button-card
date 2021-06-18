@@ -212,12 +212,21 @@ export class SliderButtonCard extends LitElement implements LovelaceCard {
     if (this.config.icon?.show === false) {
       return html``;
     }
+    let hasPicture = false;
+    let backgroundImage = '';
+    if (this.ctrl.stateObj.attributes.entity_picture) {
+      backgroundImage = `url(${this.ctrl.stateObj.attributes.entity_picture})`;
+      hasPicture = true;
+    }
     return html`
-      <div class="icon"
+      <div class="icon ${classMap({ 'has-picture': hasPicture })}"
            @action=${ (e): void => this._handleAction(e, this.config.icon)}
            .actionHandler=${actionHandler({
              hasHold: false,
              hasDoubleClick: false,
+           })}
+           style=${styleMap({
+             'background-image': `${backgroundImage}`,
            })}
            >
         <ha-icon
@@ -491,6 +500,13 @@ export class SliderButtonCard extends LitElement implements LovelaceCard {
       filter: var(--icon-filter, brightness(100%));
       color: var(--icon-color);
       transition: color 0.4s ease-in-out 0s, filter 0.2s linear 0s;
+    }
+    .icon.has-picture {
+      background-size: cover;
+      border-radius: 50%;
+    }
+    .icon.has-picture ha-icon{
+      display: none;
     }
 
     /* --- TEXT --- */
