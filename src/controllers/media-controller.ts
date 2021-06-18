@@ -31,17 +31,6 @@ export class MediaController extends Controller {
   }
 
   get label(): string {
-/*
-    if (this.percentage > 0) {
-      if (this.hasSlider) {
-        return `${this.percentage}%`
-      } else {
-        return this._hass.localize('component.fan.state._.on');
-      }
-    }
-    return this._hass.localize('component.fan.state._.off');
-*/
-
     if (this.stateObj.attributes.is_volume_muted) return '-';
     return !!this.stateObj.attributes.volume_level
       ? `${this.percentage}%`
