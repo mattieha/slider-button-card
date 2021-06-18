@@ -2,7 +2,7 @@
 [![GitHub Release][releases-shield]][releases]
 [![hacs_badge](https://img.shields.io/badge/HACS-default-orange.svg?style=for-the-badge)](https://github.com/custom-components/hacs)
 
-A button card with integrated slider for `light, switch, fan, cover, input_boolean` entities.
+A button card with integrated slider for `light, switch, fan, cover, input_boolean, media_player` entities.
 
 ![Preview][preview]
 
@@ -75,7 +75,7 @@ Slider Button Card supports Lovelace's Visual Editor.
 | Name              | Type    | Requirement  | Description                                 | Default             |
 | ----------------- | ------- | ------------ | ------------------------------------------- | ------------------- |
 | type              | string  | **Required** | `custom:slider-button-card`                   |
-| entity            | string  | **Required** | HA entity ID from domain `light, switch, fan, cover, input_boolean`                   |               |
+| entity            | string  | **Required** | HA entity ID from domain `light, switch, fan, cover, input_boolean, media_player`                   |               |
 | name              | string  | **Optional** | Name                                   | `entity.friendly_name`       |
 | show_name        | boolean | **Optional** | Show name  | `true`             |
 | show_state        | boolean | **Optional** | Show state  | `true`             |
