@@ -54,7 +54,7 @@ export class FanController extends Controller {
 
   get iconRotateSpeed(): string {
     let speed = 0;
-    if (this.percentage > 0 && this._config.icon?.rotate) {
+    if (this.percentage > 0) {
       speed = 3 - ((this.percentage / 100) * 2);
     }
     return `${speed}s`

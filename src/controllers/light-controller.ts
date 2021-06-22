@@ -1,11 +1,8 @@
 import { STATES_OFF } from 'custom-card-helpers';
+import { LightAttributes } from '../types';
+import { getEnumValues, getLightColorBasedOnTemperature } from '../utils';
 import { Controller } from './controller';
 
-const RGB_INDEX = {
-  red: 0,
-  green: 1,
-  blue: 2
-};
 const HS_INDEX = {
   hue: 0,
   saturation: 1
@@ -13,42 +10,56 @@ const HS_INDEX = {
 
 export class LightController extends Controller {
 
+  _step = 1;
   _targetValue;
 
   get attribute(): string {
-    return this._config.slider?.attribute || 'brightness_pct';
+    const attr = this._config.slider?.attribute as LightAttributes;
+    let useAttr = LightAttributes.BRIGHTNESS_PCT;
+    if (attr?.length && this.allowedAttributes.includes(attr)) {
+      let supported: string[] = [];
+      if (Array.isArray(this.stateObj?.attributes?.supported_color_modes)) {
+        supported = this.stateObj?.attributes?.supported_color_modes;
+      }
+      useAttr = attr;
+      switch(attr) {
+        case LightAttributes.COLOR_TEMP:
+          if (!supported.includes('color_temp')) {
+            useAttr = LightAttributes.BRIGHTNESS_PCT;
+          }
+          break;
+        case LightAttributes.HUE:
+        case LightAttributes.SATURATION:
+          if (!supported.includes('hs')) {
+            useAttr = LightAttributes.BRIGHTNESS_PCT;
+          }
+          break;
+      }
+    }
+    return useAttr;
+  }
+
+  get allowedAttributes(): string[] {
+    return getEnumValues(LightAttributes);
   }
 
   get _value(): number {
     if (!this.stateObj || STATES_OFF.includes(this.stateObj.state)) {
-      return 0;
+      return this.isValuePercentage ? 0 : this.min;
     }
     const attr = this.stateObj.attributes;
     switch(this.attribute) {
-      case 'color_temp':
+      case LightAttributes.COLOR_TEMP:
         return Math.round(attr.color_temp);
-      case 'white_value':
-        return Math.round(attr.white_value);
-      case 'brightness':
+      case LightAttributes.BRIGHTNESS:
         return Math.round(attr.brightness);
-      case 'brightness_pct':
+      case LightAttributes.BRIGHTNESS_PCT:
         return Math.round((attr.brightness * 100.0) / 255);
-      case 'red':
-      case 'green':
-      case 'blue':
-        return attr.rgb_color
-          ? Math.round(attr.rgb_color[RGB_INDEX[this.attribute]])
-          : 0;
-      case 'hue':
-      case 'saturation':
+      case LightAttributes.HUE:
+      case LightAttributes.SATURATION:
         return attr.hs_color
           ? Math.round(attr.hs_color[HS_INDEX[this.attribute]])
           : 0;
-      case 'effect':
-        if (attr.effect_list) {
-          return attr.effect_list.indexOf(attr.effect);
-        }
-        return 0;
       default:
         return 0;
     }
@@ -62,8 +73,8 @@ export class LightController extends Controller {
     let on = true;
     let _value;
     switch(attr) {
-      case 'brightness':
-      case 'brightness_pct':
+      case LightAttributes.BRIGHTNESS:
+      case LightAttributes.BRIGHTNESS_PCT:
         value =
           attr === 'brightness'
             ? Math.round(value)
@@ -73,24 +84,12 @@ export class LightController extends Controller {
         }
         attr = 'brightness';
         break;
-      case 'red':
-      case 'green':
-      case 'blue':
-        _value = this.stateObj.attributes.rgb_color || [0, 0, 0];
-        _value[RGB_INDEX[attr]] = value;
-        value = _value;
-        attr = 'rgb_color';
-        break;
-      case 'hue':
-      case 'saturation':
+      case LightAttributes.HUE:
+      case LightAttributes.SATURATION:
         _value = this.stateObj.attributes.hs_color || [0, 0];
         _value[HS_INDEX[attr]] = value;
         value = _value;
         attr = 'hs_color';
-        break;
-      case 'effect':
-        value = this.stateObj.attributes.effect_list[value];
-        attr = 'effect';
         break;
     }
 
@@ -108,19 +107,10 @@ export class LightController extends Controller {
     }
   }
 
-  get _step(): number {
-    switch(this.attribute) {
-      case 'effect':
-        return 1;
-      default:
-        return 1;
-    }
-  }
-
   get _min(): number {
     switch(this.attribute) {
-      case 'color_temp':
-        return this.stateObj ? this.stateObj.attributes.min_mireds : 0;
+      case LightAttributes.COLOR_TEMP:
+        return this.stateObj ? this.stateObj.attributes?.min_mireds ? this.stateObj.attributes.min_mireds : 153 : 153;
       default:
         return 0;
     }
@@ -128,42 +118,52 @@ export class LightController extends Controller {
 
   get _max(): number {
     switch(this.attribute) {
-      case 'color_temp':
-        return this.stateObj ? this.stateObj.attributes.max_mireds : 0;
-      case 'red':
-      case 'green':
-      case 'blue':
-      case 'white_value':
-      case 'brightness':
+      case LightAttributes.COLOR_TEMP:
+        return this.stateObj ? this.stateObj.attributes?.max_mireds ? this.stateObj.attributes.max_mireds : 500 : 500;
+      case LightAttributes.BRIGHTNESS:
         return 255;
-      case 'hue':
+      case LightAttributes.HUE:
         return 360;
-      case 'effect':
-        return this.stateObj
-          ? this.stateObj.attributes.effect_list
-            ? this.stateObj.attributes.effect_list.length - 1
-            : 0
-          : 0;
       default:
         return 100;
     }
   }
 
+  get isValuePercentage(): boolean {
+    switch(this.attribute) {
+      case LightAttributes.COLOR_TEMP:
+      case LightAttributes.HUE:
+      case LightAttributes.BRIGHTNESS:
+        return false;
+      default:
+        return true;
+    }
+  }
+
+  get isOff(): boolean {
+    switch(this.attribute) {
+      case LightAttributes.COLOR_TEMP:
+      case LightAttributes.HUE:
+      case LightAttributes.BRIGHTNESS:
+        return STATES_OFF.includes(this.stateObj.state);
+      default:
+        return this.percentage === 0;
+    }
+  }
+
   get label(): string {
-    if (this.percentage === 0) {
+    if (this.isOff) {
       return this._hass.localize('component.light.state._.off');
     }
     switch(this.attribute) {
-      case 'color_temp':
-      case 'brightness':
+      case LightAttributes.COLOR_TEMP:
+      case LightAttributes.BRIGHTNESS:
         return `${this.targetValue}`;
-      case 'brightness_pct':
-      case 'saturation':
+      case LightAttributes.BRIGHTNESS_PCT:
+      case LightAttributes.SATURATION:
         return `${this.targetValue}%`;
-      case 'hue':
+      case LightAttributes.HUE:
         return `${this.targetValue}°`;
-      case 'effect':
-        return this.stateObj ? this.stateObj.attributes.effect : '';
       default:
         return `${this.targetValue}`;
     }
@@ -174,50 +174,92 @@ export class LightController extends Controller {
       return false;
     }
     switch(this.attribute) {
-      case 'brightness':
-      case 'brightness_pct':
+      case LightAttributes.BRIGHTNESS:
+      case LightAttributes.BRIGHTNESS_PCT:
         if ('brightness' in this.stateObj.attributes) {
           return true;
         }
         return !!('supported_features' in this.stateObj.attributes &&
           this.stateObj?.attributes?.supported_features & 1);
 
-      case 'color_temp':
+      case LightAttributes.COLOR_TEMP:
         if ('color_temp' in this.stateObj.attributes) {
           return true;
         }
         return !!('supported_features' in this.stateObj.attributes &&
           this.stateObj.attributes.supported_features & 2);
 
-      case 'white_value':
-        if ('white_value' in this.stateObj.attributes) {
-          return true;
-        }
-        return !!('supported_features' in this.stateObj.attributes &&
-          this.stateObj.attributes.supported_features & 128);
-
-      case 'red':
-      case 'green':
-      case 'blue':
-        if ('rgb_color' in this.stateObj.attributes) {
-          return true;
-        }
-        return !!('supported_features' in this.stateObj.attributes &&
-          this.stateObj.attributes.supported_features & 16);
-
-      case 'hue':
-      case 'saturation':
+      case LightAttributes.HUE:
+      case LightAttributes.SATURATION:
         if ('hs_color' in this.stateObj.attributes) {
           return true;
         }
         return !!('supported_features' in this.stateObj.attributes &&
           this.stateObj.attributes.supported_features & 16);
 
-      case 'effect':
-        return 'effect' in this.stateObj.attributes;
-
       default:
         return false;
     }
+  }
+
+  get sliderColor(): string {
+    let returnColor = 'inherit';
+    if (this._config.slider?.use_state_color) {
+      if (this.stateObj.attributes.hs_color && this.attribute !== LightAttributes.COLOR_TEMP) {
+        const [hue, sat] = this.stateObj.attributes.hs_color;
+        let useHue = hue;
+        let useSat = sat;
+        switch(this.attribute) {
+          case LightAttributes.HUE:
+            useHue = this.valueFromPercentage;
+            break;
+          case LightAttributes.SATURATION:
+            useSat = this.percentage;
+            break;
+        }
+        if (useSat > 10) {
+          returnColor = `hsl(${useHue}, 100%, ${100 - useSat / 2}%)`;
+          this._sliderPrevColor = returnColor;
+        }
+      } else if (
+        this.attribute === LightAttributes.HUE || this.attribute === LightAttributes.SATURATION
+      ) {
+        let useHue = 0;
+        let useSat = 20;
+        switch(this.attribute) {
+          case LightAttributes.HUE:
+            useHue = this.valueFromPercentage;
+            break;
+          case LightAttributes.SATURATION:
+            useSat = this.percentage;
+            break;
+        }
+        if (useSat > 10) {
+          returnColor = `hsl(${useHue}, 100%, ${100 - useSat / 2}%)`;
+          this._sliderPrevColor = returnColor;
+        }
+      } else if (
+        this.stateObj.attributes.color_temp &&
+        this.stateObj.attributes.min_mireds &&
+        this.stateObj.attributes.max_mireds
+      ) {
+        returnColor = getLightColorBasedOnTemperature(
+          this.attribute === LightAttributes.COLOR_TEMP ? this.valueFromPercentage : this.stateObj.attributes.color_temp,
+          this.stateObj.attributes.min_mireds,
+          this.stateObj.attributes.max_mireds
+        );
+        this._sliderPrevColor = returnColor;
+      } else if (this.attribute === LightAttributes.COLOR_TEMP) {
+        returnColor = getLightColorBasedOnTemperature(
+          this.valueFromPercentage,
+          153,
+          500
+        );
+        this._sliderPrevColor = returnColor;
+      } else if (this._sliderPrevColor.startsWith('hsl') || this._sliderPrevColor.startsWith('rgb')) {
+        returnColor = this._sliderPrevColor;
+      }
+    }
+    return returnColor;
   }
 }

@@ -1,7 +1,7 @@
 import { computeStateDomain, domainIcon, HomeAssistant } from 'custom-card-helpers';
 import { HassEntity } from 'home-assistant-js-websocket';
 import { SliderBackground, SliderButtonCardConfig, SliderDirections } from '../types';
-import { getLightColorBasedOnTemperature, normalize, toPercentage } from '../utils';
+import { getLightColorBasedOnTemperature, normalize, percentageToValue, toPercentage } from '../utils';
 
 export interface Style {
   icon: ObjectStyle;
@@ -56,7 +56,7 @@ export abstract class Controller {
     if (this._value) {
       return Math.round(this._value / this.step) * this.step;
     }
-    return 0;
+    return this.min;
   }
 
   set value(value: number) {
@@ -81,8 +81,8 @@ export abstract class Controller {
 
   set targetValue(value: number) {
     if (value !== this.targetValue) {
-      //this._targetValue = value;
-      this._targetValue = Math.round(value / this.step) * this.step;
+      this._targetValue = value;
+      // this._targetValue = Math.round(value / this.step) * this.step;
     }
   }
 
@@ -134,10 +134,22 @@ export abstract class Controller {
     return this._config.slider?.step ?? this._step ?? 5;
   }
 
+  get isValuePercentage(): boolean {
+    return true;
+  }
+
   get percentage(): number {
     return Math.round(
       ((this.targetValue - this.min) * 100) / (this.max - this.min)
     );
+  }
+
+  get valueFromPercentage(): number {
+    return percentageToValue(this.percentage, this.min, this.max);
+  }
+
+  get allowedAttributes(): string[] {
+    return [];
   }
 
   get style(): Style {
@@ -220,6 +232,9 @@ export abstract class Controller {
     let percentage = this.calcMovementPercentage(event, {left, top, width, height});
     percentage = this.applyStep(percentage);
     percentage = normalize(percentage, 0, 100);
+    if (!this.isValuePercentage) {
+      percentage = percentageToValue(percentage, this.min, this.max);
+    }
     return percentage;
   }
 

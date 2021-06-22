@@ -356,6 +356,7 @@ export class SliderButtonCard extends LitElement implements LovelaceCard {
     }
     this.button.style.setProperty('--slider-value', `${this.ctrl.percentage}%`);
     this.button.style.setProperty('--slider-bg-filter', this.ctrl.style.slider.filter);
+    this.button.style.setProperty('--slider-color', this.ctrl.style.slider.color);
     this.button.style.setProperty('--icon-filter', this.ctrl.style.icon.filter);
     this.button.style.setProperty('--icon-color', this.ctrl.style.icon.color);
     this.button.style.setProperty('--icon-rotate-speed', this.ctrl.style.icon.rotateSpeed || '0s');

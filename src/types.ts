@@ -37,14 +37,12 @@ export interface IconConfig {
   show?: boolean;
   tap_action?: ActionConfig;
   use_state_color?: boolean;
-  rotate?: boolean;
 }
 
 export interface SliderConfig {
   min?: number;
   max?: number;
   step?: number;
-  percentage?: boolean;
   attribute?: string;
   direction?: SliderDirections;
   background: SliderBackground;
@@ -96,14 +94,12 @@ export const ActionButtonConfigDefault: ActionButtonConfig = {
 export const IconConfigDefault: IconConfig = {
   show: true,
   use_state_color: true,
-  rotate: false,
   tap_action: {
     action: 'more-info'
   },
 };
 
 export const SliderConfigDefault: SliderConfig = {
-  percentage: true,
   direction: SliderDirections.LEFT_RIGHT,
   background: SliderBackground.SOLID,
   use_percentage_bg_opacity: false,
@@ -115,7 +111,6 @@ export const SliderConfigDefault: SliderConfig = {
 
 export const SliderConfigDefaultDomain: Map<string, SliderConfig> = new Map([
   [Domain.LIGHT, {
-    percentage: true,
     direction: SliderDirections.LEFT_RIGHT,
     background: SliderBackground.GRADIENT,
     use_state_color: true,
@@ -125,7 +120,6 @@ export const SliderConfigDefaultDomain: Map<string, SliderConfig> = new Map([
     force_square: false,
   }],
   [Domain.FAN, {
-    percentage: true,
     direction: SliderDirections.LEFT_RIGHT,
     background: SliderBackground.SOLID,
     use_state_color: false,
@@ -135,7 +129,6 @@ export const SliderConfigDefaultDomain: Map<string, SliderConfig> = new Map([
     force_square: false,
   }],
   [Domain.SWITCH, {
-    percentage: true,
     direction: SliderDirections.LEFT_RIGHT,
     background: SliderBackground.SOLID,
     use_state_color: false,
@@ -145,7 +138,6 @@ export const SliderConfigDefaultDomain: Map<string, SliderConfig> = new Map([
     force_square: false,
   }],
   [Domain.COVER, {
-    percentage: true,
     direction: SliderDirections.TOP_BOTTOM,
     background: SliderBackground.STRIPED,
     use_state_color: false,
@@ -155,7 +147,6 @@ export const SliderConfigDefaultDomain: Map<string, SliderConfig> = new Map([
     force_square: false,
   }],
   [Domain.INPUT_BOOLEAN, {
-    percentage: true,
     direction: SliderDirections.LEFT_RIGHT,
     background: SliderBackground.SOLID,
     use_state_color: false,
@@ -165,7 +156,6 @@ export const SliderConfigDefaultDomain: Map<string, SliderConfig> = new Map([
     force_square: false,
   }],
   [Domain.MEDIA_PLAYER, {
-    percentage: true,
     direction: SliderDirections.LEFT_RIGHT,
     background: SliderBackground.TRIANGLE,
     use_state_color: false,
@@ -174,4 +164,17 @@ export const SliderConfigDefaultDomain: Map<string, SliderConfig> = new Map([
     toggle_on_click: false,
     force_square: false,
   }],
-])
+]);
+
+export enum LightAttributes {
+  COLOR_TEMP = 'color_temp',
+  BRIGHTNESS = 'brightness',
+  BRIGHTNESS_PCT = 'brightness_pct',
+  HUE = 'hue',
+  SATURATION = 'saturation',
+}
+
+export enum CoverAttributes {
+  POSITION = 'position',
+  TILT = 'tilt',
+}
