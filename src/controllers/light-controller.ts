@@ -16,11 +16,15 @@ export class LightController extends Controller {
   get attribute(): string {
     const attr = this._config.slider?.attribute as LightAttributes;
     let useAttr = LightAttributes.BRIGHTNESS_PCT;
+    let supported: string[] = [];
+    if (Array.isArray(this.stateObj?.attributes?.supported_color_modes)) {
+      supported = this.stateObj?.attributes?.supported_color_modes;
+    }
+    if (supported.length === 1 && supported[0] === LightAttributes.ON_OFF) {
+      useAttr = LightAttributes.ON_OFF;
+    }
     if (attr?.length && this.allowedAttributes.includes(attr)) {
-      let supported: string[] = [];
-      if (Array.isArray(this.stateObj?.attributes?.supported_color_modes)) {
-        supported = this.stateObj?.attributes?.supported_color_modes;
-      }
+
       useAttr = attr;
       switch(attr) {
         case LightAttributes.COLOR_TEMP:
@@ -55,6 +59,8 @@ export class LightController extends Controller {
         return Math.round(attr.brightness);
       case LightAttributes.BRIGHTNESS_PCT:
         return Math.round((attr.brightness * 100.0) / 255);
+      case LightAttributes.ON_OFF:
+        return 1;
       case LightAttributes.HUE:
       case LightAttributes.SATURATION:
         return attr.hs_color
@@ -70,8 +76,12 @@ export class LightController extends Controller {
       return;
     }
     let attr = this.attribute;
-    let on = true;
     let _value;
+    let service = value > 0 ? 'turn_on' : 'turn_off';
+    let data = {
+      // eslint-disable-next-line @typescript-eslint/camelcase
+      entity_id: this.stateObj.entity_id,
+    }
     switch(attr) {
       case LightAttributes.BRIGHTNESS:
       case LightAttributes.BRIGHTNESS_PCT:
@@ -80,9 +90,13 @@ export class LightController extends Controller {
             ? Math.round(value)
             : Math.round((value / 100.0) * 255);
         if (!value) {
-          on = false;
+          service = 'turn_off';
         }
         attr = 'brightness';
+        data = {
+          ...data,
+          [attr]: value
+        }
         break;
       case LightAttributes.HUE:
       case LightAttributes.SATURATION:
@@ -90,21 +104,17 @@ export class LightController extends Controller {
         _value[HS_INDEX[attr]] = value;
         value = _value;
         attr = 'hs_color';
+        service = 'turn_on';
+        data = {
+          ...data,
+          [attr]: value
+        }
         break;
     }
 
-    if (on) {
-      this._hass.callService('light', 'turn_on', {
-        // eslint-disable-next-line @typescript-eslint/camelcase
-        entity_id: this.stateObj.entity_id,
-        [attr]: value
-      });
-    } else {
-      this._hass.callService('light', 'turn_off', {
-        // eslint-disable-next-line @typescript-eslint/camelcase
-        entity_id: this.stateObj.entity_id
-      });
-    }
+    this._hass.callService('light', service, {
+      ...data
+    });
   }
 
   get _min(): number {
@@ -124,6 +134,8 @@ export class LightController extends Controller {
         return 255;
       case LightAttributes.HUE:
         return 360;
+      case LightAttributes.ON_OFF:
+        return 1;
       default:
         return 100;
     }
@@ -145,6 +157,7 @@ export class LightController extends Controller {
       case LightAttributes.COLOR_TEMP:
       case LightAttributes.HUE:
       case LightAttributes.BRIGHTNESS:
+      case LightAttributes.ON_OFF:
         return STATES_OFF.includes(this.stateObj.state);
       default:
         return this.percentage === 0;
@@ -156,6 +169,8 @@ export class LightController extends Controller {
       return this._hass.localize('component.light.state._.off');
     }
     switch(this.attribute) {
+      case LightAttributes.ON_OFF:
+        return this._hass.localize('component.light.state._.on');
       case LightAttributes.COLOR_TEMP:
       case LightAttributes.BRIGHTNESS:
         return `${this.targetValue}`;
@@ -169,11 +184,24 @@ export class LightController extends Controller {
     }
   }
 
+  get hasToggle(): boolean {
+    let supported: string[] = [];
+    if (Array.isArray(this.stateObj?.attributes?.supported_color_modes)) {
+      supported = this.stateObj?.attributes?.supported_color_modes;
+    }
+    if (supported.length === 1 && supported[0] === LightAttributes.ON_OFF) {
+      return true;
+    }
+    return this._config.slider?.toggle_on_click ?? false;
+  }
+
   get hasSlider(): boolean {
     if (!this.stateObj) {
       return false;
     }
     switch(this.attribute) {
+      case LightAttributes.ON_OFF:
+        return false;
       case LightAttributes.BRIGHTNESS:
       case LightAttributes.BRIGHTNESS_PCT:
         if ('brightness' in this.stateObj.attributes) {

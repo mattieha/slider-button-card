@@ -172,6 +172,7 @@ export enum LightAttributes {
   BRIGHTNESS_PCT = 'brightness_pct',
   HUE = 'hue',
   SATURATION = 'saturation',
+  ON_OFF = 'onoff',
 }
 
 export enum CoverAttributes {
