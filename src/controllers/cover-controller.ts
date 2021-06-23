@@ -1,3 +1,4 @@
+import { stateIcon } from 'custom-card-helpers';
 import { CoverAttributes, SliderDirections } from '../types';
 import { getEnumValues, toPercentage } from '../utils';
 import { Controller } from './controller';
@@ -11,6 +12,13 @@ export class CoverController extends Controller {
       return this._config.slider?.attribute;
     }
     return CoverAttributes.POSITION;
+  }
+
+  get icon(): string {
+    if (typeof this._config.icon?.icon === 'string' && this._config.icon?.icon.length) {
+      return this._config.icon.icon;
+    }
+    return stateIcon(this.stateObj);
   }
 
   get allowedAttributes(): string[] {

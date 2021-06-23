@@ -231,11 +231,7 @@ export class SliderButtonCard extends LitElement implements LovelaceCard {
            >
         <ha-icon
           tabindex="-1"
-          data-domain=${ifDefined(
-            this.config.icon?.use_state_color && this.ctrl.stateObj
-              ? computeStateDomain(this.ctrl.stateObj)
-              : undefined
-          )}
+          data-domain=${computeStateDomain(this.ctrl.stateObj)}
           data-state=${ifDefined(
             this.ctrl.stateObj ? this.ctrl.state : undefined
           )}          
