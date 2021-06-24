@@ -8,7 +8,7 @@ import {
   TemplateResult,
   CSSResult,
   css,
-  internalProperty,
+  state
 } from 'lit-element';
 import { HomeAssistant, fireEvent, LovelaceCardEditor, stateIcon, computeDomain } from 'custom-card-helpers';
 import { localize } from './localize/localize';
@@ -18,14 +18,15 @@ import { applyPatch, getEnumValues, getSliderDefaultForEntity } from './utils';
 @customElement('slider-button-card-editor')
 export class SliderButtonCardEditor extends LitElement implements LovelaceCardEditor {
   @property({ attribute: false }) public hass?: HomeAssistant;
-  @internalProperty() private _config?: SliderButtonCardConfig;
-  @internalProperty() private _helpers?: any;
+  @state() private _config?: SliderButtonCardConfig;
+  @state() private _helpers?: any;
   private _initialized = false;
   private directions = getEnumValues(SliderDirections);
   private backgrounds = getEnumValues(SliderBackground);
   private actionModes = getEnumValues(ActionButtonMode);
 
   public setConfig(config: SliderButtonCardConfig): void {
+    console.log('setConfig[]', config);
     this._config = config;
     this.loadCardHelpers();
   }
@@ -353,7 +354,7 @@ export class SliderButtonCardEditor extends LitElement implements LovelaceCardEd
     this._changeValue('icon.icon', '');
     this._changeValue(target.configValue, value);
     if (updateDefaults) {
-      const cfg = this._config;
+      const cfg: SliderButtonCardConfig = JSON.parse(JSON.stringify(this._config));
       applyPatch(cfg, ['slider'], getSliderDefaultForEntity(value));
       this._config = cfg;
       fireEvent(this, 'config-changed', { config: this._config });
@@ -374,7 +375,7 @@ export class SliderButtonCardEditor extends LitElement implements LovelaceCardEd
       return;
     }
     if (configValue) {
-      const cfg = this._config;
+      const cfg: SliderButtonCardConfig = JSON.parse(JSON.stringify(this._config));
       applyPatch(cfg, [...configValue.split('.')], value);
       this._config = cfg;
       if (value === '') {

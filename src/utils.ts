@@ -20,7 +20,8 @@ export const applyPatch = (data, path, value): void => {
 
 export function getSliderDefaultForEntity(entity: string): SliderConfig {
   const domain = computeDomain(entity) || Domain.LIGHT;
-  return SliderConfigDefaultDomain.get(domain) || SliderConfigDefault;
+  const cfg = SliderConfigDefaultDomain.get(domain) || SliderConfigDefault;
+  return JSON.parse(JSON.stringify(cfg));
 }
 
 export function getLightColorBasedOnTemperature(current: number, min: number, max: number): string {
