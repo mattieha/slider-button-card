@@ -58,7 +58,7 @@ export class LightController extends Controller {
     const attr = this.stateObj.attributes;
     switch(this.attribute) {
       case LightAttributes.COLOR_TEMP:
-        return Math.round(attr.color_temp);
+        return attr.color_temp ? Math.round(attr.color_temp) : this.min;
       case LightAttributes.BRIGHTNESS:
         return Math.round(attr.brightness);
       case LightAttributes.BRIGHTNESS_PCT:
@@ -90,7 +90,7 @@ export class LightController extends Controller {
       case LightAttributes.BRIGHTNESS:
       case LightAttributes.BRIGHTNESS_PCT:
         value =
-          attr === 'brightness'
+          attr === LightAttributes.BRIGHTNESS
             ? Math.round(value)
             : Math.round((value / 100.0) * 255);
         if (!value) {
