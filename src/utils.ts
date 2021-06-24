@@ -1,5 +1,6 @@
 import { tinycolor, TinyColor } from '@ctrl/tinycolor';
 import { computeDomain } from 'custom-card-helpers';
+import copy from 'fast-copy';
 import { Domain, SliderConfig, SliderConfigDefault, SliderConfigDefaultDomain } from './types';
 
 export function getEnumValues(enumeration): string[] {
@@ -21,7 +22,7 @@ export const applyPatch = (data, path, value): void => {
 export function getSliderDefaultForEntity(entity: string): SliderConfig {
   const domain = computeDomain(entity) || Domain.LIGHT;
   const cfg = SliderConfigDefaultDomain.get(domain) || SliderConfigDefault;
-  return JSON.parse(JSON.stringify(cfg));
+  return copy(cfg);
 }
 
 export function getLightColorBasedOnTemperature(current: number, min: number, max: number): string {

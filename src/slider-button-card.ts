@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { ActionHandlerEvent, applyThemesOnElement, computeStateDomain, getLovelace, handleAction, hasConfigOrEntityChanged, HomeAssistant, LovelaceCard, LovelaceCardEditor, STATES_OFF } from 'custom-card-helpers';
+import { ActionHandlerEvent, applyThemesOnElement, computeStateDomain, handleAction, hasConfigOrEntityChanged, HomeAssistant, LovelaceCard, LovelaceCardEditor, STATES_OFF } from 'custom-card-helpers';
+import copy from 'fast-copy';
 import { css, CSSResult, customElement, html, LitElement, property, PropertyValues, query, state, TemplateResult } from 'lit-element';
 import { classMap } from 'lit-html/directives/class-map';
 import { ifDefined } from 'lit-html/directives/if-defined';
@@ -61,9 +62,9 @@ export class SliderButtonCard extends LitElement implements LovelaceCard {
       show_name: true,
       // eslint-disable-next-line @typescript-eslint/camelcase
       show_state: true,
-      icon: IconConfigDefault,
+      icon: copy(IconConfigDefault),
       // eslint-disable-next-line @typescript-eslint/camelcase
-      action_button: ActionButtonConfigDefault,
+      action_button: copy(ActionButtonConfigDefault),
     };
   }
   public getCardSize(): number {
@@ -79,19 +80,15 @@ export class SliderButtonCard extends LitElement implements LovelaceCard {
       throw new Error(localize('common.invalid_configuration'));
     }
 
-    if (config.test_gui) {
-      getLovelace().setEditMode(true);
-    }
-
     this.config = {
       slider: getSliderDefaultForEntity(config.entity),
-      icon: IconConfigDefault,
+      icon: copy(IconConfigDefault),
       // eslint-disable-next-line @typescript-eslint/camelcase
       show_name: true,
       // eslint-disable-next-line @typescript-eslint/camelcase
       show_state: true,
       // eslint-disable-next-line @typescript-eslint/camelcase
-      action_button: ActionButtonConfigDefault,
+      action_button: copy(ActionButtonConfigDefault),
       debug: false,
       ...config
     };
@@ -126,6 +123,7 @@ export class SliderButtonCard extends LitElement implements LovelaceCard {
       oldHass.themes !== this.hass.themes ||
       oldConfig.theme !== this.config.theme
     ) {
+      this.ctrl.log('THEMES', this.hass.themes);
       applyThemesOnElement(this, this.hass.themes, this.config.theme);
     }
     this.ctrl.log('UPDATED', this.ctrl.value);
@@ -277,10 +275,6 @@ export class SliderButtonCard extends LitElement implements LovelaceCard {
           : ''}
       </div>
     `;
-  }
-
-  private setTargetValue(value: number): void {
-    this.updateValue(value);
   }
 
   private _handleAction(ev: ActionHandlerEvent, config): void {
