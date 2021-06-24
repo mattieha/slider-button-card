@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/camelcase */
+import copy from 'fast-copy';
 import {
   LitElement,
   html,
@@ -8,7 +9,7 @@ import {
   TemplateResult,
   CSSResult,
   css,
-  internalProperty,
+  state
 } from 'lit-element';
 import { HomeAssistant, fireEvent, LovelaceCardEditor, stateIcon, computeDomain } from 'custom-card-helpers';
 import { localize } from './localize/localize';
@@ -18,16 +19,27 @@ import { applyPatch, getEnumValues, getSliderDefaultForEntity } from './utils';
 @customElement('slider-button-card-editor')
 export class SliderButtonCardEditor extends LitElement implements LovelaceCardEditor {
   @property({ attribute: false }) public hass?: HomeAssistant;
-  @internalProperty() private _config?: SliderButtonCardConfig;
-  @internalProperty() private _helpers?: any;
+  @state() private _config?: SliderButtonCardConfig;
+  @state() private _helpers?: any;
   private _initialized = false;
   private directions = getEnumValues(SliderDirections);
   private backgrounds = getEnumValues(SliderBackground);
   private actionModes = getEnumValues(ActionButtonMode);
+  private actions = [
+    "more-info",
+    "toggle",
+    "navigate",
+    "url",
+    "call-service",
+    "none",
+  ];
 
-  public setConfig(config: SliderButtonCardConfig): void {
+
+  public async setConfig(config: SliderButtonCardConfig): Promise<void> {
     this._config = config;
-    this.loadCardHelpers();
+    if (this._helpers === undefined) {
+      await this.loadCardHelpers();
+    }
   }
 
   protected shouldUpdate(): boolean {
@@ -70,14 +82,6 @@ export class SliderButtonCardEditor extends LitElement implements LovelaceCardEd
     if (!this.hass || !this._helpers) {
       return html``;
     }
-    const actions = [
-      "more-info",
-      "toggle",
-      "navigate",
-      "url",
-      "call-service",
-      "none",
-    ];
     // The climate more-info has ha-switch and paper-dropdown-menu elements that are lazy loaded unless explicitly done here
     this._helpers.importMoreInfoControl('climate');
 
@@ -149,7 +153,7 @@ export class SliderButtonCardEditor extends LitElement implements LovelaceCardEd
                 label="${localize('tabs.icon.tap_action')}"
                 .hass=${this.hass}
                 .config=${this._icon.tap_action}
-                .actions=${actions}
+                .actions=${this.actions}
                 .configValue=${"icon.tap_action"}
                 @value-changed=${this._valueChanged}
               ></hui-action-editor>
@@ -286,7 +290,7 @@ export class SliderButtonCardEditor extends LitElement implements LovelaceCardEd
                     label="${localize('tabs.action_button.tap_action')}"
                     .hass=${this.hass}
                     .config=${this._action_button.tap_action}
-                    .actions=${actions}
+                    .actions=${this.actions}
                     .configValue=${"action_button.tap_action"}
                     @value-changed=${this._valueChanged}
                   ></hui-action-editor>
@@ -353,7 +357,7 @@ export class SliderButtonCardEditor extends LitElement implements LovelaceCardEd
     this._changeValue('icon.icon', '');
     this._changeValue(target.configValue, value);
     if (updateDefaults) {
-      const cfg = this._config;
+      const cfg = copy(this._config);
       applyPatch(cfg, ['slider'], getSliderDefaultForEntity(value));
       this._config = cfg;
       fireEvent(this, 'config-changed', { config: this._config });
@@ -374,7 +378,7 @@ export class SliderButtonCardEditor extends LitElement implements LovelaceCardEd
       return;
     }
     if (configValue) {
-      const cfg = this._config;
+      const cfg = copy(this._config);
       applyPatch(cfg, [...configValue.split('.')], value);
       this._config = cfg;
       if (value === '') {

@@ -170,7 +170,7 @@ This card supports translations. Please, help to add more translations and impro
 
 <!-- References -->
 [hacs]: https://hacs.xyz
-[add-translation]: https://github.com/mattieha/slider-button-card/tree/main/src/localize/languages
+[add-translation]: https://github.com/mattieha/slider-button-card/blob/main/CONTRIBUTE.md#adding-a-new-translation
 [visual-editor]: https://raw.githubusercontent.com/mattieha/slider-button-card/main/assets/card-editor.png
 [preview]: https://raw.githubusercontent.com/mattieha/slider-button-card/main/assets/preview.gif
 [grid]: https://raw.githubusercontent.com/mattieha/slider-button-card/main/assets/grid-not-square.png
