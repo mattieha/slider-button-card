@@ -18,9 +18,6 @@ export interface SliderButtonCardConfig extends LovelaceCardConfig {
   action_button?: ActionButtonConfig;
   slider?: SliderConfig;
   theme?: string;
-  show_warning?: boolean;
-  show_error?: boolean;
-  test_gui?: boolean;
   debug?: boolean;
 }
 
