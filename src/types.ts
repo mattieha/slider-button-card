@@ -172,6 +172,13 @@ export enum LightAttributes {
   ON_OFF = 'onoff',
 }
 
+export enum LightColorModes {
+  COLOR_TEMP = 'color_temp',
+  BRIGHTNESS = 'brightness',
+  HS = 'hs',
+  ON_OFF = 'onoff',
+}
+
 export enum CoverAttributes {
   POSITION = 'position',
   TILT = 'tilt',

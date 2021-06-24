@@ -1,5 +1,5 @@
 import { STATES_OFF } from 'custom-card-helpers';
-import { LightAttributes } from '../types';
+import { LightAttributes, LightColorModes } from '../types';
 import { getEnumValues, getLightColorBasedOnTemperature } from '../utils';
 import { Controller } from './controller';
 
@@ -47,8 +47,12 @@ export class LightController extends Controller {
     return getEnumValues(LightAttributes);
   }
 
+  get colorMode(): LightColorModes | undefined {
+    return this.stateObj?.attributes?.color_mode;
+  }
+
   get _value(): number {
-    if (!this.stateObj || STATES_OFF.includes(this.stateObj.state)) {
+    if (!this.stateObj || STATES_OFF.includes(this.state)) {
       return this.isValuePercentage ? 0 : this.min;
     }
     const attr = this.stateObj.attributes;
@@ -91,11 +95,12 @@ export class LightController extends Controller {
             : Math.round((value / 100.0) * 255);
         if (!value) {
           service = 'turn_off';
-        }
-        attr = 'brightness';
-        data = {
-          ...data,
-          [attr]: value
+        } else {
+          attr = 'brightness';
+          data = {
+            ...data,
+            [attr]: value
+          }
         }
         break;
       case LightAttributes.HUE:
@@ -104,6 +109,14 @@ export class LightController extends Controller {
         _value[HS_INDEX[attr]] = value;
         value = _value;
         attr = 'hs_color';
+        service = 'turn_on';
+        data = {
+          ...data,
+          [attr]: value
+        }
+        break;
+      case LightAttributes.COLOR_TEMP:
+        attr = 'color_temp';
         service = 'turn_on';
         data = {
           ...data,
@@ -156,17 +169,21 @@ export class LightController extends Controller {
     switch(this.attribute) {
       case LightAttributes.COLOR_TEMP:
       case LightAttributes.HUE:
+      case LightAttributes.SATURATION:
       case LightAttributes.BRIGHTNESS:
       case LightAttributes.ON_OFF:
-        return STATES_OFF.includes(this.stateObj.state);
+        return STATES_OFF.includes(this.state);
       default:
-        return this.percentage === 0;
+        return this.colorMode === LightColorModes.ON_OFF ? STATES_OFF.includes(this.state) : this.percentage === 0;
     }
   }
 
   get label(): string {
     if (this.isOff) {
       return this._hass.localize('component.light.state._.off');
+    }
+    if (this.colorMode === LightColorModes.ON_OFF) {
+      return this._hass.localize('component.light.state._.on');
     }
     switch(this.attribute) {
       case LightAttributes.ON_OFF:
