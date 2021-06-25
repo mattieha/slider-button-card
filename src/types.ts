@@ -76,6 +76,7 @@ export enum Domain {
   COVER = 'cover',
   INPUT_BOOLEAN = 'input_boolean',
   MEDIA_PLAYER = 'media_player',
+  CLIMATE = 'climate',
 }
 
 export const ActionButtonConfigDefault: ActionButtonConfig = {
@@ -153,6 +154,15 @@ export const SliderConfigDefaultDomain: Map<string, SliderConfig> = new Map([
     force_square: false,
   }],
   [Domain.MEDIA_PLAYER, {
+    direction: SliderDirections.LEFT_RIGHT,
+    background: SliderBackground.TRIANGLE,
+    use_state_color: false,
+    use_percentage_bg_opacity: false,
+    show_track: true,
+    toggle_on_click: false,
+    force_square: false,
+  }],
+  [Domain.CLIMATE, {
     direction: SliderDirections.LEFT_RIGHT,
     background: SliderBackground.TRIANGLE,
     use_state_color: false,

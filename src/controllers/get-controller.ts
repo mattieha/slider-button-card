@@ -1,5 +1,6 @@
 import { computeDomain } from 'custom-card-helpers';
 import { Domain, SliderButtonCardConfig } from '../types';
+import { ClimateController } from './climate-controller';
 import { Controller } from './controller';
 import { CoverController } from './cover-controller';
 import { FanController } from './fan-controller';
@@ -18,6 +19,7 @@ export class ControllerFactory {
       [Domain.COVER]: CoverController,
       [Domain.INPUT_BOOLEAN]: InputBooleanController,
       [Domain.MEDIA_PLAYER]: MediaController,
+      [Domain.CLIMATE]: ClimateController,
     };
     if (typeof mapping[domain] === 'undefined') {
       throw new Error(`Unsupported entity type: ${domain}`)
