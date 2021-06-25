@@ -1,6 +1,6 @@
 import { stateIcon } from 'custom-card-helpers';
-import { SliderDirections } from '../types';
-import { toPercentage } from '../utils';
+import { CoverAttributes, SliderDirections } from '../types';
+import { getEnumValues, toPercentage } from '../utils';
 import { Controller } from './controller';
 
 export class CoverController extends Controller {
@@ -8,7 +8,10 @@ export class CoverController extends Controller {
   _targetValue;
 
   get attribute(): string {
-    return this._config.attribute || 'position';
+    if (this._config.slider?.attribute?.length && this.allowedAttributes.includes(this._config.slider?.attribute)) {
+      return this._config.slider?.attribute;
+    }
+    return CoverAttributes.POSITION;
   }
 
   get icon(): string {
@@ -18,13 +21,16 @@ export class CoverController extends Controller {
     return stateIcon(this.stateObj);
   }
 
+  get allowedAttributes(): string[] {
+    return getEnumValues(CoverAttributes);
+  }
   get _value(): number {
     switch(this.attribute) {
-      case 'position':
+      case CoverAttributes.POSITION:
         return this.stateObj?.state === 'closed'
           ? 0
           : this.stateObj.attributes.current_position;
-      case 'tilt':
+      case CoverAttributes.TILT:
         return this.stateObj.attributes.current_tilt_position;
       default:
         return 0;
@@ -40,14 +46,14 @@ export class CoverController extends Controller {
       });
     } else {
       switch(this.attribute) {
-        case 'position':
+        case CoverAttributes.POSITION:
           this._hass.callService('cover', 'set_cover_position', {
             // eslint-disable-next-line @typescript-eslint/camelcase
             entity_id: this.stateObj.entity_id,
             position: value
           });
           break;
-        case 'tilt':
+        case CoverAttributes.TILT:
           this._hass.callService('cover', 'set_cover_tilt_position', {
             // eslint-disable-next-line @typescript-eslint/camelcase
             entity_id: this.stateObj.entity_id,
@@ -72,7 +78,7 @@ export class CoverController extends Controller {
       return defaultLabel;
     }
     switch(this.attribute) {
-      case 'position':
+      case CoverAttributes.POSITION:
         if (this.percentage === 0) {
           return openLabel;
         }
@@ -80,7 +86,7 @@ export class CoverController extends Controller {
           return closedLabel;
         }
         return `${this.percentage}%`;
-      case 'tilt':
+      case CoverAttributes.TILT:
         return `${this.percentage}`;
     }
     return defaultLabel;
@@ -88,7 +94,7 @@ export class CoverController extends Controller {
 
   get hasSlider(): boolean {
     switch(this.attribute) {
-      case 'position':
+      case CoverAttributes.POSITION:
         if ('current_position' in this.stateObj.attributes) {
           return true;
         }
@@ -99,7 +105,7 @@ export class CoverController extends Controller {
           return true;
         }
         break;
-      case 'tilt':
+      case CoverAttributes.TILT:
         if ('current_tilt_position' in this.stateObj.attributes) {
           return true;
         }

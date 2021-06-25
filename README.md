@@ -103,7 +103,23 @@ Slider Button Card supports Lovelace's Visual Editor.
 | show_track        | boolean | **Optional** | Show track when state is on  | `false`             |
 | force_square        | boolean | **Optional** | Force the button as a square  | `false`             |
 | toggle_on_click        | boolean | **Optional** | Force the slider to act as a toggle, if `true` sliding is disabled  | `false`             |
+| attribute        | string | **Optional** | Control an [attribute](#attributes) for `light` or `cover` entities |              |
 
+### Attributes
+Light:
+- `brightness_pct` **default**
+- `brightness`
+- `color_temp`
+- `hue`
+- `saturation`  
+
+_Warning options other than `brightness_pct` and `brightness` may give strange results_
+
+For example when `color_temp` is selected as attribute and the current `color_mode` of the light is **not** `color_temp` there is no value available for the slider, so the min value will be displayed. Same for `hue` and `saturation`, slider will only show correct value when the `color_mode` is `hs`.  
+
+Cover:
+- `position` **default**
+- `tilt`
 ### Action button Options
 
 | Name              | Type    | Requirement  | Description                                 | Default             |
@@ -113,9 +129,6 @@ Slider Button Card supports Lovelace's Visual Editor.
 | icon        | string | **Optional** | Icon when mode is `custom`  | `mdi:power`             |
 | show_spinner        | boolean | **Optional** | Show spinner when mode is `custom`  | `true`             |
 | tap_action        | object  | **Optional** | [Action](#action-options) to take on tap                       | `action: toggle` |
-
-
-
 
 ### Action Options
 

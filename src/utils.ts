@@ -44,6 +44,12 @@ export function getLightColorBasedOnTemperature(current: number, min: number, ma
   return (((value - min) / max) * 100); //.toFixed(2);
 }
 
+export function percentageToValue(percent: number, min: number, max: number): number {
+  return Math.floor(
+    (percent * (max - min) / 100 + min)
+  )
+}
+
 export const normalize = (value: number, min: number, max: number): number => {
   if (isNaN(value) || isNaN(min) || isNaN(max)) {
     // Not a number, return 0

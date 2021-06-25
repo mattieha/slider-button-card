@@ -8,18 +8,19 @@ export class FanController extends Controller {
   get _value(): number {
     return this.isUnavailable || STATES_OFF.includes(this.state)
       ? 0
-      : this.stateObj.attributes.percentage;
+      : this.hasSlider ? this.stateObj.attributes.percentage : 1;
   }
 
   set _value(value) {
-    if (value > 0) {
+    const service = value > 0 ? 'turn_on' : 'turn_off';
+    if (value > 0 && this.hasSlider) {
       this._hass.callService('fan', 'set_percentage', {
         // eslint-disable-next-line @typescript-eslint/camelcase
         entity_id: this.stateObj.entity_id,
         percentage: value
       });
     } else {
-      this._hass.callService('fan', 'turn_off', {
+      this._hass.callService('fan', service, {
         // eslint-disable-next-line @typescript-eslint/camelcase
         entity_id: this.stateObj.entity_id
       });
@@ -46,15 +47,12 @@ export class FanController extends Controller {
   }
 
   get _max(): number {
-    if (this.hasSlider) {
-      return 100;
-    }
-    return 1;
+    return this.hasSlider ? 100 : 1;
   }
 
   get iconRotateSpeed(): string {
     let speed = 0;
-    if (this.percentage > 0 && this._config.icon?.rotate) {
+    if (this.percentage > 0) {
       speed = 3 - ((this.percentage / 100) * 2);
     }
     return `${speed}s`
