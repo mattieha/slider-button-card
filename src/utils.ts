@@ -59,3 +59,5 @@ export const normalize = (value: number, min: number, max: number): number => {
   if (value < min) return min;
   return value;
 };
+
+export const capitalizeFirst = (s): string => (s && s[0].toUpperCase() + s.slice(1)) || "";

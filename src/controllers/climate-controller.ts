@@ -1,8 +1,9 @@
+import { STATES_OFF } from 'custom-card-helpers';
+import { capitalizeFirst } from '../utils';
 import { Controller } from './controller';
 
 export class ClimateController extends Controller {
-  _step = 1;
-  _targetValue;
+   _targetValue;
 
   get _value(): number {
     return this.stateObj.attributes.temperature;
@@ -14,6 +15,14 @@ export class ClimateController extends Controller {
       entity_id: this.stateObj.entity_id,
       temperature: value,
     });
+  }
+
+  get isOff(): boolean {
+    return STATES_OFF.includes(this.state);
+  }
+
+  get _step(): number {
+    return this.stateObj.attributes?.target_temp_step || 1;
   }
 
   get _min(): number {
@@ -29,15 +38,10 @@ export class ClimateController extends Controller {
   }
 
   get label(): string {
-    return `${this.value} ${this._hass.config.unit_system.temperature}`
-    /*if (this.percentage > 0) {
-      if (this.hasSlider) {
-        return `${this.percentage}%`
-      } else {
-        return this._hass.localize('component.fan.state._.on');
-      }
-    }
-    return this._hass.localize('component.fan.state._.off');*/
+    const unit = this._hass.config.unit_system.temperature;
+    const mode = capitalizeFirst(this.state);
+    // const current = this.stateObj.attributes?.current_temperature ? ` | ${this.stateObj.attributes.current_temperature}${unit}` : '';
+    return `${this.targetValue}${unit} | ${mode}`;
   }
 
 }
