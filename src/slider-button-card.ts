@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { ActionHandlerEvent, applyThemesOnElement, computeStateDomain, handleAction, hasConfigOrEntityChanged, HomeAssistant, LovelaceCard, LovelaceCardEditor, STATES_OFF } from 'custom-card-helpers';
+import { ActionHandlerEvent, applyThemesOnElement, computeStateDomain, handleAction, hasConfigOrEntityChanged, HomeAssistant, LovelaceCard, LovelaceCardEditor, STATES_OFF, toggleEntity } from 'custom-card-helpers';
 import copy from 'fast-copy';
 import { css, CSSResult, customElement, html, LitElement, property, PropertyValues, query, state, TemplateResult } from 'lit-element';
 import { classMap } from 'lit-html/directives/class-map';
@@ -99,12 +99,13 @@ export class SliderButtonCard extends LitElement implements LovelaceCard {
     if (!this.config) {
       return false;
     }
-    const oldHass = changedProps.get("hass") as HomeAssistant | undefined;
+    const oldHass = changedProps.get('hass') as HomeAssistant | undefined;
     if (
       !oldHass ||
       oldHass.themes !== this.hass.themes ||
       oldHass.language !== this.hass.language
     ) {
+      this.ctrl.log('shouldUpdate', 'forced true');
       return true;
     }
     return hasConfigOrEntityChanged(this, changedProps, false);
@@ -113,20 +114,18 @@ export class SliderButtonCard extends LitElement implements LovelaceCard {
   protected updated(changedProps: PropertyValues): void {
     this.updateValue(this.ctrl.value, false);
     this.animateActionEnd();
-    const oldHass = changedProps.get("hass") as HomeAssistant | undefined;
-    const oldConfig = changedProps.get("_config") as
+    const oldHass = changedProps.get('hass') as HomeAssistant | undefined;
+    const oldConfig = changedProps.get('config') as
       | SliderButtonCardConfig
       | undefined;
     if (
-      !oldHass ||
-      !oldConfig ||
-      oldHass.themes !== this.hass.themes ||
-      oldConfig.theme !== this.config.theme
+      oldHass?.themes !== this.hass.themes ||
+      oldConfig?.theme !== this.config.theme
     ) {
-      this.ctrl.log('THEMES', this.hass.themes);
+      this.ctrl.log('Theme','updated');
       applyThemesOnElement(this, this.hass.themes, this.config.theme);
     }
-    this.ctrl.log('UPDATED', this.ctrl.value);
+    this.ctrl.log('Updated', this.ctrl.value);
   }
 
   protected firstUpdated(_changedProperties: PropertyValues): void {
@@ -138,7 +137,6 @@ export class SliderButtonCard extends LitElement implements LovelaceCard {
     if (!this.ctrl.stateObj) {
       return this._showError(localize('common.show_error'));
     }
-    this.ctrl.log('RENDER', this.ctrl.value);
     return html`
       <ha-card
         tabindex="0"
@@ -286,10 +284,13 @@ export class SliderButtonCard extends LitElement implements LovelaceCard {
     }
   }
 
-  private handleClick(ev: Event): void {
+  private async handleClick(ev: Event): Promise<void> {
     if (this.ctrl.hasToggle && !this.ctrl.isUnavailable) {
       ev.preventDefault();
-      this.setStateValue(this.ctrl.toggleValue);
+      this.animateActionStart();
+      this.ctrl.log('Toggle');
+      await toggleEntity(this.hass, this.config.entity);
+      // this.setStateValue(this.ctrl.toggleValue);
     }
   }
 
@@ -301,9 +302,9 @@ export class SliderButtonCard extends LitElement implements LovelaceCard {
   }
 
   private setStateValue(value: number): void {
+    this.ctrl.log('setStateValue', value);
     this.updateValue(value, false);
     this.ctrl.value = value;
-    this.ctrl.log('setStateValue', value);
     this.animateActionStart();
   }
 
@@ -320,7 +321,6 @@ export class SliderButtonCard extends LitElement implements LovelaceCard {
       this.actionTimeout = setTimeout(()=> {
         this.action.classList.remove('loading');
       }, 750)
-
     }
   }
 
@@ -389,7 +389,6 @@ export class SliderButtonCard extends LitElement implements LovelaceCard {
     if (this.ctrl.isSliderDisabled) {
       return;
     }
-    this.ctrl.log('onPointerUp', this.ctrl.targetValue);
     this.setStateValue(this.ctrl.targetValue);
     this.slider.releasePointerCapture(event.pointerId);
   }
