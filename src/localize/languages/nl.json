@@ -11,7 +11,8 @@
       "entity": "Entiteit (Verplicht)",
       "name": "Naam (Optioneel)",
       "show_name": "Toon naam?",
-      "show_state": "Toon status?"
+      "show_state": "Toon status?",
+      "compact": "Compact?"
     },
     "icon": {
       "title": "Icoon",

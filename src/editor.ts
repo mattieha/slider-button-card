@@ -62,6 +62,10 @@ export class SliderButtonCardEditor extends LitElement implements LovelaceCardEd
     return typeof this._config?.show_state === 'undefined' ? true : this._config?.show_state;
   }
 
+  get _compact(): boolean {
+    return typeof this._config?.compact === 'undefined' ? false : this._config?.compact;
+  }
+
   get _entity(): string {
     return this._config?.entity || '';
   }
@@ -120,6 +124,13 @@ export class SliderButtonCardEditor extends LitElement implements LovelaceCardEd
                   <ha-switch
                     .checked=${this._show_state}
                     .configValue=${'show_state'}
+                    @change=${this._valueChanged}
+                  ></ha-switch>
+                </ha-formfield>
+                <ha-formfield .label=${localize('tabs.general.compact')}>
+                  <ha-switch
+                    .checked=${this._compact}
+                    .configValue=${'compact'}
                     @change=${this._valueChanged}
                   ></ha-switch>
                 </ha-formfield>

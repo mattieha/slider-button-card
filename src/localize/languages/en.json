@@ -11,7 +11,8 @@
       "entity": "Entity (Required)",
       "name": "Name (Optional)",
       "show_name": "Show name?",
-      "show_state": "Show state?"
+      "show_state": "Show state?",
+      "compact": "Compact?"
     },
     "icon": {
       "title": "Icon",

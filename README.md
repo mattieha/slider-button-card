@@ -79,6 +79,7 @@ Slider Button Card supports Lovelace's Visual Editor.
 | name              | string  | **Optional** | Name                                   | `entity.friendly_name`       |
 | show_name        | boolean | **Optional** | Show name  | `true`             |
 | show_state        | boolean | **Optional** | Show state  | `true`             |
+| compact        | boolean | **Optional** | Compact mode, display name and state inline with icon. Useful for full width cards.   | `false`             |
 | icon        | object  | **Optional** |  [Icon options](#icon-options)                      |  |
 | slider        | object  | **Optional** | [Slider options](#slider-options)                      |  |
 | action_button        | object  | **Optional** | [Action button options](#action-button-options)                     |  |
