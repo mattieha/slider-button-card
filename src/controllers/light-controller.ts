@@ -12,6 +12,7 @@ export class LightController extends Controller {
 
   _step = 1;
   _targetValue;
+  _invert = false;
 
   get attribute(): string {
     const attr = this._config.slider?.attribute as LightAttributes;

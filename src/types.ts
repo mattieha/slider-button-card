@@ -47,6 +47,7 @@ export interface SliderConfig {
   use_state_color?: boolean;
   show_track?: boolean;
   toggle_on_click?: boolean;
+  invert?: boolean;
   force_square: boolean;
 }
 
@@ -143,6 +144,7 @@ export const SliderConfigDefaultDomain: Map<string, SliderConfig> = new Map([
     toggle_on_click: false,
     show_track: false,
     force_square: false,
+    invert: true,
   }],
   [Domain.INPUT_BOOLEAN, {
     direction: SliderDirections.LEFT_RIGHT,
