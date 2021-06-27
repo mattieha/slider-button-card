@@ -6,6 +6,7 @@ export class MediaController extends Controller {
   _max = 100;
   _step = 1;
   _targetValue;
+  _invert = false;
 
   get _value(): number {
     return this.isUnavailable || this.stateObj?.attributes?.is_volume_muted
