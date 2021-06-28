@@ -4,6 +4,7 @@ import { Controller } from './controller';
 
 export class ClimateController extends Controller {
    _targetValue;
+  _invert = false;
 
   get _value(): number {
     return this.stateObj.attributes.temperature;
