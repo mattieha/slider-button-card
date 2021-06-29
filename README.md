@@ -105,6 +105,7 @@ Slider Button Card supports Lovelace's Visual Editor.
 | force_square        | boolean | **Optional** | Force the button as a square  | `false`             |
 | toggle_on_click        | boolean | **Optional** | Force the slider to act as a toggle, if `true` sliding is disabled  | `false`             |
 | attribute        | string | **Optional** | Control an [attribute](#attributes) for `light` or `cover` entities |              |
+| invert        | boolean | **Optional** | Invert calculation of state and percentage, useful for `cover` entities   | `false`<br />`true` for `cover`            |
 
 ### Attributes
 Light:

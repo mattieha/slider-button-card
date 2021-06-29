@@ -1,11 +1,12 @@
 import { stateIcon } from 'custom-card-helpers';
-import { CoverAttributes, SliderDirections } from '../types';
-import { getEnumValues, toPercentage } from '../utils';
+import { CoverAttributes } from '../types';
+import { getEnumValues } from '../utils';
 import { Controller } from './controller';
 
 export class CoverController extends Controller {
   _min = 0;
   _targetValue;
+  _invert = true;
 
   get attribute(): string {
     if (this._config.slider?.attribute?.length && this.allowedAttributes.includes(this._config.slider?.attribute)) {
@@ -80,10 +81,10 @@ export class CoverController extends Controller {
     switch(this.attribute) {
       case CoverAttributes.POSITION:
         if (this.percentage === 0) {
-          return openLabel;
+          return this.invert ? openLabel : closedLabel;
         }
         if (this.percentage === 100) {
-          return closedLabel;
+          return this.invert ? closedLabel : openLabel;
         }
         return `${this.percentage}%`;
       case CoverAttributes.TILT:
@@ -124,40 +125,6 @@ export class CoverController extends Controller {
 
   get _max(): number {
     return this.hasSlider ? 100 : 1;
-  }
-
-  get percentage(): number {
-    return Math.round(
-      ((this.targetValue - this.max) * 100) / (this.max - this.min) * -1
-    );
-  }
-
-  calcMovementPercentage(event: any, {left, top, width, height}): number {
-    let percentage;
-    switch(this._config.slider?.direction) {
-      case SliderDirections.LEFT_RIGHT:
-        percentage = 100 - toPercentage(
-          event.clientX,
-          left,
-          width
-        );
-        break
-      case SliderDirections.TOP_BOTTOM:
-        percentage = 100 - toPercentage(
-          event.clientY,
-          top,
-          height
-        );
-        break
-      case SliderDirections.BOTTOM_TOP:
-        percentage = toPercentage(
-          event.clientY,
-          top,
-          height
-        );
-
-    }
-    return percentage;
   }
 
 }

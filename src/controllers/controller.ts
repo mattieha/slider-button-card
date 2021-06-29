@@ -24,6 +24,7 @@ export abstract class Controller {
   abstract _min?: number;
   abstract _max?: number;
   abstract _step?: number;
+  abstract _invert?: boolean;
 
   protected constructor(config: SliderButtonCardConfig) {
     this._config = config;
@@ -134,13 +135,17 @@ export abstract class Controller {
     return this._config.slider?.step ?? this._step ?? 5;
   }
 
+  get invert(): boolean {
+    return this._config.slider?.invert ?? this._invert ?? false;
+  }
+
   get isValuePercentage(): boolean {
     return true;
   }
 
   get percentage(): number {
     return Math.round(
-      ((this.targetValue - this.min) * 100) / (this.max - this.min)
+      ((this.targetValue - (this.invert ? this.max : this.min)) * 100) / (this.max - this.min) * (this.invert ? -1 : 1)
     );
   }
 
@@ -247,6 +252,9 @@ export abstract class Controller {
           left,
           width
         );
+        if (this.invert) {
+          percentage = 100 - percentage;
+        }
         break
       case SliderDirections.TOP_BOTTOM:
         percentage = toPercentage(
@@ -254,13 +262,20 @@ export abstract class Controller {
           top,
           height
         );
+        if (this.invert) {
+          percentage = 100 - percentage;
+        }
         break
       case SliderDirections.BOTTOM_TOP:
-        percentage = 100 - toPercentage(
+        percentage = toPercentage(
           event.clientY,
           top,
           height
         );
+        if (!this.invert) {
+          percentage = 100 - percentage;
+        }
+        break
 
     }
     return percentage;
