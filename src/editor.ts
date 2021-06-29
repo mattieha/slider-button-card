@@ -63,7 +63,7 @@ export class SliderButtonCardEditor extends LitElement implements LovelaceCardEd
   }
 
   get _compact(): boolean {
-    return typeof this._config?.compact === 'undefined' ? false : this._config?.compact;
+    return typeof this._config?.compact !== 'boolean' ? false : this._config?.compact;
   }
 
   get _entity(): string {
