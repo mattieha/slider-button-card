@@ -54,7 +54,7 @@ export abstract class Controller {
   }
 
   get value(): number {
-    if (this._value) {
+    if (typeof this._value !== 'undefined') {
       return Math.round(this._value / this.step) * this.step;
     }
     return this.min;
@@ -68,16 +68,10 @@ export abstract class Controller {
   }
 
   get targetValue(): number {
-    if (this._targetValue === 0) {
-      return 0;
-    }
-    if (this._targetValue) {
+    if (typeof this._targetValue !== 'undefined') {
       return Math.round(this._targetValue / this.step) * this.step;
     }
-    if (this.value) {
-      return this.value;
-    }
-    return 0;
+    return this.value;
   }
 
   set targetValue(value: number) {
@@ -287,7 +281,7 @@ export abstract class Controller {
 
   log(name = '', value: string | number | object = ''): void {
     if (this._config.debug) {
-      console.log(`${this._config.entity}: ${name}`, value)
+      console.log(`${this.name}: ${name}`, value)
     }
   }
 }

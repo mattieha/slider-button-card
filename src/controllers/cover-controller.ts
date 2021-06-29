@@ -1,4 +1,4 @@
-import { stateIcon } from 'custom-card-helpers';
+import { stateIcon, STATES_OFF } from 'custom-card-helpers';
 import { CoverAttributes } from '../types';
 import { getEnumValues } from '../utils';
 import { Controller } from './controller';
@@ -28,13 +28,11 @@ export class CoverController extends Controller {
   get _value(): number {
     switch(this.attribute) {
       case CoverAttributes.POSITION:
-        return this.stateObj?.state === 'closed'
-          ? 0
-          : this.stateObj.attributes.current_position;
+        return this.stateObj.attributes.current_position;
       case CoverAttributes.TILT:
         return this.stateObj.attributes.current_tilt_position;
       default:
-        return 0;
+        return STATES_OFF.includes(this.state) ? this.min : this.max;
     }
   }
 
@@ -81,10 +79,12 @@ export class CoverController extends Controller {
     switch(this.attribute) {
       case CoverAttributes.POSITION:
         if (this.percentage === 0) {
-          return this.invert ? openLabel : closedLabel;
+          return openLabel;
+          // return this.invert ? openLabel : closedLabel;
         }
         if (this.percentage === 100) {
-          return this.invert ? closedLabel : openLabel;
+          return closedLabel;
+          // return this.invert ? closedLabel : openLabel;
         }
         return `${this.percentage}%`;
       case CoverAttributes.TILT:
