@@ -143,7 +143,7 @@ export class SliderButtonCard extends LitElement implements LovelaceCard {
       <ha-card
         tabindex="0"
         .label=${`SliderButton: ${this.config.entity || 'No Entity Defined'}`}
-        class="${classMap({ 'square': this.config.slider?.force_square || false, 'hide-name': !this.config.show_name, 'hide-state': !this.config.show_state , 'compact': this.config.compact || false })}"
+        class="${classMap({ 'square': this.config.slider?.force_square || false, 'hide-name': !this.config.show_name, 'hide-state': !this.config.show_state, 'hide-action': !this.config.action_button?.show , 'compact': this.config.compact || false })}"
       >
         <div class="button ${classMap({ off: this.ctrl.isOff, unavailable: this.ctrl.isUnavailable })}"
              style=${styleMap({
@@ -431,13 +431,6 @@ export class SliderButtonCard extends LitElement implements LovelaceCard {
     ha-card.square {
       aspect-ratio: 1 / 1;
     }
-    ha-card.hide-name.hide-state {
-      min-height: 4rem;
-    }
-    ha-card.hide-name,
-    ha-card.hide-state {
-      min-height: 5.5rem;
-    }
     ha-card.compact {
       min-height: 3rem !important;
     }    
@@ -478,13 +471,6 @@ export class SliderButtonCard extends LitElement implements LovelaceCard {
       overflow: hidden;           
       transition: all 0.2s ease-in-out;
       touch-action: none;
-    }
-    ha-card.hide-name.hide-state .button {
-      min-height: 4rem;
-    }
-    ha-card.hide-name .button,
-    ha-card.hide-state .button {
-      min-height: 5.5rem;
     }
     ha-card.compact .button {
       min-height: 3rem !important;
@@ -545,7 +531,14 @@ export class SliderButtonCard extends LitElement implements LovelaceCard {
       left: 0.5rem;
       display: inline-block;
       padding: 0;
+      height: 1.3rem;
+      width: 100%;
+      overflow: hidden;
+      max-width: calc(100% - 4em);
     }
+    .compact.hide-action .text {         
+      max-width: calc(100% - 2em);      
+    }    
 
     /* --- LABEL --- */
     
@@ -565,7 +558,7 @@ export class SliderButtonCard extends LitElement implements LovelaceCard {
     }
     .compact .name {
       display: inline-block;   
-      overflow: visible;   
+      max-width: calc(100% - 3.5em);
     }    
     
     /* --- STATE --- */
@@ -588,6 +581,8 @@ export class SliderButtonCard extends LitElement implements LovelaceCard {
     }
     .compact .state {
       display: inline-block;
+      max-width: calc(100% - 0em);
+      overflow: hidden;
     }
     
     
