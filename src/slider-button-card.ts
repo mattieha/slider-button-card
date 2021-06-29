@@ -626,9 +626,19 @@ export class SliderButtonCard extends LitElement implements LovelaceCard {
     .slider[data-background="gradient"] .slider-bg {
       --slider-bg: linear-gradient(var(--slider-bg-direction), rgba(255, 0, 0, 0) -10%, var(--slider-color) 100%);
     }    
-    .slider[data-background="striped"] .slider-bg {
+    /*.slider[data-background="striped"] .slider-bg {
       --slider-bg: linear-gradient(var(--slider-bg-direction), var(--slider-color), var(--slider-color) 50%, transparent 50%, transparent);
-      --slider-bg-size: 4px 100%;
+      --slider-bg-size: 4px 100%;      
+    }*/
+    .slider[data-background="striped"] .slider-bg {
+      --slider-bg: repeating-linear-gradient(90deg, var(--slider-color), var(--slider-color) 2px, transparent 0px, transparent 10px);
+      /*--slider-bg-size: 50% 100%;*/
+      background: var(--slider-bg) calc(var(--slider-value) - 100%) 50%, var(--slider-bg) calc(200% - var(--slider-value)) 50% transparent !important;
+      background-repeat: no-repeat !important;
+      background-size: 50% 100%, 50% 100% !important;
+    }
+    .slider[data-background="striped"] .slider-thumb {
+      display: none;
     }
     .slider[data-background="striped"][data-mode="bottom-top"] .slider-bg,
     .slider[data-background="striped"][data-mode="top-bottom"] .slider-bg {      
