@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { ActionHandlerEvent, applyThemesOnElement, computeStateDomain, handleAction, hasConfigOrEntityChanged, HomeAssistant, LovelaceCard, LovelaceCardEditor, STATES_OFF, toggleEntity } from 'custom-card-helpers';
 import copy from 'fast-copy';
-import { HassEntity } from 'home-assistant-js-websocket';
 import { css, CSSResult, customElement, html, LitElement, property, PropertyValues, query, state, TemplateResult } from 'lit-element';
 import { classMap } from 'lit-html/directives/class-map';
 import { ifDefined } from 'lit-html/directives/if-defined';
@@ -47,48 +46,6 @@ export class SliderButtonCard extends LitElement implements LovelaceCard {
   private changed = false;
   private ctrl!: Controller;
   private actionTimeout;
-  private hasTemplate = false;
-  private static templateRegex = new RegExp('\\[\\[\\[([^]*)\\]\\]\\]', 'gm');
-  private _renderedConfig!: SliderButtonCardConfig;
-  private static templateFields = [
-    'name',
-  ];
-  protected evaluateJsTemplates(): void {
-    if (!this._renderedConfig || !this.config || !this.ctrl.stateObj) {
-      return;
-    }
-
-    for (const field of SliderButtonCard.templateFields) {
-      const regMatches = SliderButtonCard.templateRegex.exec(this.config[field]);
-      SliderButtonCard.templateRegex.lastIndex = 0;
-
-      if (regMatches && regMatches.length > 1) {
-        this._renderedConfig[field] = this._evalTemplate(this.ctrl.stateObj, regMatches[1]);
-      } else {
-        this._renderedConfig[field] = this.config[field];
-      }
-    }
-  }
-  /**
-   * Renders a Javascript template
-   * Credit: https://github.com/custom-cards/button-card
-   */
-
-  private _evalTemplate(state: HassEntity | undefined, func: any): any {
-    if (!this.hass) {
-      return '';
-    }
-
-    /* eslint no-new-func: 0 */
-    return new Function('states', 'entity', 'user', 'hass', 'variables', `'use strict'; ${func}`).call(
-      this,
-      this.hass.states,
-      state,
-      this.hass.user,
-      this.hass,
-      [],
-    );
-  }
 
   public static async getConfigElement(): Promise<LovelaceCardEditor> {
     return document.createElement('slider-button-card-editor');
@@ -138,16 +95,6 @@ export class SliderButtonCard extends LitElement implements LovelaceCard {
       ...config
     };
     this.ctrl = ControllerFactory.getInstance(this.config);
-    this._renderedConfig = copy(this.config);
-    // Check if there is a template in a field
-    for (const field of SliderButtonCard.templateFields) {
-      const regResult = SliderButtonCard.templateRegex.exec(this.config[field]);
-      SliderButtonCard.templateRegex.lastIndex = 0;
-      if (regResult !== null) {
-        this.hasTemplate = true;
-        break;
-      }
-    }
   }
 
   protected shouldUpdate(changedProps: PropertyValues): boolean {
@@ -163,7 +110,7 @@ export class SliderButtonCard extends LitElement implements LovelaceCard {
       this.ctrl.log('shouldUpdate', 'forced true');
       return true;
     }
-    return hasConfigOrEntityChanged(this, changedProps, this.hasTemplate);
+    return hasConfigOrEntityChanged(this, changedProps, false);
   }
 
   protected updated(changedProps: PropertyValues): void {
@@ -192,7 +139,6 @@ export class SliderButtonCard extends LitElement implements LovelaceCard {
     if (!this.ctrl.stateObj) {
       return this._showError(localize('common.show_error'));
     }
-    this.evaluateJsTemplates();
     return html`
       <ha-card
         tabindex="0"
@@ -237,12 +183,11 @@ export class SliderButtonCard extends LitElement implements LovelaceCard {
     if (!this.config.show_name && !this.config.show_state) {
       return html``;
     }
-    console.log('ren', this._renderedConfig);
     return html`
           <div class="text">
             ${this.config.show_name
               ? html`
-                <div class="name">${ this._renderedConfig?.name ? this._renderedConfig?.name : this.ctrl.name}</div>
+                <div class="name">${this.ctrl.name}</div>
                 `
                 : ''}
             ${this.config.show_state
