@@ -27,11 +27,11 @@ export class ClimateController extends Controller {
   }
 
   get _min(): number {
-    return this.stateObj.attributes.min_temp;
+    return this.stateObj.attributes?.min_temp || 7;
   }
 
   get _max(): number {
-    return this.stateObj.attributes.max_temp;
+    return this.stateObj.attributes?.max_temp || 35;
   }
 
   get isValuePercentage(): boolean {
