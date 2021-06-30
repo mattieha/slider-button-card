@@ -11,7 +11,8 @@
       "entity": "Encja (Wymagana)",
       "name": "Nazwa (Opcjonalna)",
       "show_name": "Pokazać nazwę?",
-      "show_state": "Pokazać stan?"
+      "show_state": "Pokazać stan?",
+      "compact": "Kompaktowy?"
     },
     "icon": {
       "title": "Ikona",

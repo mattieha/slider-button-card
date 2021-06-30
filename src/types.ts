@@ -19,6 +19,7 @@ export interface SliderButtonCardConfig extends LovelaceCardConfig {
   slider?: SliderConfig;
   theme?: string;
   debug?: boolean;
+  compact?: boolean;
 }
 
 export interface ActionButtonConfig {
