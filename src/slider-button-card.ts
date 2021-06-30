@@ -105,6 +105,7 @@ export class SliderButtonCard extends LitElement implements LovelaceCard {
       show_name: true,
       // eslint-disable-next-line @typescript-eslint/camelcase
       show_state: true,
+      compact: false,
       icon: copy(IconConfigDefault),
       // eslint-disable-next-line @typescript-eslint/camelcase
       action_button: copy(ActionButtonConfigDefault),
@@ -130,6 +131,7 @@ export class SliderButtonCard extends LitElement implements LovelaceCard {
       show_name: true,
       // eslint-disable-next-line @typescript-eslint/camelcase
       show_state: true,
+      compact: false,
       // eslint-disable-next-line @typescript-eslint/camelcase
       action_button: copy(ActionButtonConfigDefault),
       debug: false,
@@ -195,7 +197,7 @@ export class SliderButtonCard extends LitElement implements LovelaceCard {
       <ha-card
         tabindex="0"
         .label=${`SliderButton: ${this.config.entity || 'No Entity Defined'}`}
-        class="${classMap({ 'square': this.config.slider?.force_square || false })}"
+        class="${classMap({ 'square': this.config.slider?.force_square || false, 'hide-name': !this.config.show_name, 'hide-state': !this.config.show_state, 'hide-action': !this.config.action_button?.show , 'compact': this.config.compact === true })}"
       >
         <div class="button ${classMap({ off: this.ctrl.isOff, unavailable: this.ctrl.isUnavailable })}"
              style=${styleMap({
@@ -484,6 +486,9 @@ export class SliderButtonCard extends LitElement implements LovelaceCard {
     ha-card.square {
       aspect-ratio: 1 / 1;
     }
+    ha-card.compact {
+      min-height: 3rem !important;
+    }    
     :host {
       --slider-bg-default-color: var(--primary-color, rgb(95, 124, 171));
       --slider-bg: var(--slider-color);
@@ -522,6 +527,9 @@ export class SliderButtonCard extends LitElement implements LovelaceCard {
       transition: all 0.2s ease-in-out;
       touch-action: none;
     }
+    ha-card.compact .button {
+      min-height: 3rem !important;
+    }
     .button.off {
       background-color: var(--btn-bg-color-off);
     }
@@ -554,7 +562,9 @@ export class SliderButtonCard extends LitElement implements LovelaceCard {
     .unavailable .icon ha-icon {
       color: var(--disabled-text-color);
     }
-
+    .compact .icon {
+      float: left;
+    }
 
     /* --- TEXT --- */
     
@@ -570,6 +580,20 @@ export class SliderButtonCard extends LitElement implements LovelaceCard {
       max-width: calc(100% - 2em);
       /*text-shadow: rgb(255 255 255 / 10%) -1px -1px 1px, rgb(0 0 0 / 50%) 1px 1px 1px;*/
     }
+    .compact .text {
+      position: relative;
+      top: 0.5rem;
+      left: 0.5rem;
+      display: inline-block;
+      padding: 0;
+      height: 1.3rem;
+      width: 100%;
+      overflow: hidden;
+      max-width: calc(100% - 4em);
+    }
+    .compact.hide-action .text {         
+      max-width: calc(100% - 2em);      
+    }    
 
     /* --- LABEL --- */
     
@@ -587,6 +611,10 @@ export class SliderButtonCard extends LitElement implements LovelaceCard {
     .unavailable .name {
       color: var(--disabled-text-color);
     }
+    .compact .name {
+      display: inline-block;   
+      max-width: calc(100% - 3.5em);
+    }    
     
     /* --- STATE --- */
     
@@ -605,6 +633,11 @@ export class SliderButtonCard extends LitElement implements LovelaceCard {
     }
     .unavailable .state {
       color: var(--disabled-text-color);
+    }
+    .compact .state {
+      display: inline-block;
+      max-width: calc(100% - 0em);
+      overflow: hidden;
     }
     
     
