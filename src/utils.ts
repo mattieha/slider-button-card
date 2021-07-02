@@ -1,25 +1,28 @@
 import { tinycolor, TinyColor } from '@ctrl/tinycolor';
 import { computeDomain } from 'custom-card-helpers';
+import copy from 'fast-copy';
 import { Domain, SliderConfig, SliderConfigDefault, SliderConfigDefaultDomain } from './types';
 
 export function getEnumValues(enumeration): string[] {
   return Object.keys(enumeration).map(key => enumeration[key]).filter(value => typeof value === 'string');
 }
 
-export function propByPath(obj,is, value): string {
-  if (typeof is == 'string')
-    return propByPath(obj,is.split('.'), value);
-  else if (is.length==1 && value!==undefined)
-    return obj[is[0]] = value;
-  else if (is.length==0)
-    return obj;
-  else
-    return propByPath(obj[is[0]],is.slice(1), value);
-}
+export const applyPatch = (data, path, value): void => {
+  if (path.length === 1) {
+    data[path[0]] = value;
+    return;
+  }
+  if (!data[path[0]]) {
+    data[path[0]] = {};
+  }
+  // eslint-disable-next-line consistent-return
+  return applyPatch(data[path[0]], path.slice(1), value);
+};
 
 export function getSliderDefaultForEntity(entity: string): SliderConfig {
   const domain = computeDomain(entity) || Domain.LIGHT;
-  return SliderConfigDefaultDomain.get(domain) || SliderConfigDefault;
+  const cfg = SliderConfigDefaultDomain.get(domain) || SliderConfigDefault;
+  return copy(cfg);
 }
 
 export function getLightColorBasedOnTemperature(current: number, min: number, max: number): string {
@@ -39,4 +42,22 @@ export function getLightColorBasedOnTemperature(current: number, min: number, ma
 }
  export function toPercentage(value: number, min: number, max: number): number {
   return (((value - min) / max) * 100); //.toFixed(2);
+}
+
+export function percentageToValue(percent: number, min: number, max: number): number {
+  return Math.floor(
+    (percent * (max - min) / 100 + min)
+  )
+}
+
+export const normalize = (value: number, min: number, max: number): number => {
+  if (isNaN(value) || isNaN(min) || isNaN(max)) {
+    // Not a number, return 0
+    return 0;
+  }
+  if (value > max) return max;
+  if (value < min) return min;
+  return value;
 };
+
+export const capitalizeFirst = (s): string => (s && s[0].toUpperCase() + s.slice(1)) || "";

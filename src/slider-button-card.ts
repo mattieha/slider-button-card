@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { ActionHandlerEvent, applyThemesOnElement, computeStateDomain, getLovelace, handleAction, hasConfigOrEntityChanged, HomeAssistant, LovelaceCard, LovelaceCardEditor, STATES_OFF } from 'custom-card-helpers';
+import { ActionHandlerEvent, applyThemesOnElement, computeStateDomain, handleAction, hasConfigOrEntityChanged, HomeAssistant, LovelaceCard, LovelaceCardEditor, STATES_OFF, toggleEntity } from 'custom-card-helpers';
+import copy from 'fast-copy';
 import { css, CSSResult, customElement, html, LitElement, property, PropertyValues, query, state, TemplateResult } from 'lit-element';
 import { classMap } from 'lit-html/directives/class-map';
 import { ifDefined } from 'lit-html/directives/if-defined';
@@ -12,8 +13,8 @@ import './editor';
 import { localize } from './localize/localize';
 
 import type { SliderButtonCardConfig } from './types';
-import { ActionButtonConfigDefault, ActionButtonMode, IconConfigDefault, SliderDirections } from './types';
-import { getSliderDefaultForEntity, toPercentage } from './utils';
+import { ActionButtonConfigDefault, ActionButtonMode, IconConfigDefault } from './types';
+import { getSliderDefaultForEntity } from './utils';
 
 /* eslint no-console: 0 */
 console.info(
@@ -61,9 +62,10 @@ export class SliderButtonCard extends LitElement implements LovelaceCard {
       show_name: true,
       // eslint-disable-next-line @typescript-eslint/camelcase
       show_state: true,
-      icon: IconConfigDefault,
+      compact: false,
+      icon: copy(IconConfigDefault),
       // eslint-disable-next-line @typescript-eslint/camelcase
-      action_button: ActionButtonConfigDefault,
+      action_button: copy(ActionButtonConfigDefault),
     };
   }
   public getCardSize(): number {
@@ -79,19 +81,16 @@ export class SliderButtonCard extends LitElement implements LovelaceCard {
       throw new Error(localize('common.invalid_configuration'));
     }
 
-    if (config.test_gui) {
-      getLovelace().setEditMode(true);
-    }
-
     this.config = {
       slider: getSliderDefaultForEntity(config.entity),
-      icon: IconConfigDefault,
+      icon: copy(IconConfigDefault),
       // eslint-disable-next-line @typescript-eslint/camelcase
       show_name: true,
       // eslint-disable-next-line @typescript-eslint/camelcase
       show_state: true,
+      compact: false,
       // eslint-disable-next-line @typescript-eslint/camelcase
-      action_button: ActionButtonConfigDefault,
+      action_button: copy(ActionButtonConfigDefault),
       debug: false,
       ...config
     };
@@ -102,12 +101,13 @@ export class SliderButtonCard extends LitElement implements LovelaceCard {
     if (!this.config) {
       return false;
     }
-    const oldHass = changedProps.get("hass") as HomeAssistant | undefined;
+    const oldHass = changedProps.get('hass') as HomeAssistant | undefined;
     if (
       !oldHass ||
       oldHass.themes !== this.hass.themes ||
       oldHass.language !== this.hass.language
     ) {
+      this.ctrl.log('shouldUpdate', 'forced true');
       return true;
     }
     return hasConfigOrEntityChanged(this, changedProps, false);
@@ -116,19 +116,18 @@ export class SliderButtonCard extends LitElement implements LovelaceCard {
   protected updated(changedProps: PropertyValues): void {
     this.updateValue(this.ctrl.value, false);
     this.animateActionEnd();
-    const oldHass = changedProps.get("hass") as HomeAssistant | undefined;
-    const oldConfig = changedProps.get("_config") as
+    const oldHass = changedProps.get('hass') as HomeAssistant | undefined;
+    const oldConfig = changedProps.get('config') as
       | SliderButtonCardConfig
       | undefined;
     if (
-      !oldHass ||
-      !oldConfig ||
-      oldHass.themes !== this.hass.themes ||
-      oldConfig.theme !== this.config.theme
+      oldHass?.themes !== this.hass.themes ||
+      oldConfig?.theme !== this.config.theme
     ) {
+      this.ctrl.log('Theme','updated');
       applyThemesOnElement(this, this.hass.themes, this.config.theme);
     }
-    this.ctrl.log('UPDATED', this.ctrl.value);
+    this.ctrl.log('Updated', this.ctrl.value);
   }
 
   protected firstUpdated(_changedProperties: PropertyValues): void {
@@ -140,12 +139,11 @@ export class SliderButtonCard extends LitElement implements LovelaceCard {
     if (!this.ctrl.stateObj) {
       return this._showError(localize('common.show_error'));
     }
-    this.ctrl.log('RENDER', this.ctrl.value);
     return html`
       <ha-card
         tabindex="0"
         .label=${`SliderButton: ${this.config.entity || 'No Entity Defined'}`}
-        class="${classMap({ 'square': this.config.slider?.force_square || false })}"
+        class="${classMap({ 'square': this.config.slider?.force_square || false, 'hide-name': !this.config.show_name, 'hide-state': !this.config.show_state, 'hide-action': !this.config.action_button?.show , 'compact': this.config.compact === true })}"
       >
         <div class="button ${classMap({ off: this.ctrl.isOff, unavailable: this.ctrl.isUnavailable })}"
              style=${styleMap({
@@ -212,21 +210,26 @@ export class SliderButtonCard extends LitElement implements LovelaceCard {
     if (this.config.icon?.show === false) {
       return html``;
     }
+    let hasPicture = false;
+    let backgroundImage = '';
+    if (this.ctrl.stateObj.attributes.entity_picture) {
+      backgroundImage = `url(${this.ctrl.stateObj.attributes.entity_picture})`;
+      hasPicture = true;
+    }
     return html`
-      <div class="icon"
+      <div class="icon ${classMap({ 'has-picture': hasPicture })}"
            @action=${ (e): void => this._handleAction(e, this.config.icon)}
            .actionHandler=${actionHandler({
              hasHold: false,
              hasDoubleClick: false,
            })}
+           style=${styleMap({
+             'background-image': `${backgroundImage}`,
+           })}
            >
         <ha-icon
           tabindex="-1"
-          data-domain=${ifDefined(
-            this.config.icon?.use_state_color && this.ctrl.stateObj
-              ? computeStateDomain(this.ctrl.stateObj)
-              : undefined
-          )}
+          data-domain=${computeStateDomain(this.ctrl.stateObj)}
           data-state=${ifDefined(
             this.ctrl.stateObj ? this.ctrl.state : undefined
           )}          
@@ -274,23 +277,22 @@ export class SliderButtonCard extends LitElement implements LovelaceCard {
     `;
   }
 
-  private setTargetValue(value: number): void {
-    this.updateValue(value);
-  }
-
   private _handleAction(ev: ActionHandlerEvent, config): void {
     if (this.hass && this.config && ev.detail.action) {
-      if (config.tap_action?.action === 'toggle') {
+      if (config.tap_action?.action === 'toggle' && !this.ctrl.isUnavailable) {
         this.animateActionStart();
       }
       handleAction(this, this.hass, {...config, entity: this.config.entity}, ev.detail.action);
     }
   }
 
-  private handleClick(ev: Event): void {
+  private async handleClick(ev: Event): Promise<void> {
     if (this.ctrl.hasToggle && !this.ctrl.isUnavailable) {
       ev.preventDefault();
-      this.setStateValue(this.ctrl.toggleValue);
+      this.animateActionStart();
+      this.ctrl.log('Toggle');
+      await toggleEntity(this.hass, this.config.entity);
+      // this.setStateValue(this.ctrl.toggleValue);
     }
   }
 
@@ -302,9 +304,9 @@ export class SliderButtonCard extends LitElement implements LovelaceCard {
   }
 
   private setStateValue(value: number): void {
+    this.ctrl.log('setStateValue', value);
     this.updateValue(value, false);
     this.ctrl.value = value;
-    this.ctrl.log('setStateValue', value);
     this.animateActionStart();
   }
 
@@ -321,7 +323,6 @@ export class SliderButtonCard extends LitElement implements LovelaceCard {
       this.actionTimeout = setTimeout(()=> {
         this.action.classList.remove('loading');
       }, 750)
-
     }
   }
 
@@ -347,11 +348,10 @@ export class SliderButtonCard extends LitElement implements LovelaceCard {
     }
     this.button.style.setProperty('--slider-value', `${this.ctrl.percentage}%`);
     this.button.style.setProperty('--slider-bg-filter', this.ctrl.style.slider.filter);
+    this.button.style.setProperty('--slider-color', this.ctrl.style.slider.color);
     this.button.style.setProperty('--icon-filter', this.ctrl.style.icon.filter);
     this.button.style.setProperty('--icon-color', this.ctrl.style.icon.color);
-    if (this.config.icon?.rotate) {
-      this.button.style.setProperty('--icon-rotate-speed', this.ctrl.style.icon.rotateSpeed || '0s');
-    }
+    this.button.style.setProperty('--icon-rotate-speed', this.ctrl.style.icon.rotateSpeed || '0s');
   }
 
   private _showError(error: string): TemplateResult {
@@ -387,51 +387,23 @@ export class SliderButtonCard extends LitElement implements LovelaceCard {
     this.slider.setPointerCapture(event.pointerId);
   }
 
-  private onPointerUp(): void {
+  private onPointerUp(event: PointerEvent): void {
     if (this.ctrl.isSliderDisabled) {
       return;
     }
-    this.ctrl.log('onPointerUp', this.ctrl.targetValue);
     this.setStateValue(this.ctrl.targetValue);
+    this.slider.releasePointerCapture(event.pointerId);
   }
 
   private onPointerMove(event: any): void {
     if (this.ctrl.isSliderDisabled) {
       return;
     }
-    if (!event.target.hasPointerCapture(event.pointerId)) return;
+    if (!this.slider.hasPointerCapture(event.pointerId)) return;
     const {left, top, width, height} = this.slider.getBoundingClientRect();
-    let per;
-    const minEdge = 0;
-    const maxEdge = 100;
-    if (this.config.slider?.direction === SliderDirections.LEFT_RIGHT) {
-      per = toPercentage(
-        event.clientX,
-        left,
-        width
-      );
-    } else if (this.config.slider?.direction === SliderDirections.TOP_BOTTOM) {
-      per = toPercentage(
-        event.clientY,
-        top,
-        height
-      );
-    } else if (this.config.slider?.direction === SliderDirections.BOTTOM_TOP) {
-      per = maxEdge - toPercentage(
-        event.clientY,
-        top,
-        height
-      );
-    }
-    per = this.ctrl.applyStep(per);
-    if (per < minEdge) {
-      per = minEdge;
-    }
-    if (per > maxEdge) {
-      per = maxEdge;
-    }
-    this.ctrl.log('onPointerMove', per);
-    this.updateValue(per);
+    const percentage = this.ctrl.moveSlider(event, {left, top, width, height});
+    this.ctrl.log('onPointerMove', percentage);
+    this.updateValue(percentage);
   }
 
   connectedCallback(): void {
@@ -459,6 +431,9 @@ export class SliderButtonCard extends LitElement implements LovelaceCard {
     ha-card.square {
       aspect-ratio: 1 / 1;
     }
+    ha-card.compact {
+      min-height: 3rem !important;
+    }    
     :host {
       --slider-bg-default-color: var(--primary-color, rgb(95, 124, 171));
       --slider-bg: var(--slider-color);
@@ -497,6 +472,9 @@ export class SliderButtonCard extends LitElement implements LovelaceCard {
       transition: all 0.2s ease-in-out;
       touch-action: none;
     }
+    ha-card.compact .button {
+      min-height: 3rem !important;
+    }
     .button.off {
       background-color: var(--btn-bg-color-off);
     }
@@ -519,6 +497,19 @@ export class SliderButtonCard extends LitElement implements LovelaceCard {
       color: var(--icon-color);
       transition: color 0.4s ease-in-out 0s, filter 0.2s linear 0s;
     }
+    .icon.has-picture {
+      background-size: cover;
+      border-radius: 50%;
+    }
+    .icon.has-picture ha-icon{
+      display: none;
+    }
+    .unavailable .icon ha-icon {
+      color: var(--disabled-text-color);
+    }
+    .compact .icon {
+      float: left;
+    }
 
     /* --- TEXT --- */
     
@@ -534,6 +525,20 @@ export class SliderButtonCard extends LitElement implements LovelaceCard {
       max-width: calc(100% - 2em);
       /*text-shadow: rgb(255 255 255 / 10%) -1px -1px 1px, rgb(0 0 0 / 50%) 1px 1px 1px;*/
     }
+    .compact .text {
+      position: relative;
+      top: 0.5rem;
+      left: 0.5rem;
+      display: inline-block;
+      padding: 0;
+      height: 1.3rem;
+      width: 100%;
+      overflow: hidden;
+      max-width: calc(100% - 4em);
+    }
+    .compact.hide-action .text {         
+      max-width: calc(100% - 2em);      
+    }    
 
     /* --- LABEL --- */
     
@@ -547,6 +552,14 @@ export class SliderButtonCard extends LitElement implements LovelaceCard {
     .off .name {
       color: var(--label-color-off);
     }
+    .unavailable.off .name,
+    .unavailable .name {
+      color: var(--disabled-text-color);
+    }
+    .compact .name {
+      display: inline-block;   
+      max-width: calc(100% - 3.5em);
+    }    
     
     /* --- STATE --- */
     
@@ -563,6 +576,15 @@ export class SliderButtonCard extends LitElement implements LovelaceCard {
     .off .state {
       color: var(--state-color-off, var(--disabled-text-color));
     }
+    .unavailable .state {
+      color: var(--disabled-text-color);
+    }
+    .compact .state {
+      display: inline-block;
+      max-width: calc(100% - 0em);
+      overflow: hidden;
+    }
+    
     
     /* --- SLIDER --- */    
     
@@ -672,6 +694,32 @@ export class SliderButtonCard extends LitElement implements LovelaceCard {
       transform: translateY(calc(var(--slider-value) * -1))  !important;
     }
     
+    .slider-thumb:before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -2px;
+      height: 100%;
+      width: 2px;          
+      background: var(--slider-color);
+      opacity: 0;       
+      transition: opacity 0.2s ease-in-out 0s;   
+      box-shadow: var(--slider-color) 0px 1px 5px 1px;
+      z-index: 999;
+    }
+    .slider[data-mode="top-bottom"] .slider-thumb:before {
+      top: -2px;
+      left: 0px;
+      height: 2px;
+      width: 100%;              
+    }    
+    .changing .slider-thumb:before {
+      opacity: 0.5;    
+    }
+    .off.changing .slider-thumb:before {
+      opacity: 0;    
+    }
+    
     .slider-thumb:after {
       content: '';
       position: absolute;
@@ -709,6 +757,10 @@ export class SliderButtonCard extends LitElement implements LovelaceCard {
     .off .action {
       color: var(--action-icon-color-off);
     }
+    .unavailable .action {
+      color: var(--disabled-text-color);
+    }
+    
 
     .circular-loader {
       position: absolute;

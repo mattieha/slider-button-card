@@ -2,7 +2,7 @@
 [![GitHub Release][releases-shield]][releases]
 [![hacs_badge](https://img.shields.io/badge/HACS-default-orange.svg?style=for-the-badge)](https://github.com/custom-components/hacs)
 
-A button card with integrated slider for `light, switch, fan, cover, input_boolean` entities.
+A button card with integrated slider for `light, switch, fan, cover, input_boolean, media_player, climate` entities.
 
 ![Preview][preview]
 
@@ -12,9 +12,6 @@ A button card with integrated slider for `light, switch, fan, cover, input_boole
 - [Installation](#installation)
     - [HACS](#hacs)
     - [Manual](#manual)
-- [Usage](#usage)
-    - [Grid](#grid)
-    - [Standalone](#standalone)
 - [Configuration](#configuration)
     - [Visual Editor](#visual-editor)
     - [Options](#options)
@@ -23,6 +20,20 @@ A button card with integrated slider for `light, switch, fan, cover, input_boole
         - [Action button options](#action-button-options)
         - [Tap action](#action-options)
     - [Styles](#styles)
+- [Examples](#examples)
+    - [Minimal working config](#minimal-working-config)
+    - [Per feature](#per-feature)
+        - [General](#general)
+        - [Icon](#icon)
+        - [Action button](#action-button)
+        - [Slider](#slider)
+    - [Full examples](#full-examples)
+        - [Fan](#fan)
+        - [Switch](#switch)
+        - [Cover](#cover)
+        - [Media player](#media-player)
+        - [Climate](#climate)
+        - [In a grid](#grid)
 - [Known issues](#known-issues)
 - [Languages](#languages)
 - [Credits](#credits)
@@ -37,33 +48,8 @@ Just search for `Slider Button Card` in Frontend tab.
 
 1. Download `slider-button-card.js` file from the [latest-release].
 2. Put `slider-button-card.js` file into your `config/www` folder.
-3. Add reference to `slider-button-card.js` in Lovelace. There's two way to do that:
-    1. **Using UI:** _Configuration_ → _Lovelace Dashboards_ → _Resources_ → Click Plus button → Set _Url_ as `/local/slider-button-card.js` → Set _Resource type_ as `JavaScript Module`.
-    2. **Using YAML:** Add following code to `lovelace` section.
-       ```yaml
-       resources:
-         - url: /local/slider-button-card.js
-           type: module
-       ```
+3. Go to _Configuration_ → _Lovelace Dashboards_ → _Resources_ → Click Plus button → Set _Url_ as `/local/slider-button-card.js` → Set _Resource type_ as `JavaScript Module`.
 4. Add `custom:slider-button-card` to Lovelace UI as any other card (using either editor or YAML configuration).
-
-## Usage
-### Grid
-In most cases the card is best used in combination with the default grid card.  
-The width and height of the slider button card is determined by the `columns` option of the grid card and the `Render cards as squares` option.
-
-
-Example `columns: 2` and `Render cards as squares: false`
-
-![Grid][grid]
-
-Example `columns: 1` and `Render cards as squares: false`
-
-![Full width][full-width]
-
-### Standalone
-Used as standalone card the width will be 100% of the column, and the height will be as needed.
-With the option `slider.force_square` it's possible to force the height to be the same as the width.
 
 ## Configuration
 
@@ -82,10 +68,11 @@ Slider Button Card supports Lovelace's Visual Editor.
 | Name              | Type    | Requirement  | Description                                 | Default             |
 | ----------------- | ------- | ------------ | ------------------------------------------- | ------------------- |
 | type              | string  | **Required** | `custom:slider-button-card`                   |
-| entity            | string  | **Required** | HA entity ID from domain `light, switch, fan, cover, input_boolean`                   |               |
+| entity            | string  | **Required** | HA entity ID from domain `light, switch, fan, cover, input_boolean, media_player, climate`                   |               |
 | name              | string  | **Optional** | Name                                   | `entity.friendly_name`       |
 | show_name        | boolean | **Optional** | Show name  | `true`             |
 | show_state        | boolean | **Optional** | Show state  | `true`             |
+| compact        | boolean | **Optional** | Compact mode, display name and state inline with icon. Useful for full width cards.   | `false`             |
 | icon        | object  | **Optional** |  [Icon options](#icon-options)                      |  |
 | slider        | object  | **Optional** | [Slider options](#slider-options)                      |  |
 | action_button        | object  | **Optional** | [Action button options](#action-button-options)                     |  |
@@ -110,7 +97,24 @@ Slider Button Card supports Lovelace's Visual Editor.
 | show_track        | boolean | **Optional** | Show track when state is on  | `false`             |
 | force_square        | boolean | **Optional** | Force the button as a square  | `false`             |
 | toggle_on_click        | boolean | **Optional** | Force the slider to act as a toggle, if `true` sliding is disabled  | `false`             |
+| attribute        | string | **Optional** | Control an [attribute](#attributes) for `light` or `cover` entities |              |
+| invert        | boolean | **Optional** | Invert calculation of state and percentage, useful for `cover` entities   | `false`<br />`true` for `cover`            |
 
+### Attributes
+Light:
+- `brightness_pct` **default**
+- `brightness`
+- `color_temp`
+- `hue`
+- `saturation`  
+
+_Warning options other than `brightness_pct` and `brightness` may give strange results_
+
+For example when `color_temp` is selected as attribute and the current `color_mode` of the light is **not** `color_temp` there is no value available for the slider, so the min value will be displayed. Same for `hue` and `saturation`, slider will only show correct value when the `color_mode` is `hs`.  
+
+Cover:
+- `position` **default**
+- `tilt`
 ### Action button Options
 
 | Name              | Type    | Requirement  | Description                                 | Default             |
@@ -120,9 +124,6 @@ Slider Button Card supports Lovelace's Visual Editor.
 | icon        | string | **Optional** | Icon when mode is `custom`  | `mdi:power`             |
 | show_spinner        | boolean | **Optional** | Show spinner when mode is `custom`  | `true`             |
 | tap_action        | object  | **Optional** | [Action](#action-options) to take on tap                       | `action: toggle` |
-
-
-
 
 ### Action Options
 
@@ -155,6 +156,517 @@ Custom styles can be set by using [Card mod](https://github.com/thomasloven/love
 |  `--action-icon-color-off`  | Color of the action button icon when state is off     | `var(--paper-item-icon-color, black)`       |
 |  `--action-spinner-color`  | Color of the spinner action button     | `var(--label-badge-text-color, white)`       |
 
+## Examples
+
+### Minimal working config
+<table>
+<tr>
+<td></td>
+<td>Minimal working config
+</td>
+</tr>
+<tr>
+<td><img src="https://raw.githubusercontent.com/mattieha/slider-button-card/main/assets/examples/general-minimal.png">  
+</td>
+<td valign="top">
+
+```yaml
+type: custom:slider-button-card
+entity: light.couch
+slider:
+  direction: left-right
+  background: gradient
+icon:
+  tap_action:
+    action: more-info
+action_button:
+  mode: toggle
+```  
+</td>
+</tr>
+</table>
+
+### Per feature
+
+#### General
+
+<table>
+<tr>
+<td></td>
+<td>Compact, best used in full width (not in grid)
+</td>
+</tr>
+<tr>
+<td><img src="https://raw.githubusercontent.com/mattieha/slider-button-card/main/assets/examples/general-compact.png">  
+</td>
+<td valign="top">
+
+```yaml
+compact: true
+```  
+</td>
+</tr>
+</table>
+
+#### Icon
+
+<table>
+<tr>
+<td></td>
+<td>Minimal config
+</td>
+</tr>
+<tr>
+<td><img src="https://raw.githubusercontent.com/mattieha/slider-button-card/main/assets/examples/icon-minimal.png">  
+</td>
+<td valign="top">
+
+```yaml
+icon:
+  tap_action:
+    action: more-info
+```  
+</td>
+</tr>
+</table>
+
+<table>
+<tr>
+<td></td>
+<td>Icon override
+</td>
+</tr>
+<tr>
+<td><img src="https://raw.githubusercontent.com/mattieha/slider-button-card/main/assets/examples/icon-icon-override.png">  
+</td>
+<td valign="top">
+
+```yaml
+icon:
+  icon: mdi:lightbulb
+  tap_action:
+    action: more-info
+```  
+</td>
+</tr>
+</table>
+
+
+#### Action button
+
+<table>
+<tr>
+<td></td>
+<td>Minimal config
+</td>
+</tr>
+<tr>
+<td><img src="https://raw.githubusercontent.com/mattieha/slider-button-card/main/assets/examples/action-minimal.png">  
+</td>
+<td valign="top">
+
+```yaml
+action_button:
+  mode: toggle
+  show: true
+```  
+</td>
+</tr>
+</table>
+
+<table>
+<tr>
+<td></td>
+<td>Custom
+</td>
+</tr>
+<tr>
+<td><img src="https://raw.githubusercontent.com/mattieha/slider-button-card/main/assets/examples/action-custom.png">  
+</td>
+<td valign="top">
+
+```yaml
+action_button:
+  mode: custom
+  show: true
+  tap_action:
+    action: toggle
+```  
+</td>
+</tr>
+</table>
+
+<table>
+<tr>
+<td></td>
+<td>Custom icon and tap action
+</td>
+</tr>
+<tr>
+<td><img src="https://raw.githubusercontent.com/mattieha/slider-button-card/main/assets/examples/action-custom-icon.png">  
+</td>
+<td valign="top">
+
+```yaml
+action_button:
+  mode: custom
+  show: true
+  icon: mdi:palette
+  tap_action:
+    action: call-service
+    service: scene.turn_on
+    service_data:
+      entity_id: scene.test
+```  
+</td>
+</tr>
+</table>
+
+#### Slider
+
+<table>
+<tr>
+<td></td>
+<td>Minimal config
+</td>
+</tr>
+<tr>
+<td><img src="https://raw.githubusercontent.com/mattieha/slider-button-card/main/assets/examples/slider-minimal.png">  
+</td>
+<td valign="top">
+
+```yaml
+slider:
+  direction: left-right
+  background: gradient
+```  
+</td>
+</tr>
+</table>
+
+<table>
+<tr>
+<td></td>
+<td>Background uses color or color_temp if available 
+</td>
+</tr>
+<tr>
+<td><img src="https://raw.githubusercontent.com/mattieha/slider-button-card/main/assets/examples/slider-state-color.png">  
+</td>
+<td valign="top">
+
+```yaml
+slider:
+  direction: left-right
+  background: gradient
+  use_state_color: true
+```  
+</td>
+</tr>
+</table>
+
+<table>
+<tr>
+<td></td>
+<td>Show track, best used in full width or triangle 
+</td>
+</tr>
+<tr>
+<td><img src="https://raw.githubusercontent.com/mattieha/slider-button-card/main/assets/examples/slider-show-track.png">  
+</td>
+<td valign="top">
+
+```yaml
+slider:
+  direction: left-right
+  background: triangle
+  use_state_color: true
+  show_track: true
+```  
+</td>
+</tr>
+</table>
+
+<table>
+<tr>
+<td></td>
+<td>Force square 
+</td>
+</tr>
+<tr>
+<td><img src="https://raw.githubusercontent.com/mattieha/slider-button-card/main/assets/examples/slider-force-square.png">  
+</td>
+<td valign="top">
+
+```yaml
+slider:
+  direction: left-right
+  background: triangle
+  use_state_color: true
+  show_track: true
+  force_square: true
+```  
+</td>
+</tr>
+</table>
+
+
+
+### Full examples
+#### Fan
+For fan entities the icon auto rotates based on the speed of the fan. 
+<table>
+<tr>
+<td></td>
+<td>Icon rotate animation 
+</td>
+</tr>
+<tr>
+<td><img src="https://raw.githubusercontent.com/mattieha/slider-button-card/main/assets/examples/fan.gif">  
+</td>
+<td valign="top">
+
+```yaml
+type: custom:slider-button-card
+entity: fan.living_fan
+slider:
+  direction: left-right
+  background: triangle
+  show_track: true
+icon:
+  tap_action:
+    action: more-info
+action_button:
+  tap_action:
+    action: toggle
+  mode: custom
+name: Fan
+```  
+</td>
+</tr>
+</table>
+
+#### Switch
+ Use `slider.toggle_on_click: true` so the slider acts as a toggle (sliding is disabled).
+<table>
+<tr>
+<td></td>
+<td>Toggle on click
+</td>
+</tr>
+<tr>
+<td><img src="https://raw.githubusercontent.com/mattieha/slider-button-card/main/assets/examples/switch.gif">  
+</td>
+<td valign="top">
+
+```yaml
+type: custom:slider-button-card
+entity: switch.socket
+slider:
+  direction: left-right
+  background: custom
+  toggle_on_click: true
+icon:
+  use_state_color: true
+  tap_action:
+    action: more-info
+action_button:
+  tap_action:
+    action: toggle
+  mode: custom
+name: Switch
+```  
+</td>
+</tr>
+</table>
+
+#### Cover
+For most use cases: set `slider.direction: top-bottom` and `slider.background: striped`;
+<table>
+<tr>
+<td></td>
+<td>Direction top to bottom, custom action icon 
+</td>
+</tr>
+<tr>
+<td><img src="https://raw.githubusercontent.com/mattieha/slider-button-card/main/assets/examples/cover.gif">  
+</td>
+<td valign="top">
+
+```yaml
+type: custom:slider-button-card
+entity: cover.living_cover
+slider:
+  direction: top-bottom
+  background: striped
+icon:
+  show: true
+  tap_action:
+    action: more-info
+action_button:
+  tap_action:
+    action: toggle
+  mode: custom
+  icon: mdi:swap-vertical
+name: Cover
+```  
+</td>
+</tr>
+</table>
+
+#### Media player
+Default behavior: slider is used for volume control, when there is an entity picture it will be used instead of the icon.
+In this example the action button is used to toggle play/pause.
+<table>
+<tr>
+<td></td>
+<td>Action button to toggle play/pause 
+</td>
+</tr>
+<tr>
+<td><img src="https://raw.githubusercontent.com/mattieha/slider-button-card/main/assets/examples/media.gif">  
+</td>
+<td valign="top">
+
+```yaml
+type: custom:slider-button-card
+entity: media_player.spotify_mha
+slider:
+  direction: left-right
+  background: triangle
+  show_track: true
+icon:
+  tap_action:
+    action: more-info
+action_button:
+  mode: custom
+  icon: mdi:play-pause
+  tap_action:
+    action: call-service
+    service: media_player.media_play_pause
+    service_data:
+      entity_id: media_player.spotify_mha
+name: Media
+
+```  
+</td>
+</tr>
+</table>
+
+#### Climate
+Default behavior: slider is used to set target temperature, it doesn't alter state.
+<table>
+<tr>
+<td></td>
+<td>Target temperature and state disabled in card 
+</td>
+</tr>
+<tr>
+<td><img src="https://raw.githubusercontent.com/mattieha/slider-button-card/main/assets/examples/climate.gif">  
+</td>
+<td valign="top">
+
+```yaml
+type: custom:slider-button-card
+entity: climate.harmony_climate_controller
+slider:
+  direction: left-right
+  background: triangle
+  show_track: true
+icon:
+  tap_action:
+    action: more-info
+action_button:
+  mode: custom
+  tap_action:
+    action: toggle
+name: Airco
+
+```  
+</td>
+</tr>
+</table>
+
+#### Grid
+
+<table>
+<tr>
+<td></td>
+<td> 4 columns, square: false
+</td>
+</tr>
+<tr>
+<td valign="top"><img src="https://raw.githubusercontent.com/mattieha/slider-button-card/main/assets/preview.gif">  
+</td>
+<td valign="top">
+
+```yaml
+type: grid
+cards:
+  - type: custom:slider-button-card
+    entity: light.couch
+    slider:
+      direction: left-right
+      background: gradient
+      use_state_color: true
+    icon:
+      tap_action:
+        action: more-info
+      use_state_color: true
+    action_button:
+      mode: toggle
+  - type: custom:slider-button-card
+    entity: switch.socket
+    slider:
+      direction: left-right
+      background: custom
+      toggle_on_click: true
+    icon:
+      use_state_color: true
+      tap_action:
+        action: more-info
+    action_button:
+      tap_action:
+        action: toggle
+      mode: toggle
+    name: Switch
+  - type: custom:slider-button-card
+    entity: fan.living_fan
+    slider:
+      direction: left-right
+      background: triangle
+      show_track: true
+    icon:
+      tap_action:
+        action: more-info
+    action_button:
+      tap_action:
+        action: toggle
+      mode: custom
+    name: Fan
+  - type: custom:slider-button-card
+    entity: cover.living_cover
+    slider:
+      direction: top-bottom
+      background: striped
+    icon:
+      show: true
+      tap_action:
+        action: more-info
+    action_button:
+      tap_action:
+        action: toggle
+      mode: custom
+      icon: mdi:swap-vertical
+    name: Cover
+square: false
+columns: 4
+
+```  
+</td>
+</tr>
+</table>
+
 ## Known issues
 When you discover any bugs please open an [issue](https://github.com/mattieha/slider-button-card/issues).
 
@@ -165,6 +677,8 @@ This card supports translations. Please, help to add more translations and impro
 - English
 - Hebrew
 - Nederlands (Dutch)
+- Polish (polski)
+- Russian
 - [_Your language?_][add-translation]
 
 ## Credits
@@ -175,7 +689,7 @@ This card supports translations. Please, help to add more translations and impro
 
 <!-- References -->
 [hacs]: https://hacs.xyz
-[add-translation]: https://github.com/mattieha/slider-button-card/tree/main/src/localize/languages
+[add-translation]: https://github.com/mattieha/slider-button-card/blob/main/CONTRIBUTE.md#adding-a-new-translation
 [visual-editor]: https://raw.githubusercontent.com/mattieha/slider-button-card/main/assets/card-editor.png
 [preview]: https://raw.githubusercontent.com/mattieha/slider-button-card/main/assets/preview.gif
 [grid]: https://raw.githubusercontent.com/mattieha/slider-button-card/main/assets/grid-not-square.png
@@ -183,3 +697,4 @@ This card supports translations. Please, help to add more translations and impro
 [latest-release]: https://github.com/mattieha/slider-button-card/releases/latest
 [releases-shield]: https://img.shields.io/github/release/mattieha/slider-button-card.svg?style=for-the-badge
 [releases]: https://github.com/mattieha/slider-button-card/releases
+[icon-minimal]: https://raw.githubusercontent.com/mattieha/slider-button-card/main/assets/grid-full-width.png

@@ -1,7 +1,7 @@
 import { computeStateDomain, domainIcon, HomeAssistant } from 'custom-card-helpers';
 import { HassEntity } from 'home-assistant-js-websocket';
-import { SliderBackground, SliderButtonCardConfig } from '../types';
-import { getLightColorBasedOnTemperature } from '../utils';
+import { SliderBackground, SliderButtonCardConfig, SliderDirections } from '../types';
+import { getLightColorBasedOnTemperature, normalize, percentageToValue, toPercentage } from '../utils';
 
 export interface Style {
   icon: ObjectStyle;
@@ -24,6 +24,7 @@ export abstract class Controller {
   abstract _min?: number;
   abstract _max?: number;
   abstract _step?: number;
+  abstract _invert?: boolean;
 
   protected constructor(config: SliderButtonCardConfig) {
     this._config = config;
@@ -56,7 +57,7 @@ export abstract class Controller {
     if (this._value) {
       return Math.round(this._value / this.step) * this.step;
     }
-    return 0;
+    return this.min;
   }
 
   set value(value: number) {
@@ -81,8 +82,8 @@ export abstract class Controller {
 
   set targetValue(value: number) {
     if (value !== this.targetValue) {
-      //this._targetValue = value;
-      this._targetValue = Math.round(value / this.step) * this.step;
+      this._targetValue = value;
+      // this._targetValue = Math.round(value / this.step) * this.step;
     }
   }
 
@@ -107,7 +108,7 @@ export abstract class Controller {
   }
 
   get state(): string {
-    return this.stateObj.state;
+    return this.stateObj?.state;
   }
 
   get isOff(): boolean {
@@ -134,10 +135,26 @@ export abstract class Controller {
     return this._config.slider?.step ?? this._step ?? 5;
   }
 
+  get invert(): boolean {
+    return this._config.slider?.invert ?? this._invert ?? false;
+  }
+
+  get isValuePercentage(): boolean {
+    return true;
+  }
+
   get percentage(): number {
     return Math.round(
-      ((this.targetValue - this.min) * 100) / (this.max - this.min)
+      ((this.targetValue - (this.invert ? this.max : this.min)) * 100) / (this.max - this.min) * (this.invert ? -1 : 1)
     );
+  }
+
+  get valueFromPercentage(): number {
+    return percentageToValue(this.percentage, this.min, this.max);
+  }
+
+  get allowedAttributes(): string[] {
+    return [];
   }
 
   get style(): Style {
@@ -214,6 +231,54 @@ export abstract class Controller {
       }
     }
     return 'inherit';
+  }
+
+  moveSlider(event: any, {left, top, width, height}): number {
+    let percentage = this.calcMovementPercentage(event, {left, top, width, height});
+    percentage = this.applyStep(percentage);
+    percentage = normalize(percentage, 0, 100);
+    if (!this.isValuePercentage) {
+      percentage = percentageToValue(percentage, this.min, this.max);
+    }
+    return percentage;
+  }
+
+  calcMovementPercentage(event: any, {left, top, width, height}): number {
+    let percentage;
+    switch(this._config.slider?.direction) {
+      case SliderDirections.LEFT_RIGHT:
+        percentage = toPercentage(
+          event.clientX,
+          left,
+          width
+        );
+        if (this.invert) {
+          percentage = 100 - percentage;
+        }
+        break
+      case SliderDirections.TOP_BOTTOM:
+        percentage = toPercentage(
+          event.clientY,
+          top,
+          height
+        );
+        if (this.invert) {
+          percentage = 100 - percentage;
+        }
+        break
+      case SliderDirections.BOTTOM_TOP:
+        percentage = toPercentage(
+          event.clientY,
+          top,
+          height
+        );
+        if (!this.invert) {
+          percentage = 100 - percentage;
+        }
+        break
+
+    }
+    return percentage;
   }
 
   applyStep(value: number): number {

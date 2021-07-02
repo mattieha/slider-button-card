@@ -11,7 +11,8 @@
       "entity": "ישיות (נדרש)",
       "name": "שם (אופציונלי)",
       "show_name": "להציג שם?",
-      "show_state": "להציג מצב?"
+      "show_state": "להציג מצב?",
+      "compact": "קוֹמפָּקטִי?"
     },
     "icon": {
       "title": "סמליל",
@@ -26,6 +27,7 @@
       "background": "רקע",
       "use_brightness": "להשתמש בבהירות?",
       "show_track": "להציג מסלול?",
+      "toggle_on_click": "פעל כמתג (השבת החלקה)",
       "force_square": "כוח מרובע?"
     },
     "action_button": {

@@ -11,7 +11,8 @@
       "entity": "Entiteit (Verplicht)",
       "name": "Naam (Optioneel)",
       "show_name": "Toon naam?",
-      "show_state": "Toon status?"
+      "show_state": "Toon status?",
+      "compact": "Compact?"
     },
     "icon": {
       "title": "Icoon",
@@ -26,6 +27,7 @@
       "background": "Actergrond",
       "use_brightness": "Gebruik helderheid?",
       "show_track": "Toon spoor?",
+      "toggle_on_click": "Fungeren als een schakelaar (schuiven uitschakelen)",
       "force_square": "Forceer vierkant?"
     },
     "action_button": {

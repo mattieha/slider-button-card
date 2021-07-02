@@ -18,10 +18,8 @@ export interface SliderButtonCardConfig extends LovelaceCardConfig {
   action_button?: ActionButtonConfig;
   slider?: SliderConfig;
   theme?: string;
-  show_warning?: boolean;
-  show_error?: boolean;
-  test_gui?: boolean;
   debug?: boolean;
+  compact?: boolean;
 }
 
 export interface ActionButtonConfig {
@@ -37,14 +35,12 @@ export interface IconConfig {
   show?: boolean;
   tap_action?: ActionConfig;
   use_state_color?: boolean;
-  rotate?: boolean;
 }
 
 export interface SliderConfig {
   min?: number;
   max?: number;
   step?: number;
-  percentage?: boolean;
   attribute?: string;
   direction?: SliderDirections;
   background: SliderBackground;
@@ -52,6 +48,7 @@ export interface SliderConfig {
   use_state_color?: boolean;
   show_track?: boolean;
   toggle_on_click?: boolean;
+  invert?: boolean;
   force_square: boolean;
 }
 
@@ -80,6 +77,8 @@ export enum Domain {
   FAN = 'fan',
   COVER = 'cover',
   INPUT_BOOLEAN = 'input_boolean',
+  MEDIA_PLAYER = 'media_player',
+  CLIMATE = 'climate',
   LOCK = 'lock',
 }
 
@@ -96,75 +95,114 @@ export const ActionButtonConfigDefault: ActionButtonConfig = {
 export const IconConfigDefault: IconConfig = {
   show: true,
   use_state_color: true,
-  rotate: false,
   tap_action: {
     action: 'more-info'
   },
 };
 
 export const SliderConfigDefault: SliderConfig = {
-  percentage: true,
   direction: SliderDirections.LEFT_RIGHT,
   background: SliderBackground.SOLID,
   use_percentage_bg_opacity: false,
   use_state_color: false,
   show_track: false,
+  toggle_on_click: false,
   force_square: false,
 };
 
 export const SliderConfigDefaultDomain: Map<string, SliderConfig> = new Map([
   [Domain.LIGHT, {
-    percentage: true,
     direction: SliderDirections.LEFT_RIGHT,
     background: SliderBackground.GRADIENT,
-    use_state_color: false,
+    use_state_color: true,
     use_percentage_bg_opacity: false,
     show_track: false,
+    toggle_on_click: false,
     force_square: false,
   }],
   [Domain.FAN, {
-    percentage: true,
     direction: SliderDirections.LEFT_RIGHT,
     background: SliderBackground.SOLID,
     use_state_color: false,
     use_percentage_bg_opacity: false,
     show_track: false,
+    toggle_on_click: false,
     force_square: false,
   }],
   [Domain.SWITCH, {
-    percentage: true,
     direction: SliderDirections.LEFT_RIGHT,
     background: SliderBackground.SOLID,
     use_state_color: false,
     use_percentage_bg_opacity: false,
     show_track: false,
+    toggle_on_click: true,
     force_square: false,
   }],
   [Domain.COVER, {
-    percentage: true,
     direction: SliderDirections.TOP_BOTTOM,
     background: SliderBackground.STRIPED,
     use_state_color: false,
     use_percentage_bg_opacity: false,
+    toggle_on_click: false,
     show_track: false,
     force_square: false,
+    invert: true,
   }],
   [Domain.INPUT_BOOLEAN, {
-    percentage: true,
     direction: SliderDirections.LEFT_RIGHT,
     background: SliderBackground.SOLID,
     use_state_color: false,
     use_percentage_bg_opacity: false,
     show_track: false,
+    toggle_on_click: true,
+    force_square: false,
+  }],
+  [Domain.MEDIA_PLAYER, {
+    direction: SliderDirections.LEFT_RIGHT,
+    background: SliderBackground.TRIANGLE,
+    use_state_color: false,
+    use_percentage_bg_opacity: false,
+    show_track: true,
+    toggle_on_click: false,
     force_square: false,
   }],
   [Domain.LOCK, {
-    percentage: true,
     direction: SliderDirections.LEFT_RIGHT,
     background: SliderBackground.SOLID,
     use_state_color: false,
     use_percentage_bg_opacity: false,
     show_track: false,
+    toggle_on_click: true,
     force_square: false,
   }],
-])
+  [Domain.CLIMATE, {
+    direction: SliderDirections.LEFT_RIGHT,
+    background: SliderBackground.TRIANGLE,
+    use_state_color: false,
+    use_percentage_bg_opacity: false,
+    show_track: true,
+    toggle_on_click: false,
+    force_square: false,
+  }],
+]);
+
+export enum LightAttributes {
+  COLOR_TEMP = 'color_temp',
+  BRIGHTNESS = 'brightness',
+  BRIGHTNESS_PCT = 'brightness_pct',
+  HUE = 'hue',
+  SATURATION = 'saturation',
+  ON_OFF = 'onoff',
+}
+
+export enum LightColorModes {
+  COLOR_TEMP = 'color_temp',
+  BRIGHTNESS = 'brightness',
+  HS = 'hs',
+  ON_OFF = 'onoff',
+}
+
+export enum CoverAttributes {
+  POSITION = 'position',
+  TILT = 'tilt',
+}
