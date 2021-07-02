@@ -494,19 +494,27 @@ class ne{constructor(t){this.classes=new Set,this.changed=!1,this.element=t;cons
         max-height: 100vh;
         padding: 1em;
       }      
-    `}};t([Zt({attribute:!1})],Yi.prototype,"hass",void 0),t([Jt()],Yi.prototype,"_config",void 0),t([Jt()],Yi.prototype,"_helpers",void 0),Yi=t([Yt("slider-button-card-editor")],Yi),console.info(`%c  SLIDER-BUTTON-CARD %c ${Gi("common.version")}1.9.0 %c`,"background-color: #555;color: #fff;padding: 3px 2px 3px 3px;border: 1px solid #555;border-radius: 3px 0 0 3px;font-family: Roboto,Verdana,Geneva,sans-serif;text-shadow: 0 1px 0 rgba(1, 1, 1, 0.3)","background-color: transparent;color: #555;padding: 3px 3px 3px 2px;border: 1px solid #555; border-radius: 0 3px 3px 0;font-family: Roboto,Verdana,Geneva,sans-serif","background-color: transparent"),window.customCards=window.customCards||[],window.customCards.push({type:"slider-button-card",name:"Slider button Card",description:"A button card with slider",preview:!0});let Wi=class extends oe{constructor(){super(...arguments),this.changing=!1,this.changed=!1}static async getConfigElement(){return document.createElement("slider-button-card-editor")}static getStubConfig(t,e){const i=e.find(t=>t.startsWith("light"))||"";return{entity:i,slider:Je(i),show_name:!0,show_state:!0,compact:!1,icon:X(Se),action_button:X(we)}}getCardSize(){return 0}setConfig(t){if(!t)throw new Error(Gi("common.invalid_configuration"));if(!t.entity)throw new Error(Gi("common.invalid_configuration"));this.config=Object.assign({slider:Je(t.entity),icon:X(Se),show_name:!0,show_state:!0,compact:!1,action_button:X(we),debug:!1},t),this.ctrl=class{static getInstance(t){const e=w(t.entity),i={[ye.LIGHT]:ni,[ye.FAN]:si,[ye.SWITCH]:ci,[ye.COVER]:ii,[ye.INPUT_BOOLEAN]:ri,[ye.MEDIA_PLAYER]:li,[ye.CLIMATE]:ei,[ye.LOCK]:ai};if(void 0===i[e])throw new Error("Unsupported entity type: "+e);return new i[e](t)}}.getInstance(this.config)}shouldUpdate(t){if(!this.config)return!1;const e=t.get("hass");return e&&e.themes===this.hass.themes&&e.language===this.hass.language?function(t,e,i){if(e.has("config")||i)return!0;if(t.config.entity){var s=e.get("hass");return!s||s.states[t.config.entity]!==t.hass.states[t.config.entity]}return!1}(this,t,!1):(this.ctrl.log("shouldUpdate","forced true"),!0)}updated(t){this.updateValue(this.ctrl.value,!1),this.animateActionEnd();const e=t.get("hass"),i=t.get("config");(null==e?void 0:e.themes)===this.hass.themes&&(null==i?void 0:i.theme)===this.config.theme||(this.ctrl.log("Theme","updated"),function(t,e,i,s){void 0===s&&(s=!1),t._themes||(t._themes={});var r=e.default_theme;("default"===i||i&&e.themes[i])&&(r=i);var o=Object.assign({},t._themes);if("default"!==r){var n=e.themes[r];Object.keys(n).forEach((function(e){var i="--"+e;t._themes[i]="",o[i]=n[e]}))}if(t.updateStyles?t.updateStyles(o):window.ShadyCSS&&window.ShadyCSS.styleSubtree(t,o),s){var a=document.querySelector("meta[name=theme-color]");if(a){a.hasAttribute("default-content")||a.setAttribute("default-content",a.getAttribute("content"));var l=o["--primary-color"]||a.getAttribute("default-content");a.setAttribute("content",l)}}}(this,this.hass.themes,this.config.theme)),this.ctrl.log("Updated",this.ctrl.value)}firstUpdated(t){super.firstUpdated(t)}render(){var t,e,i,s,r;return this.ctrl.hass=this.hass,this.ctrl.stateObj?It`
+    `}};t([Zt({attribute:!1})],Yi.prototype,"hass",void 0),t([Jt()],Yi.prototype,"_config",void 0),t([Jt()],Yi.prototype,"_helpers",void 0),Yi=t([Yt("slider-button-card-editor")],Yi),console.info(`%c  SLIDER-BUTTON-CARD %c ${Gi("common.version")}1.10.0 %c`,"background-color: #555;color: #fff;padding: 3px 2px 3px 3px;border: 1px solid #555;border-radius: 3px 0 0 3px;font-family: Roboto,Verdana,Geneva,sans-serif;text-shadow: 0 1px 0 rgba(1, 1, 1, 0.3)","background-color: transparent;color: #555;padding: 3px 3px 3px 2px;border: 1px solid #555; border-radius: 0 3px 3px 0;font-family: Roboto,Verdana,Geneva,sans-serif","background-color: transparent"),window.customCards=window.customCards||[],window.customCards.push({type:"slider-button-card",name:"Slider button Card",description:"A button card with slider",preview:!0});let Wi=class extends oe{constructor(){super(...arguments),this.changing=!1,this.changed=!1,this.locked=!1}static async getConfigElement(){return document.createElement("slider-button-card-editor")}static getStubConfig(t,e){const i=e.find(t=>t.startsWith("light"))||"";return{entity:i,slider:Je(i),show_name:!0,show_state:!0,compact:!1,icon:X(Se),action_button:X(we)}}getCardSize(){return 0}setConfig(t){var e,i;if(!t)throw new Error(Gi("common.invalid_configuration"));if(!t.entity)throw new Error(Gi("common.invalid_configuration"));this.config=Object.assign({slider:Je(t.entity),icon:X(Se),show_name:!0,show_state:!0,compact:!1,action_button:X(we),debug:!1},t),this.ctrl=class{static getInstance(t){const e=w(t.entity),i={[ye.LIGHT]:ni,[ye.FAN]:si,[ye.SWITCH]:ci,[ye.COVER]:ii,[ye.INPUT_BOOLEAN]:ri,[ye.MEDIA_PLAYER]:li,[ye.CLIMATE]:ei,[ye.LOCK]:ai};if(void 0===i[e])throw new Error("Unsupported entity type: "+e);return new i[e](t)}}.getInstance(this.config),(null===(i=null===(e=this.config.slider)||void 0===e?void 0:e.lock)||void 0===i?void 0:i.enabled)&&(this.locked=!0)}shouldUpdate(t){if(!this.config)return!1;const e=t.get("hass");return e&&e.themes===this.hass.themes&&e.language===this.hass.language?function(t,e,i){if(e.has("config")||i)return!0;if(t.config.entity){var s=e.get("hass");return!s||s.states[t.config.entity]!==t.hass.states[t.config.entity]}return!1}(this,t,!1):(this.ctrl.log("shouldUpdate","forced true"),!0)}updated(t){this.updateValue(this.ctrl.value,!1),this.animateActionEnd();const e=t.get("hass"),i=t.get("config");(null==e?void 0:e.themes)===this.hass.themes&&(null==i?void 0:i.theme)===this.config.theme||(this.ctrl.log("Theme","updated"),function(t,e,i,s){void 0===s&&(s=!1),t._themes||(t._themes={});var r=e.default_theme;("default"===i||i&&e.themes[i])&&(r=i);var o=Object.assign({},t._themes);if("default"!==r){var n=e.themes[r];Object.keys(n).forEach((function(e){var i="--"+e;t._themes[i]="",o[i]=n[e]}))}if(t.updateStyles?t.updateStyles(o):window.ShadyCSS&&window.ShadyCSS.styleSubtree(t,o),s){var a=document.querySelector("meta[name=theme-color]");if(a){a.hasAttribute("default-content")||a.setAttribute("default-content",a.getAttribute("content"));var l=o["--primary-color"]||a.getAttribute("default-content");a.setAttribute("content",l)}}}(this,this.hass.themes,this.config.theme)),this.ctrl.log("Updated",this.ctrl.value)}firstUpdated(t){super.firstUpdated(t)}render(){var t,e,i,s,r,o,n;return this.ctrl.hass=this.hass,this.ctrl.stateObj?It`
       <ha-card
         tabindex="0"
         .label=${"SliderButton: "+(this.config.entity||"No Entity Defined")}
         class="${le({square:(null===(t=this.config.slider)||void 0===t?void 0:t.force_square)||!1,"hide-name":!this.config.show_name,"hide-state":!this.config.show_state,"hide-action":!(null===(e=this.config.action_button)||void 0===e?void 0:e.show),compact:!0===this.config.compact})}"
       >
-        <div class="button ${le({off:this.ctrl.isOff,unavailable:this.ctrl.isUnavailable})}"
+        <div class="button ${le({off:this.ctrl.isOff,unavailable:this.ctrl.isUnavailable,locked:this.locked})}"
              style=${ue({"--slider-value":this.ctrl.percentage+"%","--slider-bg-filter":this.ctrl.style.slider.filter,"--slider-color":this.ctrl.style.slider.color,"--icon-filter":this.ctrl.style.icon.filter,"--icon-color":this.ctrl.style.icon.color})}
              >
+          ${(null===(s=null===(i=this.config.slider)||void 0===i?void 0:i.lock)||void 0===s?void 0:s.enabled)?It`
+                <div class="lock-overlay" @click=${this.handleLockClick}>
+                  <ha-icon
+                    tabindex="-1"
+                    .icon=${"mdi:lock"}
+                  ></ha-icon>
+                </div>
+                `:""}
           <div class="slider"
-               data-show-track="${null===(i=this.config.slider)||void 0===i?void 0:i.show_track}"
-               data-mode="${null===(s=this.config.slider)||void 0===s?void 0:s.direction}"
-               data-background="${null===(r=this.config.slider)||void 0===r?void 0:r.background}"
+               data-show-track="${null===(r=this.config.slider)||void 0===r?void 0:r.show_track}"
+               data-mode="${null===(o=this.config.slider)||void 0===o?void 0:o.direction}"
+               data-background="${null===(n=this.config.slider)||void 0===n?void 0:n.background}"
                data-is-toggle="${this.ctrl.hasToggle}"
                @pointerdown=${this.onPointerDown}
                @pointermove=${this.onPointerMove}
@@ -574,7 +582,7 @@ class ne{constructor(t){this.classes=new Set,this.changed=!1,this.element=t;cons
             </svg>
                 `:""}
       </div>
-    `}_handleAction(t,e){var i;this.hass&&this.config&&t.detail.action&&("toggle"!==(null===(i=e.tap_action)||void 0===i?void 0:i.action)||this.ctrl.isUnavailable||this.animateActionStart(),A(this,this.hass,Object.assign(Object.assign({},e),{entity:this.config.entity}),t.detail.action))}async handleClick(t){this.ctrl.hasToggle&&!this.ctrl.isUnavailable&&(t.preventDefault(),this.animateActionStart(),this.ctrl.log("Toggle"),await M(this.hass,this.config.entity))}_toggle(){this.hass&&this.config&&A(this,this.hass,{tap_action:{action:"toggle"},entity:this.config.entity},"tap")}setStateValue(t){this.ctrl.log("setStateValue",t),this.updateValue(t,!1),this.ctrl.value=t,this.animateActionStart()}animateActionStart(){this.animateActionEnd(),this.action&&this.action.classList.add("loading")}animateActionEnd(){this.action&&(clearTimeout(this.actionTimeout),this.actionTimeout=setTimeout(()=>{this.action.classList.remove("loading")},750))}updateValue(t,e=!0){this.changing=e,this.changed=!e,this.ctrl.log("updateValue",t),this.ctrl.targetValue=t,this.button&&(this.button.classList.remove("off"),e?this.button.classList.add("changing"):(this.button.classList.remove("changing"),this.ctrl.isOff&&this.button.classList.add("off")),this.stateText&&(this.stateText.innerHTML=this.ctrl.isUnavailable?""+this.hass.localize("state.default.unavailable"):this.ctrl.label),this.button.style.setProperty("--slider-value",this.ctrl.percentage+"%"),this.button.style.setProperty("--slider-bg-filter",this.ctrl.style.slider.filter),this.button.style.setProperty("--slider-color",this.ctrl.style.slider.color),this.button.style.setProperty("--icon-filter",this.ctrl.style.icon.filter),this.button.style.setProperty("--icon-color",this.ctrl.style.icon.color),this.button.style.setProperty("--icon-rotate-speed",this.ctrl.style.icon.rotateSpeed||"0s"))}_showError(t){const e=document.createElement("hui-error-card");return e.setConfig({type:"error",error:t,origConfig:this.config}),It`
+    `}_handleAction(t,e){var i;this.hass&&this.config&&t.detail.action&&("toggle"!==(null===(i=e.tap_action)||void 0===i?void 0:i.action)||this.ctrl.isUnavailable||this.animateActionStart(),A(this,this.hass,Object.assign(Object.assign({},e),{entity:this.config.entity}),t.detail.action))}handleLockClick(t){t.preventDefault(),this.locked?this.unlockCard():this.lockCard()}lockCard(){clearTimeout(this.lockTimeout),this.locked=!0,this.button.classList.add("locked")}unlockCard(){clearTimeout(this.lockTimeout),this.locked=!1,this.button.classList.remove("locked"),this.lockTimeout=setTimeout(()=>{this.lockCard()},2e3)}async handleClick(t){this.ctrl.hasToggle&&!this.ctrl.isUnavailable&&(t.preventDefault(),this.animateActionStart(),this.ctrl.log("Toggle"),await M(this.hass,this.config.entity))}_toggle(){this.hass&&this.config&&A(this,this.hass,{tap_action:{action:"toggle"},entity:this.config.entity},"tap")}setStateValue(t){this.ctrl.log("setStateValue",t),this.updateValue(t,!1),this.ctrl.value=t,this.animateActionStart()}animateActionStart(){this.animateActionEnd(),this.action&&this.action.classList.add("loading")}animateActionEnd(){this.action&&(clearTimeout(this.actionTimeout),this.actionTimeout=setTimeout(()=>{this.action.classList.remove("loading")},750))}updateValue(t,e=!0){this.changing=e,this.changed=!e,this.ctrl.log("updateValue",t),this.ctrl.targetValue=t,this.button&&(this.button.classList.remove("off"),e?this.button.classList.add("changing"):(this.button.classList.remove("changing"),this.ctrl.isOff&&this.button.classList.add("off")),this.stateText&&(this.stateText.innerHTML=this.ctrl.isUnavailable?""+this.hass.localize("state.default.unavailable"):this.ctrl.label),this.button.style.setProperty("--slider-value",this.ctrl.percentage+"%"),this.button.style.setProperty("--slider-bg-filter",this.ctrl.style.slider.filter),this.button.style.setProperty("--slider-color",this.ctrl.style.slider.color),this.button.style.setProperty("--icon-filter",this.ctrl.style.icon.filter),this.button.style.setProperty("--icon-color",this.ctrl.style.icon.color),this.button.style.setProperty("--icon-rotate-speed",this.ctrl.style.icon.rotateSpeed||"0s"))}_showError(t){const e=document.createElement("hui-error-card");return e.setConfig({type:"error",error:t,origConfig:this.config}),It`
       ${e}
     `}getColorFromVariable(t){if(void 0!==t&&"var"===t.substring(0,3)){let e=window.getComputedStyle(this).getPropertyValue(t.substring(4).slice(0,-1)).trim();return e.length||(e=window.getComputedStyle(document.documentElement).getPropertyValue(t.substring(4).slice(0,-1)).trim()),e}return t}onPointerDown(t){t.preventDefault(),t.stopPropagation(),this.ctrl.isSliderDisabled||this.slider.setPointerCapture(t.pointerId)}onPointerUp(t){this.ctrl.isSliderDisabled||(this.setStateValue(this.ctrl.targetValue),this.slider.releasePointerCapture(t.pointerId))}onPointerMove(t){if(this.ctrl.isSliderDisabled)return;if(!this.slider.hasPointerCapture(t.pointerId))return;const{left:e,top:i,width:s,height:r}=this.slider.getBoundingClientRect(),o=this.ctrl.moveSlider(t,{left:e,top:i,width:s,height:r});this.ctrl.log("onPointerMove",o),this.updateValue(o)}connectedCallback(){super.connectedCallback()}disconnectedCallback(){super.disconnectedCallback()}static get styles(){return se`
     ha-card {
@@ -771,6 +779,38 @@ class ne{constructor(t){this.classes=new Set,this.changed=!1,this.element=t;cons
     
     /* --- SLIDER OVERLAY --- */      
       
+    .lock-overlay {
+      position: absolute;      
+      top: 0px;
+      left: 0px;
+      height: 100%;
+      width: 100%;
+      cursor: pointer;
+      opacity: 0;
+      display: none;
+      z-index: 99999;    
+    }
+    
+    .lock-overlay ha-icon{
+      position: absolute;      
+      bottom: 10px;
+      right: 10px;
+      width: var(--mdc-icon-size, 24px);
+      height: var(--mdc-icon-size, 24px);
+      color: black;
+      opacity: 0;
+      transition: opacity 0.5s ease-in-out;    
+    }
+    
+    .locked .lock-overlay ha-icon{
+      opacity: 1;    
+    }
+    
+    .locked .lock-overlay {
+      display: block;
+      opacity: 1;
+    }
+    
     .slider .toggle-overlay {
       position: absolute;      
       top: 0px;

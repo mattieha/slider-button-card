@@ -46,6 +46,8 @@ export class SliderButtonCard extends LitElement implements LovelaceCard {
   private changed = false;
   private ctrl!: Controller;
   private actionTimeout;
+  private lockTimeout;
+  private locked = false;
 
   public static async getConfigElement(): Promise<LovelaceCardEditor> {
     return document.createElement('slider-button-card-editor');
@@ -95,6 +97,9 @@ export class SliderButtonCard extends LitElement implements LovelaceCard {
       ...config
     };
     this.ctrl = ControllerFactory.getInstance(this.config);
+    if (this.config.slider?.lock?.enabled) {
+      this.locked = true;
+    }
   }
 
   protected shouldUpdate(changedProps: PropertyValues): boolean {
@@ -145,7 +150,7 @@ export class SliderButtonCard extends LitElement implements LovelaceCard {
         .label=${`SliderButton: ${this.config.entity || 'No Entity Defined'}`}
         class="${classMap({ 'square': this.config.slider?.force_square || false, 'hide-name': !this.config.show_name, 'hide-state': !this.config.show_state, 'hide-action': !this.config.action_button?.show , 'compact': this.config.compact === true })}"
       >
-        <div class="button ${classMap({ off: this.ctrl.isOff, unavailable: this.ctrl.isUnavailable })}"
+        <div class="button ${classMap({ off: this.ctrl.isOff, unavailable: this.ctrl.isUnavailable, 'locked': this.locked })}"
              style=${styleMap({
                '--slider-value': `${this.ctrl.percentage}%`,
                '--slider-bg-filter': this.ctrl.style.slider.filter,
@@ -154,6 +159,16 @@ export class SliderButtonCard extends LitElement implements LovelaceCard {
                '--icon-color': this.ctrl.style.icon.color,
              })}
              >
+          ${this.config.slider?.lock?.enabled
+            ? html`
+                <div class="lock-overlay" @click=${this.handleLockClick}>
+                  <ha-icon
+                    tabindex="-1"
+                    .icon=${'mdi:lock-outline'}
+                  ></ha-icon>
+                </div>
+                `
+            : ''}
           <div class="slider"
                data-show-track="${this.config.slider?.show_track}"
                data-mode="${this.config.slider?.direction}"
@@ -284,6 +299,30 @@ export class SliderButtonCard extends LitElement implements LovelaceCard {
       }
       handleAction(this, this.hass, {...config, entity: this.config.entity}, ev.detail.action);
     }
+  }
+
+  private handleLockClick(ev: Event): void {
+    ev.preventDefault();
+    if (this.locked) {
+      this.unlockCard();
+    } else {
+      this.lockCard();
+    }
+  }
+
+  private lockCard(): void {
+    clearTimeout(this.lockTimeout);
+    this.locked = true;
+    this.button.classList.add('locked');
+  }
+
+  private unlockCard(): void {
+    clearTimeout(this.lockTimeout);
+    this.locked = false;
+    this.button.classList.remove('locked');
+    this.lockTimeout = setTimeout(()=> {
+      this.lockCard();
+    }, 2000)
   }
 
   private async handleClick(ev: Event): Promise<void> {
@@ -610,6 +649,38 @@ export class SliderButtonCard extends LitElement implements LovelaceCard {
     
     /* --- SLIDER OVERLAY --- */      
       
+    .lock-overlay {
+      position: absolute;      
+      top: 0px;
+      left: 0px;
+      height: 100%;
+      width: 100%;
+      cursor: pointer;
+      opacity: 0;
+      display: none;
+      z-index: 99999;    
+    }
+    
+    .lock-overlay ha-icon{
+      position: absolute;      
+      bottom: 10px;
+      right: 10px;
+      width: var(--mdc-icon-size, 24px);
+      height: var(--mdc-icon-size, 24px);
+      color: black;
+      opacity: 0;
+      transition: opacity 0.5s ease-in-out;    
+    }
+    
+    .locked .lock-overlay ha-icon{
+      opacity: 1;    
+    }
+    
+    .locked .lock-overlay {
+      display: block;
+      opacity: 1;
+    }
+    
     .slider .toggle-overlay {
       position: absolute;      
       top: 0px;

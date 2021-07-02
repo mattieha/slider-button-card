@@ -50,6 +50,12 @@ export interface SliderConfig {
   toggle_on_click?: boolean;
   invert?: boolean;
   force_square: boolean;
+  lock?: LockConfig;
+}
+
+export interface LockConfig {
+  enabled?: boolean;
+  show_icon?: boolean;
 }
 
 export enum ActionButtonMode {
