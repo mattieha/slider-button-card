@@ -2,7 +2,7 @@
 [![GitHub Release][releases-shield]][releases]
 [![hacs_badge](https://img.shields.io/badge/HACS-default-orange.svg?style=for-the-badge)](https://github.com/custom-components/hacs)
 
-A button card with integrated slider for `light, switch, fan, cover, input_boolean, media_player, climate` entities.
+A button card with integrated slider for `light, switch, fan, cover, input_boolean, media_player, climate, lock` entities.
 
 ![Preview][preview]
 
@@ -33,6 +33,7 @@ A button card with integrated slider for `light, switch, fan, cover, input_boole
         - [Cover](#cover)
         - [Media player](#media-player)
         - [Climate](#climate)
+        - [Lock](#lock)
         - [In a grid](#grid)
 - [Known issues](#known-issues)
 - [Languages](#languages)
@@ -68,7 +69,7 @@ Slider Button Card supports Lovelace's Visual Editor.
 | Name              | Type    | Requirement  | Description                                 | Default             |
 | ----------------- | ------- | ------------ | ------------------------------------------- | ------------------- |
 | type              | string  | **Required** | `custom:slider-button-card`                   |
-| entity            | string  | **Required** | HA entity ID from domain `light, switch, fan, cover, input_boolean, media_player, climate`                   |               |
+| entity            | string  | **Required** | HA entity ID from domain `light, switch, fan, cover, input_boolean, media_player, climate, lock`                   |               |
 | name              | string  | **Optional** | Name                                   | `entity.friendly_name`       |
 | show_name        | boolean | **Optional** | Show name  | `true`             |
 | show_state        | boolean | **Optional** | Show state  | `true`             |
@@ -582,6 +583,38 @@ action_button:
     action: toggle
 name: Airco
 
+```  
+</td>
+</tr>
+</table>
+
+#### Lock
+Default behavior: `slider.toggle_on_click: true`
+<table>
+<tr>
+<td></td>
+<td>Action button hidden 
+</td>
+</tr>
+<tr>
+<td><img src="https://raw.githubusercontent.com/mattieha/slider-button-card/main/assets/examples/lock.gif">  
+</td>
+<td valign="top">
+
+```yaml
+type: custom:slider-button-card
+entity: lock.virtual_lock
+slider:
+  direction: left-right
+  background: solid
+  toggle_on_click: true
+icon:
+  use_state_color: true
+  tap_action:
+    action: more-info
+action_button:
+  show: false
+name: Lock
 ```  
 </td>
 </tr>
