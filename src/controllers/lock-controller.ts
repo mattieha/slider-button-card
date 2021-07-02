@@ -5,6 +5,7 @@ export class LockController extends Controller {
   _min = 0;
   _max = 1;
   _targetValue;
+  _invert = false;
 
   get _value(): number {
     return !STATES_OFF.includes(this.stateObj.state)
