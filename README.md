@@ -23,6 +23,14 @@ A button card with integrated slider for `light, switch, fan, cover, input_boole
         - [Action button options](#action-button-options)
         - [Tap action](#action-options)
     - [Styles](#styles)
+- [Examples](#examples)
+    - [Minimal working config](#minimal-working-config)
+    - [Per feature](#per-feature)
+        - [General](#general)
+        - [Icon](#icon)
+        - [Action button](#action-button)
+        - [Slider](#slider)
+    - [Full examples](#full-examples)
 - [Known issues](#known-issues)
 - [Languages](#languages)
 - [Credits](#credits)
@@ -163,6 +171,268 @@ Custom styles can be set by using [Card mod](https://github.com/thomasloven/love
 |  `--action-icon-color-off`  | Color of the action button icon when state is off     | `var(--paper-item-icon-color, black)`       |
 |  `--action-spinner-color`  | Color of the spinner action button     | `var(--label-badge-text-color, white)`       |
 
+## Examples
+
+### Minimal working config
+<table>
+<tr>
+<td></td>
+<td>Minimal working config
+</td>
+</tr>
+<tr>
+<td><img src="https://raw.githubusercontent.com/mattieha/slider-button-card/main/assets/examples/general-minimal.png">  
+</td>
+<td valign="top">
+
+```yaml
+type: custom:slider-button-card
+entity: light.couch
+slider:
+  direction: left-right
+  background: gradient
+icon:
+  tap_action:
+    action: more-info
+action_button:
+  mode: toggle
+```  
+</td>
+</tr>
+</table>
+
+### Per feature
+
+#### General
+
+<table>
+<tr>
+<td></td>
+<td>Compact, best used in full width (not in grid)
+</td>
+</tr>
+<tr>
+<td><img src="https://raw.githubusercontent.com/mattieha/slider-button-card/main/assets/examples/general-compact.png">  
+</td>
+<td valign="top">
+
+```yaml
+compact: true
+```  
+</td>
+</tr>
+</table>
+
+#### Icon
+
+<table>
+<tr>
+<td></td>
+<td>Minimal config
+</td>
+</tr>
+<tr>
+<td><img src="https://raw.githubusercontent.com/mattieha/slider-button-card/main/assets/examples/icon-minimal.png">  
+</td>
+<td valign="top">
+
+```yaml
+icon:
+  tap_action:
+    action: more-info
+```  
+</td>
+</tr>
+</table>
+
+<table>
+<tr>
+<td></td>
+<td>Icon override
+</td>
+</tr>
+<tr>
+<td><img src="https://raw.githubusercontent.com/mattieha/slider-button-card/main/assets/examples/icon-icon-override.png">  
+</td>
+<td valign="top">
+
+```yaml
+icon:
+  icon: mdi:lightbulb
+  tap_action:
+    action: more-info
+```  
+</td>
+</tr>
+</table>
+
+
+#### Action button
+
+<table>
+<tr>
+<td></td>
+<td>Minimal config
+</td>
+</tr>
+<tr>
+<td><img src="https://raw.githubusercontent.com/mattieha/slider-button-card/main/assets/examples/action-minimal.png">  
+</td>
+<td valign="top">
+
+```yaml
+action_button:
+  mode: toggle
+  show: true
+```  
+</td>
+</tr>
+</table>
+
+<table>
+<tr>
+<td></td>
+<td>Custom
+</td>
+</tr>
+<tr>
+<td><img src="https://raw.githubusercontent.com/mattieha/slider-button-card/main/assets/examples/action-custom.png">  
+</td>
+<td valign="top">
+
+```yaml
+action_button:
+  mode: custom
+  show: true
+  tap_action:
+    action: toggle
+```  
+</td>
+</tr>
+</table>
+
+<table>
+<tr>
+<td></td>
+<td>Custom icon and tap action
+</td>
+</tr>
+<tr>
+<td><img src="https://raw.githubusercontent.com/mattieha/slider-button-card/main/assets/examples/action-custom-icon.png">  
+</td>
+<td valign="top">
+
+```yaml
+action_button:
+  mode: custom
+  show: true
+  icon: mdi:palette
+  tap_action:
+    action: call-service
+    service: scene.turn_on
+    service_data:
+      entity_id: scene.test
+```  
+</td>
+</tr>
+</table>
+
+#### Slider
+
+<table>
+<tr>
+<td></td>
+<td>Minimal config
+</td>
+</tr>
+<tr>
+<td><img src="https://raw.githubusercontent.com/mattieha/slider-button-card/main/assets/examples/slider-minimal.png">  
+</td>
+<td valign="top">
+
+```yaml
+slider:
+  direction: left-right
+  background: gradient
+```  
+</td>
+</tr>
+</table>
+
+<table>
+<tr>
+<td></td>
+<td>Background uses color or color_temp if available 
+</td>
+</tr>
+<tr>
+<td><img src="https://raw.githubusercontent.com/mattieha/slider-button-card/main/assets/examples/slider-state-color.png">  
+</td>
+<td valign="top">
+
+```yaml
+slider:
+  direction: left-right
+  background: gradient
+  use_state_color: true
+```  
+</td>
+</tr>
+</table>
+
+<table>
+<tr>
+<td></td>
+<td>Show track, best used in full width or triangle 
+</td>
+</tr>
+<tr>
+<td><img src="https://raw.githubusercontent.com/mattieha/slider-button-card/main/assets/examples/slider-show-track.png">  
+</td>
+<td valign="top">
+
+```yaml
+slider:
+  direction: left-right
+  background: triangle
+  use_state_color: true
+  show_track: true
+```  
+</td>
+</tr>
+</table>
+
+<table>
+<tr>
+<td></td>
+<td>Force square 
+</td>
+</tr>
+<tr>
+<td><img src="https://raw.githubusercontent.com/mattieha/slider-button-card/main/assets/examples/slider-force-square.png">  
+</td>
+<td valign="top">
+
+```yaml
+slider:
+  direction: left-right
+  background: triangle
+  use_state_color: true
+  show_track: true
+  force_square: true
+```  
+</td>
+</tr>
+</table>
+
+
+
+### Full examples
+
+
+
+
+
 ## Known issues
 When you discover any bugs please open an [issue](https://github.com/mattieha/slider-button-card/issues).
 
@@ -193,3 +463,4 @@ This card supports translations. Please, help to add more translations and impro
 [latest-release]: https://github.com/mattieha/slider-button-card/releases/latest
 [releases-shield]: https://img.shields.io/github/release/mattieha/slider-button-card.svg?style=for-the-badge
 [releases]: https://github.com/mattieha/slider-button-card/releases
+[icon-minimal]: https://raw.githubusercontent.com/mattieha/slider-button-card/main/assets/grid-full-width.png
