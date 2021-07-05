@@ -712,6 +712,7 @@ This card supports translations. Please, help to add more translations and impro
 - Hebrew
 - Nederlands (Dutch)
 - Polish (polski)
+- Portuguese
 - Russian
 - [_Your language?_][add-translation]
 
