@@ -5,6 +5,7 @@
 A button card with integrated slider for `light, switch, fan, cover, input_boolean, media_player, climate, lock` entities.
 
 ![Preview][preview]
+![Preview 2][preview-2]
 
 #### Please ⭐️ this repo if you find it useful
 
@@ -711,6 +712,7 @@ This card supports translations. Please, help to add more translations and impro
 - Hebrew
 - Nederlands (Dutch)
 - Polish (polski)
+- Portuguese
 - Russian
 - [_Your language?_][add-translation]
 
@@ -725,6 +727,7 @@ This card supports translations. Please, help to add more translations and impro
 [add-translation]: https://github.com/mattieha/slider-button-card/blob/main/CONTRIBUTE.md#adding-a-new-translation
 [visual-editor]: https://raw.githubusercontent.com/mattieha/slider-button-card/main/assets/card-editor.png
 [preview]: https://raw.githubusercontent.com/mattieha/slider-button-card/main/assets/preview.gif
+[preview-2]: https://raw.githubusercontent.com/mattieha/slider-button-card/main/assets/preview-2.gif
 [grid]: https://raw.githubusercontent.com/mattieha/slider-button-card/main/assets/grid-not-square.png
 [full-width]: https://raw.githubusercontent.com/mattieha/slider-button-card/main/assets/grid-full-width.png
 [latest-release]: https://github.com/mattieha/slider-button-card/releases/latest
