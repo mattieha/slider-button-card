@@ -494,7 +494,7 @@ class ne{constructor(t){this.classes=new Set,this.changed=!1,this.element=t;cons
         max-height: 100vh;
         padding: 1em;
       }      
-    `}};t([Zt({attribute:!1})],Yi.prototype,"hass",void 0),t([Jt()],Yi.prototype,"_config",void 0),t([Jt()],Yi.prototype,"_helpers",void 0),Yi=t([Yt("slider-button-card-editor")],Yi),console.info(`%c  SLIDER-BUTTON-CARD %c ${Gi("common.version")}1.9.0 %c`,"background-color: #555;color: #fff;padding: 3px 2px 3px 3px;border: 1px solid #555;border-radius: 3px 0 0 3px;font-family: Roboto,Verdana,Geneva,sans-serif;text-shadow: 0 1px 0 rgba(1, 1, 1, 0.3)","background-color: transparent;color: #555;padding: 3px 3px 3px 2px;border: 1px solid #555; border-radius: 0 3px 3px 0;font-family: Roboto,Verdana,Geneva,sans-serif","background-color: transparent"),window.customCards=window.customCards||[],window.customCards.push({type:"slider-button-card",name:"Slider button Card",description:"A button card with slider",preview:!0});let Wi=class extends oe{constructor(){super(...arguments),this.changing=!1,this.changed=!1}static async getConfigElement(){return document.createElement("slider-button-card-editor")}static getStubConfig(t,e){const i=e.find(t=>t.startsWith("light"))||"";return{entity:i,slider:Je(i),show_name:!0,show_state:!0,compact:!1,icon:X(Se),action_button:X(we)}}getCardSize(){return 0}setConfig(t){if(!t)throw new Error(Gi("common.invalid_configuration"));if(!t.entity)throw new Error(Gi("common.invalid_configuration"));this.config=Object.assign({slider:Je(t.entity),icon:X(Se),show_name:!0,show_state:!0,compact:!1,action_button:X(we),debug:!1},t),this.ctrl=class{static getInstance(t){const e=w(t.entity),i={[ye.LIGHT]:ni,[ye.FAN]:si,[ye.SWITCH]:ci,[ye.COVER]:ii,[ye.INPUT_BOOLEAN]:ri,[ye.MEDIA_PLAYER]:li,[ye.CLIMATE]:ei,[ye.LOCK]:ai};if(void 0===i[e])throw new Error("Unsupported entity type: "+e);return new i[e](t)}}.getInstance(this.config)}shouldUpdate(t){if(!this.config)return!1;const e=t.get("hass");return e&&e.themes===this.hass.themes&&e.language===this.hass.language?function(t,e,i){if(e.has("config")||i)return!0;if(t.config.entity){var s=e.get("hass");return!s||s.states[t.config.entity]!==t.hass.states[t.config.entity]}return!1}(this,t,!1):(this.ctrl.log("shouldUpdate","forced true"),!0)}updated(t){this.updateValue(this.ctrl.value,!1),this.animateActionEnd();const e=t.get("hass"),i=t.get("config");(null==e?void 0:e.themes)===this.hass.themes&&(null==i?void 0:i.theme)===this.config.theme||(this.ctrl.log("Theme","updated"),function(t,e,i,s){void 0===s&&(s=!1),t._themes||(t._themes={});var r=e.default_theme;("default"===i||i&&e.themes[i])&&(r=i);var o=Object.assign({},t._themes);if("default"!==r){var n=e.themes[r];Object.keys(n).forEach((function(e){var i="--"+e;t._themes[i]="",o[i]=n[e]}))}if(t.updateStyles?t.updateStyles(o):window.ShadyCSS&&window.ShadyCSS.styleSubtree(t,o),s){var a=document.querySelector("meta[name=theme-color]");if(a){a.hasAttribute("default-content")||a.setAttribute("default-content",a.getAttribute("content"));var l=o["--primary-color"]||a.getAttribute("default-content");a.setAttribute("content",l)}}}(this,this.hass.themes,this.config.theme)),this.ctrl.log("Updated",this.ctrl.value)}firstUpdated(t){super.firstUpdated(t)}render(){var t,e,i,s,r;return this.ctrl.hass=this.hass,this.ctrl.stateObj?It`
+    `}};t([Zt({attribute:!1})],Yi.prototype,"hass",void 0),t([Jt()],Yi.prototype,"_config",void 0),t([Jt()],Yi.prototype,"_helpers",void 0),Yi=t([Yt("slider-button-card-editor")],Yi),console.info(`%c  SLIDER-BUTTON-CARD %c ${Gi("common.version")}1.10.0 %c`,"background-color: #555;color: #fff;padding: 3px 2px 3px 3px;border: 1px solid #555;border-radius: 3px 0 0 3px;font-family: Roboto,Verdana,Geneva,sans-serif;text-shadow: 0 1px 0 rgba(1, 1, 1, 0.3)","background-color: transparent;color: #555;padding: 3px 3px 3px 2px;border: 1px solid #555; border-radius: 0 3px 3px 0;font-family: Roboto,Verdana,Geneva,sans-serif","background-color: transparent"),window.customCards=window.customCards||[],window.customCards.push({type:"slider-button-card",name:"Slider button Card",description:"A button card with slider",preview:!0});let Wi=class extends oe{constructor(){super(...arguments),this.changing=!1,this.changed=!1}static async getConfigElement(){return document.createElement("slider-button-card-editor")}static getStubConfig(t,e){const i=e.find(t=>t.startsWith("light"))||"";return{entity:i,slider:Je(i),show_name:!0,show_state:!0,compact:!1,icon:X(Se),action_button:X(we)}}getCardSize(){return 0}setConfig(t){if(!t)throw new Error(Gi("common.invalid_configuration"));if(!t.entity)throw new Error(Gi("common.invalid_configuration"));this.config=Object.assign({slider:Je(t.entity),icon:X(Se),show_name:!0,show_state:!0,compact:!1,action_button:X(we),debug:!1},t),this.ctrl=class{static getInstance(t){const e=w(t.entity),i={[ye.LIGHT]:ni,[ye.FAN]:si,[ye.SWITCH]:ci,[ye.COVER]:ii,[ye.INPUT_BOOLEAN]:ri,[ye.MEDIA_PLAYER]:li,[ye.CLIMATE]:ei,[ye.LOCK]:ai};if(void 0===i[e])throw new Error("Unsupported entity type: "+e);return new i[e](t)}}.getInstance(this.config)}shouldUpdate(t){if(!this.config)return!1;const e=t.get("hass");return e&&e.themes===this.hass.themes&&e.language===this.hass.language?function(t,e,i){if(e.has("config")||i)return!0;if(t.config.entity){var s=e.get("hass");return!s||s.states[t.config.entity]!==t.hass.states[t.config.entity]}return!1}(this,t,!1):(this.ctrl.log("shouldUpdate","forced true"),!0)}updated(t){this.updateValue(this.ctrl.value,!1),this.animateActionEnd();const e=t.get("hass"),i=t.get("config");(null==e?void 0:e.themes)===this.hass.themes&&(null==i?void 0:i.theme)===this.config.theme||(this.ctrl.log("Theme","updated"),function(t,e,i,s){void 0===s&&(s=!1),t._themes||(t._themes={});var r=e.default_theme;("default"===i||i&&e.themes[i])&&(r=i);var o=Object.assign({},t._themes);if("default"!==r){var n=e.themes[r];Object.keys(n).forEach((function(e){var i="--"+e;t._themes[i]="",o[i]=n[e]}))}if(t.updateStyles?t.updateStyles(o):window.ShadyCSS&&window.ShadyCSS.styleSubtree(t,o),s){var a=document.querySelector("meta[name=theme-color]");if(a){a.hasAttribute("default-content")||a.setAttribute("default-content",a.getAttribute("content"));var l=o["--primary-color"]||a.getAttribute("default-content");a.setAttribute("content",l)}}}(this,this.hass.themes,this.config.theme)),this.ctrl.log("Updated",this.ctrl.value)}firstUpdated(t){super.firstUpdated(t)}render(){var t,e,i,s,r;return this.ctrl.hass=this.hass,this.ctrl.stateObj?It`
       <ha-card
         tabindex="0"
         .label=${"SliderButton: "+(this.config.entity||"No Entity Defined")}
@@ -605,8 +605,8 @@ class ne{constructor(t){this.classes=new Set,this.changed=!1,this.element=t;cons
       --slider-value: 0%;
       --slider-transition-duration: 0.2s;      
       /*--label-text-shadow: rgb(255 255 255 / 10%) -1px -1px 1px, rgb(0 0 0 / 50%) 1px 1px 1px;*/
-      --label-color-on: var(--primary-text-color, white);
-      --label-color-off: var(--primary-text-color, white);
+      /*--label-color-on: var(--primary-text-color, white);*/
+      /*--label-color-off: var(--primary-text-color, white);*/
       --icon-filter: brightness(100%);
       --icon-color: var(--paper-item-icon-color);
       --icon-rotate-speed: 0s;
@@ -615,9 +615,9 @@ class ne{constructor(t){this.classes=new Set,this.changed=!1,this.element=t;cons
       /*--state-text-shadow: rgb(255 255 255 / 10%) -1px -1px 1px, rgb(0 0 0 / 50%) 1px 1px 1px;*/
       --btn-bg-color-off: rgba(43,55,78,1);
       --btn-bg-color-on: #20293c;
-      --action-icon-color-on: var(--paper-item-icon-color, black);
-      --action-icon-color-off: var(--paper-item-icon-color, black);      
-      --action-spinner-color: var(--label-badge-text-color, white);
+      /*--action-icon-color-on: var(--paper-item-icon-color, black);*/
+      /*--action-icon-color-off: var(--paper-item-icon-color, black);*/      
+      /*--action-spinner-color: var(--label-badge-text-color, white);*/
     }
     /* --- BUTTON --- */
     
@@ -704,14 +704,14 @@ class ne{constructor(t){this.classes=new Set,this.changed=!1,this.element=t;cons
     /* --- LABEL --- */
     
     .name {
-      color: var(--label-color-on);      
+      color: var(--label-color-on, var(--primary-text-color, white));      
       text-overflow: ellipsis;
       overflow: hidden;
       white-space: nowrap;
       text-shadow: var(--label-text-shadow, none);
     }
     .off .name {
-      color: var(--label-color-off);
+      color: var(--label-color-off, var(--primary-text-color, white));
     }
     .unavailable.off .name,
     .unavailable .name {
@@ -818,7 +818,7 @@ class ne{constructor(t){this.classes=new Set,this.changed=!1,this.element=t;cons
       --slider-bg-size: 30px 30px;
     }    
     .slider[data-background="gradient"] .slider-bg {
-      --slider-bg: linear-gradient(var(--slider-bg-direction), rgba(255, 0, 0, 0) -10%, var(--slider-color) 100%);
+      --slider-bg: linear-gradient(var(--slider-bg-direction), rgba(0, 0, 0, 0) -10%, var(--slider-color) 100%);
     }    
     .slider[data-background="striped"] .slider-bg {
       --slider-bg: linear-gradient(var(--slider-bg-direction), var(--slider-color), var(--slider-color) 50%, transparent 50%, transparent);
@@ -905,7 +905,7 @@ class ne{constructor(t){this.classes=new Set,this.changed=!1,this.element=t;cons
       float: right;
       width: var(--mdc-icon-size, 24px);
       height: var(--mdc-icon-size, 24px);
-      color: var(--action-icon-color-on);
+      color: var(--action-icon-color-on, var(--paper-item-icon-color, black));
       cursor: pointer;
       outline: none;
       -webkit-tap-highlight-color: transparent;
@@ -916,7 +916,7 @@ class ne{constructor(t){this.classes=new Set,this.changed=!1,this.element=t;cons
       top: 5px;
     }    
     .off .action {
-      color: var(--action-icon-color-off);
+      color: var(--action-icon-color-off, var(--paper-item-icon-color, black));
     }
     .unavailable .action {
       color: var(--disabled-text-color);
@@ -940,7 +940,7 @@ class ne{constructor(t){this.classes=new Set,this.changed=!1,this.element=t;cons
     .loader-path {
       fill: none;
       stroke-width: 2px;
-      stroke: var(--action-spinner-color);
+      stroke: var(--action-spinner-color, var(--label-badge-text-color, white));
       animation: animate-stroke 1.5s ease-in-out infinite both;        
       stroke-linecap: round;
     }

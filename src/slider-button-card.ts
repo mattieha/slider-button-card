@@ -444,8 +444,8 @@ export class SliderButtonCard extends LitElement implements LovelaceCard {
       --slider-value: 0%;
       --slider-transition-duration: 0.2s;      
       /*--label-text-shadow: rgb(255 255 255 / 10%) -1px -1px 1px, rgb(0 0 0 / 50%) 1px 1px 1px;*/
-      --label-color-on: var(--primary-text-color, white);
-      --label-color-off: var(--primary-text-color, white);
+      /*--label-color-on: var(--primary-text-color, white);*/
+      /*--label-color-off: var(--primary-text-color, white);*/
       --icon-filter: brightness(100%);
       --icon-color: var(--paper-item-icon-color);
       --icon-rotate-speed: 0s;
@@ -454,9 +454,9 @@ export class SliderButtonCard extends LitElement implements LovelaceCard {
       /*--state-text-shadow: rgb(255 255 255 / 10%) -1px -1px 1px, rgb(0 0 0 / 50%) 1px 1px 1px;*/
       --btn-bg-color-off: rgba(43,55,78,1);
       --btn-bg-color-on: #20293c;
-      --action-icon-color-on: var(--paper-item-icon-color, black);
-      --action-icon-color-off: var(--paper-item-icon-color, black);      
-      --action-spinner-color: var(--label-badge-text-color, white);
+      /*--action-icon-color-on: var(--paper-item-icon-color, black);*/
+      /*--action-icon-color-off: var(--paper-item-icon-color, black);*/      
+      /*--action-spinner-color: var(--label-badge-text-color, white);*/
     }
     /* --- BUTTON --- */
     
@@ -543,14 +543,14 @@ export class SliderButtonCard extends LitElement implements LovelaceCard {
     /* --- LABEL --- */
     
     .name {
-      color: var(--label-color-on);      
+      color: var(--label-color-on, var(--primary-text-color, white));      
       text-overflow: ellipsis;
       overflow: hidden;
       white-space: nowrap;
       text-shadow: var(--label-text-shadow, none);
     }
     .off .name {
-      color: var(--label-color-off);
+      color: var(--label-color-off, var(--primary-text-color, white));
     }
     .unavailable.off .name,
     .unavailable .name {
@@ -657,7 +657,7 @@ export class SliderButtonCard extends LitElement implements LovelaceCard {
       --slider-bg-size: 30px 30px;
     }    
     .slider[data-background="gradient"] .slider-bg {
-      --slider-bg: linear-gradient(var(--slider-bg-direction), rgba(255, 0, 0, 0) -10%, var(--slider-color) 100%);
+      --slider-bg: linear-gradient(var(--slider-bg-direction), rgba(0, 0, 0, 0) -10%, var(--slider-color) 100%);
     }    
     .slider[data-background="striped"] .slider-bg {
       --slider-bg: linear-gradient(var(--slider-bg-direction), var(--slider-color), var(--slider-color) 50%, transparent 50%, transparent);
@@ -744,7 +744,7 @@ export class SliderButtonCard extends LitElement implements LovelaceCard {
       float: right;
       width: var(--mdc-icon-size, 24px);
       height: var(--mdc-icon-size, 24px);
-      color: var(--action-icon-color-on);
+      color: var(--action-icon-color-on, var(--paper-item-icon-color, black));
       cursor: pointer;
       outline: none;
       -webkit-tap-highlight-color: transparent;
@@ -755,7 +755,7 @@ export class SliderButtonCard extends LitElement implements LovelaceCard {
       top: 5px;
     }    
     .off .action {
-      color: var(--action-icon-color-off);
+      color: var(--action-icon-color-off, var(--paper-item-icon-color, black));
     }
     .unavailable .action {
       color: var(--disabled-text-color);
@@ -779,7 +779,7 @@ export class SliderButtonCard extends LitElement implements LovelaceCard {
     .loader-path {
       fill: none;
       stroke-width: 2px;
-      stroke: var(--action-spinner-color);
+      stroke: var(--action-spinner-color, var(--label-badge-text-color, white));
       animation: animate-stroke 1.5s ease-in-out infinite both;        
       stroke-linecap: round;
     }
