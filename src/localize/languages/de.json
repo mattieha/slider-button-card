@@ -1,62 +1,62 @@
 {
   "common": {
     "version": "v",
-    "invalid_configuration": "Invalid configuration",
-    "show_warning": "Show Warning",
-    "show_error": "Show Error"
+    "invalid_configuration": "Ungültige Konfiguration",
+    "show_warning": "Zeige Warnung",
+    "show_error": "Zeige Fehler"
   },
   "tabs": {
     "general": {
-      "title": "General",
-      "entity": "Entity (Required)",
-      "name": "Name (Optional)",
-      "show_name": "Show name?",
-      "show_state": "Show state?",
-      "compact": "Compact?"
+      "title": "Allgemein",
+      "entity": "Entiät (vorgeschrieben)",
+      "name": "Name (optional)",
+      "show_name": "Namen zeigen?",
+      "show_state": "Zustand zeigen?",
+      "compact": "Kompakt?"
     },
     "icon": {
       "title": "Icon",
-      "icon": "Icon (Optional)",
-      "show_icon": "Show icon?",
-      "use_state_color": "Use state color?",
+      "icon": "Icon (optional)",
+      "show_icon": "Icon zeigen?",
+      "use_state_color": "Zustandsfarbe verwenden?",
       "tap_action": "Tap action"
     },
     "slider": {
-      "title": "Slider",
-      "direction": "Direction",
-      "background": "Background",
-      "use_brightness": "Use brightness?",
-      "show_track": "Show track?",
-      "toggle_on_click": "Act as a toggle (disable sliding)",
-      "force_square": "Force square?"
+      "title": "Schieberegler",
+      "direction": "Richtung",
+      "background": "Hintergrund",
+      "use_brightness": "Helligkeit benutzen?",
+      "show_track": "Spur anzeigen?",
+      "toggle_on_click": "Als Schalter benutzen (schieben deaktivieren)",
+      "force_square": "Quadrat erzwingen?"
     },
     "action_button": {
-      "title": "Action button",
-      "mode": "Mode",
+      "title": "Action-Knopf",
+      "mode": "Modus",
       "icon": "Icon",
-      "show_button": "Show button?",
-      "show_spinner": "Show spinner?",
+      "show_button": "Knopf zeigen?",
+      "show_spinner": "Spinner anzeigen?",
       "tap_action": "Tap action"
     }
   },
   "state": {
-    "off": "Off",
-    "on": "On"
+    "off": "Aus",
+    "on": "An"
   },
   "direction": {
-    "left-right": "Left to right",
-    "top-bottom": "Top to bottom",
-    "bottom-top": "Bottom to top"
+    "left-right": "Links nach Rechts",
+    "top-bottom": "Oben nach Unten",
+    "bottom-top": "Unten nach Oben"
   },
   "background": {
-    "striped": "Striped",
-    "gradient": "Gradient",
-    "solid": "Solid",
-    "triangle": "Triangle",
-    "custom": "Custom"
+    "striped": "gestreift",
+    "gradient": "Farbverlauf",
+    "solid": "Einfarbig",
+    "triangle": "Dreieck",
+    "custom": "benuzerdefiniert"
   },
   "mode": {
-    "toggle": "Toggle",
-    "custom": "Custom"
+    "toggle": "Umschalter",
+    "custom": "benuzerdefiniert"
   }
 }
