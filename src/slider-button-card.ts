@@ -13,7 +13,7 @@ import './editor';
 import { localize } from './localize/localize';
 
 import type { SliderButtonCardConfig } from './types';
-import { ActionButtonConfigDefault, ActionButtonMode, IconConfigDefault } from './types';
+import { ActionButtonConfigDefault, ActionButtonMode, IconConfigDefault, LockLayout } from './types';
 import { getSliderDefaultForEntity } from './utils';
 
 /* eslint no-console: 0 */
@@ -150,7 +150,8 @@ export class SliderButtonCard extends LitElement implements LovelaceCard {
         .label=${`SliderButton: ${this.config.entity || 'No Entity Defined'}`}
         class="${classMap({ 'square': this.config.slider?.force_square || false, 'hide-name': !this.config.show_name, 'hide-state': !this.config.show_state, 'hide-action': !this.config.action_button?.show , 'compact': this.config.compact === true })}"
       >
-        <div class="button ${classMap({ off: this.ctrl.isOff, unavailable: this.ctrl.isUnavailable, 'locked': this.locked })}"
+        <div class="button ${classMap({ off: this.ctrl.isOff, unavailable: this.ctrl.isUnavailable, 'locked': this.locked})}"
+             data-lock-layout="${this.config.slider?.lock?.layout || LockLayout.CORNER}"
              style=${styleMap({
                '--slider-value': `${this.ctrl.percentage}%`,
                '--slider-bg-filter': this.ctrl.style.slider.filter,
@@ -322,7 +323,7 @@ export class SliderButtonCard extends LitElement implements LovelaceCard {
     this.button.classList.remove('locked');
     this.lockTimeout = setTimeout(()=> {
       this.lockCard();
-    }, 2000)
+    }, (this.config.slider?.lock?.duration || 5) * 1000)
   }
 
   private async handleClick(ev: Event): Promise<void> {
@@ -418,8 +419,8 @@ export class SliderButtonCard extends LitElement implements LovelaceCard {
   }
 
   private onPointerDown(event: PointerEvent): void {
-    event.preventDefault();
-    event.stopPropagation();
+    /*event.preventDefault();*/
+    /*event.stopPropagation();*/
     if (this.ctrl.isSliderDisabled) {
       return;
     }
@@ -427,6 +428,7 @@ export class SliderButtonCard extends LitElement implements LovelaceCard {
   }
 
   private onPointerUp(event: PointerEvent): void {
+    event.stopPropagation();
     if (this.ctrl.isSliderDisabled) {
       return;
     }
@@ -636,11 +638,14 @@ export class SliderButtonCard extends LitElement implements LovelaceCard {
       background-color: var( --ha-card-background, var(--card-background-color, var(--btn-bg-color-on, black)) );
       cursor: ew-resize;
       z-index: 0;
+      /*touch-action: pan-x;*/
     }
     .slider[data-mode="bottom-top"] {
+      /*touch-action: pan-y;*/
       cursor: ns-resize;     
     }
     .slider[data-mode="top-bottom"] {
+      /*touch-action: pan-y;*/
       cursor: ns-resize;
     }
     .slider:active {
@@ -657,27 +662,38 @@ export class SliderButtonCard extends LitElement implements LovelaceCard {
       width: 100%;
       cursor: pointer;
       opacity: 0;
-      display: none;
-      z-index: 99999;    
-    }
-    
+      display: block;
+      pointer-events: none;
+      z-index: 99999;
+      transition: opacity 0.5s ease-in-out;    
+    }    
+    [data-lock-layout="overlay"] .lock-overlay {
+      background: rgba(0, 0, 0, 0.1);
+    } 
     .lock-overlay ha-icon{
+      --mdc-icon-size: 20px;
       position: absolute;      
-      bottom: 10px;
-      right: 10px;
+      bottom: 0px;
+      right: 0px;
       width: var(--mdc-icon-size, 24px);
       height: var(--mdc-icon-size, 24px);
-      color: black;
-      opacity: 0;
-      transition: opacity 0.5s ease-in-out;    
-    }
-    
-    .locked .lock-overlay ha-icon{
-      opacity: 1;    
-    }
-    
+      color: var(--label-color-on, var(--primary-text-color, black));
+      opacity: 0.5;
+    }    
+    [data-lock-layout="corner"] .lock-overlay ha-icon {
+      margin: 0.4rem;
+    }     
+    [data-lock-layout="overlay"] .lock-overlay ha-icon {
+      --mdc-icon-size: 30px;
+      bottom: unset;
+      right: unset;
+      top: 50%;
+      left: 50%;
+      margin-top: -15px;
+      margin-left: -15px;      
+    }     
     .locked .lock-overlay {
-      display: block;
+      pointer-events: all;
       opacity: 1;
     }
     

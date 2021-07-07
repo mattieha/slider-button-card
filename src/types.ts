@@ -56,6 +56,13 @@ export interface SliderConfig {
 export interface LockConfig {
   enabled?: boolean;
   show_icon?: boolean;
+  layout?: LockLayout;
+  duration?: number;
+}
+
+export enum LockLayout {
+  OVERLAY = 'overlay',
+  CORNER = 'corner',
 }
 
 export enum ActionButtonMode {
