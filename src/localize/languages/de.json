@@ -1,0 +1,62 @@
+{
+  "common": {
+    "version": "v",
+    "invalid_configuration": "Ungültige Konfiguration",
+    "show_warning": "Zeige Warnung",
+    "show_error": "Zeige Fehler"
+  },
+  "tabs": {
+    "general": {
+      "title": "Allgemein",
+      "entity": "Entiät (vorgeschrieben)",
+      "name": "Name (optional)",
+      "show_name": "Namen zeigen?",
+      "show_state": "Zustand zeigen?",
+      "compact": "Kompakt?"
+    },
+    "icon": {
+      "title": "Icon",
+      "icon": "Icon (optional)",
+      "show_icon": "Icon zeigen?",
+      "use_state_color": "Zustandsfarbe verwenden?",
+      "tap_action": "Tap action"
+    },
+    "slider": {
+      "title": "Schieberegler",
+      "direction": "Richtung",
+      "background": "Hintergrund",
+      "use_brightness": "Helligkeit benutzen?",
+      "show_track": "Spur anzeigen?",
+      "toggle_on_click": "Als Schalter benutzen (schieben deaktivieren)",
+      "force_square": "Quadrat erzwingen?"
+    },
+    "action_button": {
+      "title": "Action-Knopf",
+      "mode": "Modus",
+      "icon": "Icon",
+      "show_button": "Knopf zeigen?",
+      "show_spinner": "Spinner anzeigen?",
+      "tap_action": "Tap action"
+    }
+  },
+  "state": {
+    "off": "Aus",
+    "on": "An"
+  },
+  "direction": {
+    "left-right": "Links nach Rechts",
+    "top-bottom": "Oben nach Unten",
+    "bottom-top": "Unten nach Oben"
+  },
+  "background": {
+    "striped": "gestreift",
+    "gradient": "Farbverlauf",
+    "solid": "Einfarbig",
+    "triangle": "Dreieck",
+    "custom": "benuzerdefiniert"
+  },
+  "mode": {
+    "toggle": "Umschalter",
+    "custom": "benuzerdefiniert"
+  }
+}
