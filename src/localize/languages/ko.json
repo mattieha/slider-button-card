@@ -1,0 +1,63 @@
+{
+    "common": {
+      "version": "v",
+      "invalid_configuration": "유효하지 않은 설정입니다",
+      "show_warning": "경고 표시",
+      "show_error": "에러 표시"
+    },
+    "tabs": {
+      "general": {
+        "title": "일반",
+        "entity": "구성 요소 (필수)",
+        "name": "이름 (옵션)",
+        "show_name": "이름 표시",
+        "show_state": "상태 표시",
+        "compact": "슬림 모드"
+      },
+      "icon": {
+        "title": "아이콘",
+        "icon": "아이콘 (옵션)",
+        "show_icon": "아이콘 표시",
+        "use_state_color": "상태 색상 사용",
+        "tap_action": "탭 액션"
+      },
+      "slider": {
+        "title": "슬라이더",
+        "direction": "방향 지정",
+        "background": "배경",
+        "use_brightness": "밝기 사용",
+        "show_track": "범위 표시",
+        "toggle_on_click": "토글 버튼으로 동작(슬라이더 비활성화)",
+        "force_square": "정사각형 모양으로 고정"
+      },
+      "action_button": {
+        "title": "액션 버튼",
+        "mode": "모드",
+        "icon": "아이콘",
+        "show_button": "버튼 표시",
+        "show_spinner": "로딩 스피너 표시",
+        "tap_action": "탭 액셥"
+      }
+    },
+    "state": {
+      "off": "꺼짐",
+      "on": "켜짐"
+    },
+    "direction": {
+      "left-right": "왼쪽에서 오른쪽",
+      "top-bottom": "위에서 아래",
+      "bottom-top": "아래에서 위"
+    },
+    "background": {
+      "striped": "줄무늬",
+      "gradient": "그레디언트",
+      "solid": "단색",
+      "triangle": "삼각형",
+      "custom": "커스텀"
+    },
+    "mode": {
+      "toggle": "토글 모드",
+      "custom": "커스텀 모드"
+    }
+  }
+  
