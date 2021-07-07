@@ -36,6 +36,7 @@ A button card with integrated slider for `light, switch, fan, cover, input_boole
         - [Climate](#climate)
         - [Lock](#lock)
         - [In a grid](#grid)
+- [Group support](#groups)
 - [Known issues](#known-issues)
 - [Languages](#languages)
 - [Credits](#credits)
@@ -700,6 +701,12 @@ columns: 4
 </td>
 </tr>
 </table>
+
+## Groups
+Mixed `group` entities are not supported, if you want to control multiple
+- lights use [Light group](https://www.home-assistant.io/integrations/light.group/)
+- covers use [Cover group](https://www.home-assistant.io/integrations/cover.group/)
+- media players use [Media player group](https://www.home-assistant.io/integrations/media_player.group/)
 
 ## Known issues
 When you discover any bugs please open an [issue](https://github.com/mattieha/slider-button-card/issues).
