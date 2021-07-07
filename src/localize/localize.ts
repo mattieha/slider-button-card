@@ -1,4 +1,5 @@
 import * as en from './languages/en.json';
+import * as de from './languages/de.json';
 import * as he from './languages/he.json';
 import * as nl from './languages/nl.json';
 import * as pl from './languages/pl.json';
@@ -7,9 +8,11 @@ import * as ru from './languages/ru.json';
 import * as ko from './languages/ko.json';
 
 
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const languages: any = {
   en: en,
+  de: de,
   he: he,
   nl: nl,
   pl: pl,
