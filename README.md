@@ -76,9 +76,9 @@ Slider Button Card supports Lovelace's Visual Editor.
 | show_name        | boolean | **Optional** | Show name  | `true`             |
 | show_state        | boolean | **Optional** | Show state  | `true`             |
 | compact        | boolean | **Optional** | Compact mode, display name and state inline with icon. Useful for full width cards.   | `false`             |
-| icon        | object  | **Optional** |  [Icon options](#icon-options)                      |  |
-| slider        | object  | **Optional** | [Slider options](#slider-options)                      |  |
-| action_button        | object  | **Optional** | [Action button options](#action-button-options)                     |  |
+| icon        | [object](#icon-options)  | **Optional** |  [Icon options](#icon-options)                      |  |
+| slider        | [object](#slider-options)  | **Optional** | [Slider options](#slider-options)                      |  |
+| action_button        | [object](#action-button-options)  | **Optional** | [Action button options](#action-button-options)                     |  |
 
 ### Icon Options
 
@@ -87,7 +87,7 @@ Slider Button Card supports Lovelace's Visual Editor.
 | icon              | string  | **Optional** | Icon                                   | `default entity icon`       |
 | show        | boolean | **Optional** | Show icon  | `true`             |
 | use_state_color        | boolean | **Optional** | Use state color  | `true`             |
-| tap_action        | object  | **Optional** | [Action](#action-options) to take on tap                       | `action: more-info` |
+| tap_action        | [object](#action-options)  | **Optional** | [Action](#action-options) to take on tap                       | `action: more-info` |
 
 ### Slider Options
 
@@ -100,8 +100,9 @@ Slider Button Card supports Lovelace's Visual Editor.
 | show_track        | boolean | **Optional** | Show track when state is on  | `false`             |
 | force_square        | boolean | **Optional** | Force the button as a square  | `false`             |
 | toggle_on_click        | boolean | **Optional** | Force the slider to act as a toggle, if `true` sliding is disabled  | `false`             |
-| attribute        | string | **Optional** | Control an [attribute](#attributes) for `light` or `cover` entities |              |
+| attribute        | [string](#attributes) | **Optional** | Control an [attribute](#attributes) for `light` or `cover` entities |              |
 | invert        | boolean | **Optional** | Invert calculation of state and percentage, useful for `cover` entities   | `false`<br />`true` for `cover`            |
+| lock        | [object](#lock-options) | **Optional** | Lock the card from accidental click / touch [lock options](#lock-options)  | Not enabled           |
 
 ### Attributes
 Light:
@@ -118,6 +119,14 @@ For example when `color_temp` is selected as attribute and the current `color_mo
 Cover:
 - `position` **default**
 - `tilt`
+
+### Lock Options
+
+| Name              | Type    | Requirement  | Description                                 | Default             |
+| ----------------- | ------- | ------------ | ------------------------------------------- | ------------------- |
+| enabled              | boolean  | **required** | Enable lock mode on slider                                   | `false`       |
+| duration        | number | **Optional** | Duration in seconds to lock the slider after unlock.  | `5`             |
+
 ### Action button Options
 
 | Name              | Type    | Requirement  | Description                                 | Default             |
@@ -126,7 +135,7 @@ Cover:
 | show        | boolean | **Optional** | Show the action button  | `true`             |
 | icon        | string | **Optional** | Icon when mode is `custom`  | `mdi:power`             |
 | show_spinner        | boolean | **Optional** | Show spinner when mode is `custom`  | `true`             |
-| tap_action        | object  | **Optional** | [Action](#action-options) to take on tap                       | `action: toggle` |
+| tap_action        | [object](#action-options)  | **Optional** | [Action](#action-options) to take on tap                       | `action: toggle` |
 
 ### Action Options
 
@@ -371,6 +380,29 @@ slider:
 <table>
 <tr>
 <td></td>
+<td>Lock 
+</td>
+</tr>
+<tr>
+<td><img src="https://raw.githubusercontent.com/mattieha/slider-button-card/main/assets/examples/slider-lock.png">  
+</td>
+<td valign="top">
+
+```yaml
+slider:
+  direction: left-right
+  background: gradient
+  lock:
+    enabled: true
+    duration: 5
+```  
+</td>
+</tr>
+</table>
+
+<table>
+<tr>
+<td></td>
 <td>Show track, best used in full width or triangle 
 </td>
 </tr>
@@ -412,8 +444,6 @@ slider:
 </td>
 </tr>
 </table>
-
-
 
 ### Full examples
 #### Fan

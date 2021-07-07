@@ -28,7 +28,11 @@
       "use_brightness": "Helligkeit benutzen?",
       "show_track": "Spur anzeigen?",
       "toggle_on_click": "Als Schalter benutzen (schieben deaktivieren)",
-      "force_square": "Quadrat erzwingen?"
+      "force_square": "Quadrat erzwingen?",
+      "lock": {
+        "enabled": "Sperre aktiviert?",
+        "duration": "Sperrdauer in Sekunden"
+      }
     },
     "action_button": {
       "title": "Action-Knopf",

@@ -54,7 +54,7 @@ export interface SliderConfig {
 }
 
 export interface LockConfig {
-  enabled?: boolean;
+  enabled: boolean;
   layout?: LockLayout;
   duration?: number;
 }
