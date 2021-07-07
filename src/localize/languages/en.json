@@ -28,7 +28,11 @@
       "use_brightness": "Use brightness?",
       "show_track": "Show track?",
       "toggle_on_click": "Act as a toggle (disable sliding)",
-      "force_square": "Force square?"
+      "force_square": "Force square?",
+      "lock": {
+        "enabled": "Lock enabled?",
+        "duration": "Lock duration in seconds"
+      }
     },
     "action_button": {
       "title": "Action button",

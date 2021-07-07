@@ -42,6 +42,7 @@ export class SliderButtonCard extends LitElement implements LovelaceCard {
   @query('.button') button;
   @query('.action') action;
   @query('.slider') slider;
+  @query('.type-custom-slider-button-card') card;
   private changing = false;
   private changed = false;
   private ctrl!: Controller;
@@ -148,9 +149,9 @@ export class SliderButtonCard extends LitElement implements LovelaceCard {
       <ha-card
         tabindex="0"
         .label=${`SliderButton: ${this.config.entity || 'No Entity Defined'}`}
-        class="${classMap({ 'square': this.config.slider?.force_square || false, 'hide-name': !this.config.show_name, 'hide-state': !this.config.show_state, 'hide-action': !this.config.action_button?.show , 'compact': this.config.compact === true })}"
+        class="${classMap({ 'square': this.config.slider?.force_square || false, 'hide-name': !this.config.show_name, 'hide-state': !this.config.show_state, 'hide-action': !this.config.action_button?.show , 'compact': this.config.compact === true, 'locked': this.locked })}"
       >
-        <div class="button ${classMap({ off: this.ctrl.isOff, unavailable: this.ctrl.isUnavailable, 'locked': this.locked})}"
+        <div class="button ${classMap({ off: this.ctrl.isOff, unavailable: this.ctrl.isUnavailable})}"
              data-lock-layout="${this.config.slider?.lock?.layout || LockLayout.CORNER}"
              style=${styleMap({
                '--slider-value': `${this.ctrl.percentage}%`,
@@ -314,13 +315,13 @@ export class SliderButtonCard extends LitElement implements LovelaceCard {
   private lockCard(): void {
     clearTimeout(this.lockTimeout);
     this.locked = true;
-    this.button.classList.add('locked');
+    this.card.classList.add('locked');
   }
 
   private unlockCard(): void {
     clearTimeout(this.lockTimeout);
     this.locked = false;
-    this.button.classList.remove('locked');
+    this.card.classList.remove('locked');
     this.lockTimeout = setTimeout(()=> {
       this.lockCard();
     }, (this.config.slider?.lock?.duration || 5) * 1000)
@@ -419,8 +420,8 @@ export class SliderButtonCard extends LitElement implements LovelaceCard {
   }
 
   private onPointerDown(event: PointerEvent): void {
-    /*event.preventDefault();*/
-    /*event.stopPropagation();*/
+    event.preventDefault();
+    event.stopPropagation();
     if (this.ctrl.isSliderDisabled) {
       return;
     }
@@ -474,7 +475,10 @@ export class SliderButtonCard extends LitElement implements LovelaceCard {
     }
     ha-card.compact {
       min-height: 3rem !important;
-    }    
+    }
+    ha-card.locked {
+      touch-action: auto;
+    }
     :host {
       --slider-bg-default-color: var(--primary-color, rgb(95, 124, 171));
       --slider-bg: var(--slider-color);
@@ -519,7 +523,10 @@ export class SliderButtonCard extends LitElement implements LovelaceCard {
     .button.off {
       background-color: var(--btn-bg-color-off);
     }
-    
+    ha-card.locked .button {
+      touch-action: auto;
+    }
+
     /* --- ICON --- */
     
     .icon {
@@ -638,14 +645,11 @@ export class SliderButtonCard extends LitElement implements LovelaceCard {
       background-color: var( --ha-card-background, var(--card-background-color, var(--btn-bg-color-on, black)) );
       cursor: ew-resize;
       z-index: 0;
-      /*touch-action: pan-x;*/
     }
     .slider[data-mode="bottom-top"] {
-      /*touch-action: pan-y;*/
-      cursor: ns-resize;     
+      cursor: ns-resize;
     }
     .slider[data-mode="top-bottom"] {
-      /*touch-action: pan-y;*/
       cursor: ns-resize;
     }
     .slider:active {
@@ -682,6 +686,15 @@ export class SliderButtonCard extends LitElement implements LovelaceCard {
     }    
     [data-lock-layout="corner"] .lock-overlay ha-icon {
       margin: 0.4rem;
+    }     
+    .compact [data-lock-layout="corner"] .lock-overlay ha-icon {
+      margin: 0;
+      bottom: unset;
+      top: 1.2rem;
+      right: 3.2rem;
+    }     
+    .compact.hide-action [data-lock-layout="corner"] .lock-overlay ha-icon {
+      right: 1.2rem;
     }     
     [data-lock-layout="overlay"] .lock-overlay ha-icon {
       --mdc-icon-size: 30px;

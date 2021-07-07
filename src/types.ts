@@ -55,7 +55,6 @@ export interface SliderConfig {
 
 export interface LockConfig {
   enabled?: boolean;
-  show_icon?: boolean;
   layout?: LockLayout;
   duration?: number;
 }
@@ -113,6 +112,12 @@ export const IconConfigDefault: IconConfig = {
   },
 };
 
+export const LockConfigDefault: LockConfig = {
+  enabled: false,
+  duration: 5,
+  layout: LockLayout.CORNER,
+};
+
 export const SliderConfigDefault: SliderConfig = {
   direction: SliderDirections.LEFT_RIGHT,
   background: SliderBackground.SOLID,
@@ -121,6 +126,7 @@ export const SliderConfigDefault: SliderConfig = {
   show_track: false,
   toggle_on_click: false,
   force_square: false,
+  lock: LockConfigDefault,
 };
 
 export const SliderConfigDefaultDomain: Map<string, SliderConfig> = new Map([
