@@ -716,10 +716,7 @@ When you discover any bugs please open an [issue](https://github.com/mattieha/sl
 This card supports translations. Please, help to add more translations and improve existing ones. Here's a list of supported languages:
 
 - English
-- french
-
-
-
+- French
 - German
 - Hebrew
 - Nederlands (Dutch)
