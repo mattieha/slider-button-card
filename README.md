@@ -158,6 +158,7 @@ Custom styles can be set by using [Card mod](https://github.com/thomasloven/love
 |  `--action-icon-color-on`  | Color of the action button icon when state is on     | `var(--paper-item-icon-color, black)`       |
 |  `--action-icon-color-off`  | Color of the action button icon when state is off     | `var(--paper-item-icon-color, black)`       |
 |  `--action-spinner-color`  | Color of the spinner action button     | `var(--label-badge-text-color, white)`       |
+|  `--slider-color`  | Color of slider     | `var(--primary-color, rgb(95, 124, 171))`       |
 
 ## Examples
 
