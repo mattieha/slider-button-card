@@ -7,12 +7,14 @@ import * as pl from './languages/pl.json';
 import * as pt from './languages/pt.json';
 import * as ru from './languages/ru.json';
 import * as ko from './languages/ko.json';
+import * as cn from './languages/cn.json';
 
 
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const languages: any = {
   en: en,
+  cn: cn,
   de: de,
   fr: fr,
   he: he,
