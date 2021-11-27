@@ -13,7 +13,7 @@ import {
 } from 'lit-element';
 import { HomeAssistant, fireEvent, LovelaceCardEditor, stateIcon, computeDomain } from 'custom-card-helpers';
 import { localize } from './localize/localize';
-import { ActionButtonConfig, ActionButtonConfigDefault, ActionButtonMode, Domain, IconConfig, IconConfigDefault, SliderBackground, SliderButtonCardConfig, SliderConfig, SliderConfigDefault, SliderDirections } from './types';
+import { ActionButtonConfig, ActionButtonConfigDefault, ActionButtonMode, Domain, IconConfig, IconConfigDefault, LockConfigDefault, SliderBackground, SliderButtonCardConfig, SliderConfig, SliderConfigDefault, SliderDirections } from './types';
 import { applyPatch, getEnumValues, getSliderDefaultForEntity } from './utils';
 
 @customElement('slider-button-card-editor')
@@ -237,6 +237,33 @@ export class SliderButtonCardEditor extends LitElement implements LovelaceCardEd
                   ></ha-switch>
                 </ha-formfield>
               </div>
+              <div class="side-by-side">
+                <ha-formfield .label=${localize('tabs.slider.lock.enabled')}>
+                  <ha-switch
+                    .checked=${this._slider.lock?.enabled}
+                    .configValue=${'slider.lock.enabled'}
+                    @change=${this._valueChanged}
+                  ></ha-switch>
+                </ha-formfield>
+                ${this._slider.lock?.enabled
+                  ? html`
+                    <paper-input
+                      pattern="[0-9]+([\\\\.][0-9]+)?"
+                      .label=${localize('tabs.slider.lock.duration')}
+                      .noLabelFloat=${false}
+                      .min=${1}
+                      .max=${10}
+                      .value=${this._slider.lock?.duration || LockConfigDefault.duration}
+                      .step=${0.1}
+                      type="number"
+                      auto-validate
+                      .configValue=${'slider.lock.duration'}
+                      @value-changed=${this._numberChanged}
+                    ></paper-input>
+                `
+                  :
+                  ''}
+              </div>
             </div>
           </div>
           
@@ -381,6 +408,15 @@ export class SliderButtonCardEditor extends LitElement implements LovelaceCardEd
     this._changeValue(target.configValue, target.checked !== undefined ? target.checked : value);
   }
 
+  private _numberChanged(ev): void {
+    ev.stopPropagation();
+    const target = ev.target;
+    const value = target.value === '' || isNaN(target.value)
+      ? LockConfigDefault.duration as number
+      : Number(target.value);
+    this._changeValue(target.configValue, value);
+  }
+
   private _changeValue(configValue: string, value: string | boolean | number): void {
     if (!this._config || !this.hass) {
       return;
@@ -471,7 +507,7 @@ export class SliderButtonCardEditor extends LitElement implements LovelaceCardEd
       input.tab-checkbox:checked ~ .tab-content {
         max-height: 100vh;
         padding: 1em;
-      }      
+      }
     `;
   }
 }

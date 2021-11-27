@@ -28,7 +28,11 @@
       "use_brightness": "Usar Brilho?",
       "show_track": "Mostrar Acompanhamento?",
       "toggle_on_click": "Atua como um alternador (desative o deslizamento)",
-      "force_square": "Forçar Quadrado?"
+      "force_square": "Forçar Quadrado?",
+      "lock": {
+        "enabled": "Bloqueio ativado?",
+        "duration": "Duração do bloqueio em segundos"
+      }
     },
     "action_button": {
       "title": "Botão de Ação",

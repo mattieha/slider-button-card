@@ -28,7 +28,11 @@
       "use_brightness": "להשתמש בבהירות?",
       "show_track": "להציג מסלול?",
       "toggle_on_click": "פעל כמתג (השבת החלקה)",
-      "force_square": "כוח מרובע?"
+      "force_square": "כוח מרובע?",
+      "lock": {
+        "enabled": "נעילה מופעלת?",
+        "duration": "משך נעילה בשניות"
+      }
     },
     "action_button": {
       "title": "כפתור פעולה",

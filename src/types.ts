@@ -50,6 +50,18 @@ export interface SliderConfig {
   toggle_on_click?: boolean;
   invert?: boolean;
   force_square: boolean;
+  lock?: LockConfig;
+}
+
+export interface LockConfig {
+  enabled: boolean;
+  layout?: LockLayout;
+  duration?: number;
+}
+
+export enum LockLayout {
+  OVERLAY = 'overlay',
+  CORNER = 'corner',
 }
 
 export enum ActionButtonMode {
@@ -100,6 +112,12 @@ export const IconConfigDefault: IconConfig = {
   },
 };
 
+export const LockConfigDefault: LockConfig = {
+  enabled: false,
+  duration: 5,
+  layout: LockLayout.CORNER,
+};
+
 export const SliderConfigDefault: SliderConfig = {
   direction: SliderDirections.LEFT_RIGHT,
   background: SliderBackground.SOLID,
@@ -108,6 +126,7 @@ export const SliderConfigDefault: SliderConfig = {
   show_track: false,
   toggle_on_click: false,
   force_square: false,
+  lock: LockConfigDefault,
 };
 
 export const SliderConfigDefaultDomain: Map<string, SliderConfig> = new Map([
