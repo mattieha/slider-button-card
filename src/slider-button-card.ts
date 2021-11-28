@@ -46,6 +46,7 @@ export class SliderButtonCard extends LitElement implements LovelaceCard {
   private changed = false;
   private ctrl!: Controller;
   private actionTimeout;
+  private legacySliderTouchCapture?: number;
 
   public static async getConfigElement(): Promise<LovelaceCardEditor> {
     return document.createElement('slider-button-card-editor');
@@ -162,6 +163,9 @@ export class SliderButtonCard extends LitElement implements LovelaceCard {
                @pointerdown=${this.onPointerDown}
                @pointermove=${this.onPointerMove}
                @pointerup=${this.onPointerUp}
+               @touchstart=${this.onTouchStart}
+               @touchmove=${this.onTouchMove}
+               @touchend=${this.onTouchEnd}
           >
             ${this.ctrl.hasToggle
               ? html`
@@ -376,6 +380,37 @@ export class SliderButtonCard extends LitElement implements LovelaceCard {
       return varColor
     }
     return color;
+  }
+
+  // Support pre-iOS13 devices, which don't have PointerEvents
+  private onTouchStart(event: TouchEvent): void {
+    if ('PointerEvent' in window) return;
+
+    event.preventDefault();
+    if (this.ctrl.isSliderDisabled) return;
+
+    this.legacySliderTouchCapture = event.touches[0].identifier;
+  }
+
+  // Support pre-iOS13 devices, which don't have PointerEvents
+  private onTouchEnd(): void {
+    if ('PointerEvent' in window) return;
+    if (this.ctrl.isSliderDisabled) return;
+
+    this.setStateValue(this.ctrl.targetValue);
+    this.legacySliderTouchCapture = undefined;
+  }
+
+  // Support pre-iOS13 devices, which don't have PointerEvents
+  private onTouchMove(event: any): void {
+    if ('PointerEvent' in window) return;
+    if (this.ctrl.isSliderDisabled) return;
+    if (this.legacySliderTouchCapture !== event.touches[0].identifier) return;
+
+    const {left, top, width, height} = this.slider.getBoundingClientRect();
+    const percentage = this.ctrl.moveSlider(event.touches[0], {left, top, width, height});
+    this.ctrl.log('onTouchMove', percentage);
+    this.updateValue(percentage);
   }
 
   private onPointerDown(event: PointerEvent): void {
