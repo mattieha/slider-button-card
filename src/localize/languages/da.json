@@ -1,0 +1,62 @@
+{
+  "common": {
+    "version": "v",
+    "invalid_configuration": "Ugyldig konfiguration",
+    "show_warning": "Vis advarsel",
+    "show_error": "Vis fejl"
+  },
+  "tabs": {
+    "general": {
+      "title": "Generelt",
+      "entity": "Entitet (påkrævet)",
+      "name": "Navn (valgfri)",
+      "show_name": "Vis navn?",
+      "show_state": "Vis tilstand?",
+      "compact": "Kompakt?"
+    },
+    "icon": {
+      "title": "Ikon",
+      "icon": "Ikon (valgfri)",
+      "show_icon": "Vis ikon?",
+      "use_state_color": "Brug tilstandsfarve?",
+      "tap_action": "Tryk aktion"
+    },
+    "slider": {
+      "title": "Slider",
+      "direction": "Retning",
+      "background": "Baggrund",
+      "use_brightness": "Brug lysstyrke?",
+      "show_track": "Vis spor?",
+      "toggle_on_click": "Brug som knap (deaktivér slider)",
+      "force_square": "Tving kvadrat?"
+    },
+    "action_button": {
+      "title": "Aktionsknap",
+      "mode": "Tilstand",
+      "icon": "Ikon",
+      "show_button": "Vis knap?",
+      "show_spinner": "Vis spinner?",
+      "tap_action": "Tryk aktion"
+    }
+  },
+  "state": {
+    "off": "Slukket",
+    "on": "Tændt"
+  },
+  "direction": {
+    "left-right": "Venstre til højre",
+    "top-bottom": "Top til bund",
+    "bottom-top": "bund til top"
+  },
+  "background": {
+    "striped": "Stribet",
+    "gradient": "Gradient",
+    "solid": "Solid",
+    "triangle": "Trekant",
+    "custom": "Brugerdefineret"
+  },
+  "mode": {
+    "toggle": "Skifter",
+    "custom": "Brugerdefineret"
+  }
+}
