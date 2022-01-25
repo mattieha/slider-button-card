@@ -719,11 +719,12 @@ This card supports translations. Please, help to add more translations and impro
 - French
 - German
 - Hebrew
+- Korean
 - Nederlands (Dutch)
 - Polish (polski)
 - Portuguese
 - Russian
-- Korean
+- Spanish
 - [_Your language?_][add-translation]
 
 ## Credits
