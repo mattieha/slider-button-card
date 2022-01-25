@@ -27,7 +27,7 @@
       "background": "Fondo",
       "use_brightness": "¿Usar brillo?",
       "show_track": "¿Mostrar senda?",
-      "toggle_on_click": "Comportamiento como interruptor (deshabilitar deslizamiento)",
+      "toggle_on_click": "Comportamiento como interruptor (Deshabilitar deslizamiento)",
       "force_square": "¿Forzar cuadrado?"
     },
     "action_button": {
