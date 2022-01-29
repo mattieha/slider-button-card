@@ -10,36 +10,40 @@ A button card with integrated slider for `light, switch, fan, cover, input_boole
 #### Please ⭐️ this repo if you find it useful
 
 ## TOC
-- [Installation](#installation)
+- [Slider button card by @mattieha](#slider-button-card-by-mattieha)
+      - [Please ⭐️ this repo if you find it useful](#please-️-this-repo-if-you-find-it-useful)
+  - [TOC](#toc)
+  - [Installation](#installation)
     - [HACS](#hacs)
     - [Manual](#manual)
-- [Configuration](#configuration)
+  - [Configuration](#configuration)
     - [Visual Editor](#visual-editor)
     - [Options](#options)
-        - [Icon options](#icon-options)
-        - [Slider options](#slider-options)
-        - [Action button options](#action-button-options)
-        - [Tap action](#action-options)
+    - [Icon Options](#icon-options)
+    - [Slider Options](#slider-options)
+    - [Attributes](#attributes)
+    - [Action button Options](#action-button-options)
+    - [Action Options](#action-options)
     - [Styles](#styles)
-- [Examples](#examples)
+  - [Examples](#examples)
     - [Minimal working config](#minimal-working-config)
     - [Per feature](#per-feature)
-        - [General](#general)
-        - [Icon](#icon)
-        - [Action button](#action-button)
-        - [Slider](#slider)
+      - [General](#general)
+      - [Icon](#icon)
+      - [Action button](#action-button)
+      - [Slider](#slider)
     - [Full examples](#full-examples)
-        - [Fan](#fan)
-        - [Switch](#switch)
-        - [Cover](#cover)
-        - [Media player](#media-player)
-        - [Climate](#climate)
-        - [Lock](#lock)
-        - [In a grid](#grid)
-- [Group support](#groups)
-- [Known issues](#known-issues)
-- [Languages](#languages)
-- [Credits](#credits)
+      - [Fan](#fan)
+      - [Switch](#switch)
+      - [Cover](#cover)
+      - [Media player](#media-player)
+      - [Climate](#climate)
+      - [Lock](#lock)
+      - [Grid](#grid)
+  - [Groups](#groups)
+  - [Known issues](#known-issues)
+  - [Languages](#languages)
+  - [Credits](#credits)
 
 ## Installation
 
@@ -724,6 +728,7 @@ This card supports translations. Please, help to add more translations and impro
 - Portuguese
 - Russian
 - Korean
+- Simplified Chinese(简体中文)
 - [_Your language?_][add-translation]
 
 ## Credits
