@@ -1,0 +1,62 @@
+{
+    "common": {
+      "version": "v",
+      "invalid_configuration": "Configurazione non valida",
+      "show_warning": "Mostra Avvertimento",
+      "show_error": "Mostra Errore"
+    },
+    "tabs": {
+      "general": {
+        "title": "Generale",
+        "entity": "Entità (Richiesta)",
+        "name": "Nome (Opzionale)",
+        "show_name": "Mostra nome?",
+        "show_state": "Mostra stato?",
+        "compact": "Compatto?"
+      },
+      "icon": {
+        "title": "Icona",
+        "icon": "Icona (Opzionale)",
+        "show_icon": "Mostra icona?",
+        "use_state_color": "Usa stato colore?",
+        "tap_action": "Tap azione"
+      },
+      "slider": {
+        "title": "Cursore",
+        "direction": "Directione",
+        "background": "Sfondo",
+        "use_brightness": "Usa luminosità?",
+        "show_track": "Mostra traccia?",
+        "toggle_on_click": "Azione come interruttore (disabilita scorrimento)",
+        "force_square": "Forza quadrato?"
+      },
+      "action_button": {
+        "title": "Bottone Azione",
+        "mode": "Modo",
+        "icon": "Icona",
+        "show_button": "Mostra Bottone?",
+        "show_spinner": "Show Girandola?",
+        "tap_action": "Tap azione"
+      }
+    },
+    "state": {
+      "off": "Spento",
+      "on": "Acceso"
+    },
+    "direction": {
+      "left-right": "da Sinistra a Destra",
+      "top-bottom": "da Sopra a Sotto",
+      "bottom-top": "da Sotto a Sopra"
+    },
+    "background": {
+      "striped": "a Strisce",
+      "gradient": "Sfumatura",
+      "solid": "Solido",
+      "triangle": "Triangolo",
+      "custom": "Custom"
+    },
+    "mode": {
+      "toggle": "Interruttore",
+      "custom": "Custom"
+    }
+  }
