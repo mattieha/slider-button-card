@@ -91,17 +91,19 @@ Slider Button Card supports Lovelace's Visual Editor.
 
 ### Slider Options
 
-| Name                      | Type    | Requirement  | Description                                                             | Default                         |
-|---------------------------|---------|--------------|-------------------------------------------------------------------------|---------------------------------|
-| direction                 | string  | **Optional** | Direction `left-right, top-bottom, bottom-top`                          | `left-right`                    |
-| background                | string  | **Optional** | Background `solid, gradient, triangle, striped, custom`                 | `gradient`                      |
-| use_state_colo            | boolean | **Optional** | Use state color                                                         | `true`                          |
-| use_percentage_bg_opacity | boolean | **Optional** | Apply opacity to background based on percentage                         | `true`                          |
-| show_track                | boolean | **Optional** | Show track when state is on                                             | `false`                         |
-| force_square              | boolean | **Optional** | Force the button as a square                                            | `false`                         |
-| toggle_on_click           | boolean | **Optional** | Force the slider to act as a toggle, if `true` sliding is disabled      | `false`                         |
-| attribute                 | string  | **Optional** | Control an [attribute](#attributes) for `light` or `cover` entities     |                                 |
-| invert                    | boolean | **Optional** | Invert calculation of state and percentage, useful for `cover` entities | `false`<br />`true` for `cover` |
+| Name                      | Type    | Requirement  | Description                                                               | Default                         |
+|---------------------------|---------|--------------|---------------------------------------------------------------------------|---------------------------------|
+| direction                 | string  | **Optional** | Direction `left-right, top-bottom, bottom-top`                            | `left-right`                    |
+| background                | string  | **Optional** | Background `solid, gradient, triangle, striped, custom`                   | `gradient`                      |
+| use_state_colo            | boolean | **Optional** | Use state color                                                           | `true`                          |
+| use_percentage_bg_opacity | boolean | **Optional** | Apply opacity to background based on percentage                           | `true`                          |
+| show_track                | boolean | **Optional** | Show track when state is on                                               | `false`                         |
+| force_square              | boolean | **Optional** | Force the button as a square                                              | `false`                         |
+| toggle_on_click           | boolean | **Optional** | Force the slider to act as a toggle, if `true` sliding is disabled        | `false`                         |
+| attribute                 | string  | **Optional** | Control an [attribute](#attributes) for `light` or `cover` entities       |                                 |
+| invert                    | boolean | **Optional** | Invert calculation of state and percentage, useful for `cover` entities   | `false`<br />`true` for `cover` |
+| change_during_slide       | boolean | **Optional** | Change the entity's value during the slide (works great with lights)      | `false`                         |
+| change_during_slide_rate  | number  | **Optional** | The rate of sending changes in milliseconds. Short time might cause lags. | 300                             |
 
 ### Attributes
 Light:

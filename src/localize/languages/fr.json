@@ -28,7 +28,8 @@
       "use_brightness": "Utiliser la luminosité ?",
       "show_track": "Afficher le chemin ?",
       "toggle_on_click": "Agir comme un bouton (désactive le curseur)",
-      "force_square": "Forcer carré ?"
+      "force_square": "Forcer carré ?",
+      "change_during_slide": "Changer pendant la diapositive ?"
     },
     "action_button": {
       "title": "Bouton d'action",

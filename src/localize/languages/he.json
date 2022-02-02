@@ -28,7 +28,8 @@
       "use_brightness": "להשתמש בבהירות?",
       "show_track": "להציג מסלול?",
       "toggle_on_click": "פעל כמתג (השבת החלקה)",
-      "force_square": "כוח מרובע?"
+      "force_square": "כוח מרובע?",
+      "change_during_slide": "לשנות במהלך ההחלקה?"
     },
     "action_button": {
       "title": "כפתור פעולה",

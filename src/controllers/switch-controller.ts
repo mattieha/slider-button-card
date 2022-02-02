@@ -15,7 +15,7 @@ export class SwitchController extends Controller {
 
   set _value(value) {
     const service = value > 0 ? 'turn_on' : 'turn_off';
-    this._hass.callService('switch', service, {
+    this.callService('switch', service, {
       // eslint-disable-next-line @typescript-eslint/camelcase
       entity_id: this.stateObj.entity_id
     });

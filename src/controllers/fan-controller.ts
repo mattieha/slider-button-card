@@ -15,13 +15,13 @@ export class FanController extends Controller {
   set _value(value) {
     const service = value > 0 ? 'turn_on' : 'turn_off';
     if (value > 0 && this.hasSlider) {
-      this._hass.callService('fan', 'set_percentage', {
+      this.callService('fan', 'set_percentage', {
         // eslint-disable-next-line @typescript-eslint/camelcase
         entity_id: this.stateObj.entity_id,
         percentage: value
       });
     } else {
-      this._hass.callService('fan', service, {
+      this.callService('fan', service, {
         // eslint-disable-next-line @typescript-eslint/camelcase
         entity_id: this.stateObj.entity_id
       });

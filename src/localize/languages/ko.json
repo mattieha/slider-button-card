@@ -28,7 +28,8 @@
         "use_brightness": "밝기 사용",
         "show_track": "범위 표시",
         "toggle_on_click": "토글 버튼으로 동작(슬라이더 비활성화)",
-        "force_square": "정사각형 모양으로 고정"
+        "force_square": "정사각형 모양으로 고정",
+        "change_during_slide": "슬라이드 중 변경?"
       },
       "action_button": {
         "title": "액션 버튼",
@@ -60,4 +61,3 @@
       "custom": "커스텀 모드"
     }
   }
-  

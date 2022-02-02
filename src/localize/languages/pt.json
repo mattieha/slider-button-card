@@ -28,7 +28,8 @@
       "use_brightness": "Usar Brilho?",
       "show_track": "Mostrar Acompanhamento?",
       "toggle_on_click": "Atua como um alternador (desative o deslizamento)",
-      "force_square": "Forçar Quadrado?"
+      "force_square": "Forçar Quadrado?",
+      "change_during_slide": "Mudança durante o slide?"
     },
     "action_button": {
       "title": "Botão de Ação",
