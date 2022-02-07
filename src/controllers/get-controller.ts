@@ -5,6 +5,7 @@ import { Controller } from './controller';
 import { CoverController } from './cover-controller';
 import { FanController } from './fan-controller';
 import { InputBooleanController } from './input-boolean-controller';
+import { InputNumberController } from './input-number-controller';
 import { LightController } from './light-controller';
 import { LockController } from './lock-controller';
 import { MediaController } from './media-controller';
@@ -19,6 +20,7 @@ export class ControllerFactory {
       [Domain.SWITCH]: SwitchController,
       [Domain.COVER]: CoverController,
       [Domain.INPUT_BOOLEAN]: InputBooleanController,
+      [Domain.INPUT_NUMBER]: InputNumberController,
       [Domain.MEDIA_PLAYER]: MediaController,
       [Domain.CLIMATE]: ClimateController,
       [Domain.LOCK]: LockController,
