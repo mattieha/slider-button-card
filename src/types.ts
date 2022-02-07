@@ -77,6 +77,7 @@ export enum Domain {
   FAN = 'fan',
   COVER = 'cover',
   INPUT_BOOLEAN = 'input_boolean',
+  INPUT_NUMBER = 'input_number',
   MEDIA_PLAYER = 'media_player',
   CLIMATE = 'climate',
   LOCK = 'lock',

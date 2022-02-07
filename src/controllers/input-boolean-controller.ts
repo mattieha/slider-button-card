@@ -1,44 +1,35 @@
-import { Controller } from "./controller";
+import { STATES_OFF } from 'custom-card-helpers';
+import { Controller } from './controller';
 
-export class InputNumberController extends Controller {
-  get _value() {
-    return this.stateObj.state;
+export class InputBooleanController extends Controller {
+  _min = 0;
+  _max = 1;
+  _targetValue;
+  _invert = false;
+
+  get _value(): number {
+    return !STATES_OFF.includes(this.stateObj.state)
+      ? 1
+      : 0;
   }
 
   set _value(value) {
-    this._hass.callService("input_number", "set_value", {
-      entity_id: this.stateObj.entity_id,
-      value: value,
+    const service = value > 0 ? 'turn_on' : 'turn_off';
+    this._hass.callService('input_boolean', service, {
+      // eslint-disable-next-line @typescript-eslint/camelcase
+      entity_id: this.stateObj.entity_id
     });
   }
 
-  get string() {
-    return `${parseFloat(this.stateObj.state)} ${
-      this.stateObj.attributes.unit_of_measurement || ""
-    }`.trim();
+  get _step(): number {
+    return 1;
   }
 
-  get isOff() {
-    return false;
+  get label(): string {
+    if (this.percentage > 0) {
+      return this._hass.localize('component.input_boolean.state._.on');
+    }
+    return this._hass.localize('component.input_boolean.state._.off');
   }
 
-  get hasToggle() {
-    return false;
-  }
-
-  get hasSlider() {
-    return this.stateObj.attributes.mode === "slider";
-  }
-
-  get _min() {
-    return this.stateObj.attributes.min;
-  }
-
-  get _max() {
-    return this.stateObj.attributes.max;
-  }
-
-  get _step() {
-    return this.stateObj.attributes.step;
-  }
 }
