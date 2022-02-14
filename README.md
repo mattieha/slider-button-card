@@ -68,40 +68,40 @@ Slider Button Card supports Lovelace's Visual Editor.
 
 ### Options
 
-| Name              | Type    | Requirement  | Description                                 | Default             |
-| ----------------- | ------- | ------------ | ------------------------------------------- | ------------------- |
-| type              | string  | **Required** | `custom:slider-button-card`                   |
-| entity            | string  | **Required** | HA entity ID from domain `light, switch, fan, cover, input_boolean, media_player, climate, lock`                   |               |
-| name              | string  | **Optional** | Name                                   | `entity.friendly_name`       |
-| show_name        | boolean | **Optional** | Show name  | `true`             |
-| show_state        | boolean | **Optional** | Show state  | `true`             |
-| compact        | boolean | **Optional** | Compact mode, display name and state inline with icon. Useful for full width cards.   | `false`             |
-| icon        | object  | **Optional** |  [Icon options](#icon-options)                      |  |
-| slider        | object  | **Optional** | [Slider options](#slider-options)                      |  |
-| action_button        | object  | **Optional** | [Action button options](#action-button-options)                     |  |
+| Name          | Type    | Requirement  | Description                                                                                      | Default                |
+|---------------|---------|--------------|--------------------------------------------------------------------------------------------------|------------------------|
+| type          | string  | **Required** | `custom:slider-button-card`                                                                      |                        |
+| entity        | string  | **Required** | HA entity ID from domain `light, switch, fan, cover, input_boolean, media_player, climate, lock` |                        |
+| name          | string  | **Optional** | Name                                                                                             | `entity.friendly_name` |
+| show_name     | boolean | **Optional** | Show name                                                                                        | `true`                 |
+| show_state    | boolean | **Optional** | Show state                                                                                       | `true`                 |
+| compact       | boolean | **Optional** | Compact mode, display name and state inline with icon. Useful for full width cards.              | `false`                |
+| icon          | object  | **Optional** | [Icon options](#icon-options)                                                                    |                        |
+| slider        | object  | **Optional** | [Slider options](#slider-options)                                                                |                        |
+| action_button | object  | **Optional** | [Action button options](#action-button-options)                                                  |                        |
 
 ### Icon Options
 
-| Name              | Type    | Requirement  | Description                                 | Default             |
-| ----------------- | ------- | ------------ | ------------------------------------------- | ------------------- |
-| icon              | string  | **Optional** | Icon                                   | `default entity icon`       |
-| show        | boolean | **Optional** | Show icon  | `true`             |
-| use_state_color        | boolean | **Optional** | Use state color  | `true`             |
-| tap_action        | object  | **Optional** | [Action](#action-options) to take on tap                       | `action: more-info` |
+| Name            | Type    | Requirement  | Description                              | Default               |
+|-----------------|---------|--------------|------------------------------------------|-----------------------|
+| icon            | string  | **Optional** | Icon                                     | `default entity icon` |
+| show            | boolean | **Optional** | Show icon                                | `true`                |
+| use_state_color | boolean | **Optional** | Use state color                          | `true`                |
+| tap_action      | object  | **Optional** | [Action](#action-options) to take on tap | `action: more-info`   |
 
 ### Slider Options
 
-| Name              | Type    | Requirement  | Description                                 | Default             |
-| ----------------- | ------- | ------------ | ------------------------------------------- | ------------------- |
-| direction              | string  | **Optional** | Direction `left-right, top-bottom, bottom-top`                                   | `left-right`       |
-| background        | string | **Optional** | Background `solid, gradient, triangle, striped, custom`  | `gradient`             |
-| use_state_color        | boolean | **Optional** | Use state color  | `true`             |
-| use_percentage_bg_opacity        | boolean | **Optional** | Apply opacity to background based on percentage  | `true`             |
-| show_track        | boolean | **Optional** | Show track when state is on  | `false`             |
-| force_square        | boolean | **Optional** | Force the button as a square  | `false`             |
-| toggle_on_click        | boolean | **Optional** | Force the slider to act as a toggle, if `true` sliding is disabled  | `false`             |
-| attribute        | string | **Optional** | Control an [attribute](#attributes) for `light` or `cover` entities |              |
-| invert        | boolean | **Optional** | Invert calculation of state and percentage, useful for `cover` entities   | `false`<br />`true` for `cover`            |
+| Name                      | Type    | Requirement  | Description                                                             | Default                         |
+|---------------------------|---------|--------------|-------------------------------------------------------------------------|---------------------------------|
+| direction                 | string  | **Optional** | Direction `left-right, top-bottom, bottom-top`                          | `left-right`                    |
+| background                | string  | **Optional** | Background `solid, gradient, triangle, striped, custom`                 | `gradient`                      |
+| use_state_colo            | boolean | **Optional** | Use state color                                                         | `true`                          |
+| use_percentage_bg_opacity | boolean | **Optional** | Apply opacity to background based on percentage                         | `true`                          |
+| show_track                | boolean | **Optional** | Show track when state is on                                             | `false`                         |
+| force_square              | boolean | **Optional** | Force the button as a square                                            | `false`                         |
+| toggle_on_click           | boolean | **Optional** | Force the slider to act as a toggle, if `true` sliding is disabled      | `false`                         |
+| attribute                 | string  | **Optional** | Control an [attribute](#attributes) for `light` or `cover` entities     |                                 |
+| invert                    | boolean | **Optional** | Invert calculation of state and percentage, useful for `cover` entities | `false`<br />`true` for `cover` |
 
 ### Attributes
 Light:
@@ -120,13 +120,13 @@ Cover:
 - `tilt`
 ### Action button Options
 
-| Name              | Type    | Requirement  | Description                                 | Default             |
-| ----------------- | ------- | ------------ | ------------------------------------------- | ------------------- |
-| mode              | string  | **Optional** | Mode `toggle, custom`                                   | `toggle`       |
-| show        | boolean | **Optional** | Show the action button  | `true`             |
-| icon        | string | **Optional** | Icon when mode is `custom`  | `mdi:power`             |
-| show_spinner        | boolean | **Optional** | Show spinner when mode is `custom`  | `true`             |
-| tap_action        | object  | **Optional** | [Action](#action-options) to take on tap                       | `action: toggle` |
+| Name         | Type    | Requirement  | Description                              | Default          |
+|--------------|---------|--------------|------------------------------------------|------------------|
+| mode         | string  | **Optional** | Mode `toggle, custom`                    | `toggle`         |
+| show         | boolean | **Optional** | Show the action button                   | `true`           |
+| icon         | string  | **Optional** | Icon when mode is `custom`               | `mdi:power`      |
+| show_spinner | boolean | **Optional** | Show spinner when mode is `custom`       | `true`           |
+| tap_action   | object  | **Optional** | [Action](#action-options) to take on tap | `action: toggle` |
 
 ### Action Options
 
@@ -148,16 +148,16 @@ Custom styles can be set by using [Card mod](https://github.com/thomasloven/love
       }
 ```
 
-| Variable                   | Description                                 | Default             |
-| -----------------------    | ------------------------------------------- | ------------------- |
-|  `--icon-color`  | Color of the icon when `icon.use_state_color === false`     | `var(--paper-item-icon-color)`       |
-|  `--label-color-on`  | Color of the label when state is on     | `var(--primary-text-color, white)`       |
-|  `--label-color-off`  | Color of the label when state is off    | `var(--primary-text-color, white)`       |
-|  `--state-color-on`  | Color of the state value when state is on    | `var(--label-badge-text-color, white)`       |
-|  `--state-color-off`  | Color of the state value when state is off    | `var(--disabled-text-color)`       |
-|  `--action-icon-color-on`  | Color of the action button icon when state is on     | `var(--paper-item-icon-color, black)`       |
-|  `--action-icon-color-off`  | Color of the action button icon when state is off     | `var(--paper-item-icon-color, black)`       |
-|  `--action-spinner-color`  | Color of the spinner action button     | `var(--label-badge-text-color, white)`       |
+| Variable                  | Description                                             | Default                                |
+|---------------------------|---------------------------------------------------------|----------------------------------------|
+| `--icon-color`            | Color of the icon when `icon.use_state_color === false` | `var(--paper-item-icon-color)`         |
+| `--label-color-on`        | Color of the label when state is on                     | `var(--primary-text-color, white)`     |
+| `--label-color-off`       | Color of the label when state is off                    | `var(--primary-text-color, white)`     |
+| `--state-color-on`        | Color of the state value when state is on               | `var(--label-badge-text-color, white)` |
+| `--state-color-off`       | Color of the state value when state is off              | `var(--disabled-text-color)`           |
+| `--action-icon-color-on`  | Color of the action button icon when state is on        | `var(--paper-item-icon-color, black)`  |
+| `--action-icon-color-off` | Color of the action button icon when state is off       | `var(--paper-item-icon-color, black)`  |
+| `--action-spinner-color`  | Color of the spinner action button                      | `var(--label-badge-text-color, white)` |
 
 ## Examples
 
