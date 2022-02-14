@@ -15,7 +15,7 @@ export class LockController extends Controller {
 
   set _value(value) {
     const service = value > 0 ? 'lock' : 'unlock';
-    this._hass.callService('lock', service, {
+    this.callService('lock', service, {
       // eslint-disable-next-line @typescript-eslint/camelcase
       entity_id: this.stateObj.entity_id
     });

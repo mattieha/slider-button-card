@@ -28,7 +28,8 @@
       "use_brightness": "Użyć jasności?",
       "show_track": "Pokazać ślad?",
       "toggle_on_click": "Działaj jako przełącznik (wyłącz przesuwanie)",
-      "force_square": "Wymusić kwadrat?"
+      "force_square": "Wymusić kwadrat?",
+      "change_during_slide": "Zmiana podczas slajdu?"
     },
     "action_button": {
       "title": "Przycisk akcji",

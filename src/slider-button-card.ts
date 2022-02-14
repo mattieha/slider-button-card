@@ -46,6 +46,8 @@ export class SliderButtonCard extends LitElement implements LovelaceCard {
   private changed = false;
   private ctrl!: Controller;
   private actionTimeout;
+  private lastPush?: number;
+  private postUpdateTimer?: number;
 
   public static async getConfigElement(): Promise<LovelaceCardEditor> {
     return document.createElement('slider-button-card-editor');
@@ -114,6 +116,15 @@ export class SliderButtonCard extends LitElement implements LovelaceCard {
   }
 
   protected updated(changedProps: PropertyValues): void {
+    if (this.changing) {
+      return;
+    }
+    if (this.ctrl.hasPendingPromises()) {
+      return;
+    }
+    if (this.ctrl.checkSelfEmitted()) {
+      return;
+    }
     this.updateValue(this.ctrl.value, false);
     this.animateActionEnd();
     const oldHass = changedProps.get('hass') as HomeAssistant | undefined;
@@ -303,11 +314,13 @@ export class SliderButtonCard extends LitElement implements LovelaceCard {
     }
   }
 
-  private setStateValue(value: number): void {
+  private setStateValue(value: number, changing = false): void {
     this.ctrl.log('setStateValue', value);
-    this.updateValue(value, false);
+    this.updateValue(value, changing);
     this.ctrl.value = value;
-    this.animateActionStart();
+    if (!changing) {
+      this.animateActionStart();
+    }
   }
 
   private animateActionStart(): void {
@@ -384,6 +397,7 @@ export class SliderButtonCard extends LitElement implements LovelaceCard {
     if (this.ctrl.isSliderDisabled) {
       return;
     }
+    this.lastPush = undefined;
     this.slider.setPointerCapture(event.pointerId);
   }
 
@@ -391,8 +405,17 @@ export class SliderButtonCard extends LitElement implements LovelaceCard {
     if (this.ctrl.isSliderDisabled) {
       return;
     }
+
+    this.clearPostUpdateTimer();
     this.setStateValue(this.ctrl.targetValue);
     this.slider.releasePointerCapture(event.pointerId);
+  }
+
+  private clearPostUpdateTimer(): void {
+    if (this.postUpdateTimer != undefined) {
+      clearTimeout(this.postUpdateTimer);
+      this.postUpdateTimer = undefined;
+    }
   }
 
   private onPointerMove(event: any): void {
@@ -402,8 +425,29 @@ export class SliderButtonCard extends LitElement implements LovelaceCard {
     if (!this.slider.hasPointerCapture(event.pointerId)) return;
     const {left, top, width, height} = this.slider.getBoundingClientRect();
     const percentage = this.ctrl.moveSlider(event, {left, top, width, height});
-    this.ctrl.log('onPointerMove', percentage);
     this.updateValue(percentage);
+
+    this.clearPostUpdateTimer();
+
+    if (!this.config.slider?.change_during_slide) {
+      return;
+    }
+
+    const rate = this.config.slider.change_during_slide_rate | 300;
+    const action = (): void => {
+      this.lastPush = Date.now();
+      this.setStateValue(this.ctrl.targetValue, true);
+    };
+    if (this.lastPush == undefined) {
+      this.lastPush = Date.now();
+    }
+    if ((Date.now() - this.lastPush) > rate) {
+      action();
+    } else {
+      this.postUpdateTimer = window.setTimeout(() => {
+        action();
+      }, rate);
+    }
   }
 
   connectedCallback(): void {

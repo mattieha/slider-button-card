@@ -126,7 +126,16 @@ export class LightController extends Controller {
         break;
     }
 
-    this._hass.callService('light', service, {
+    if (this._config.slider?.change_during_slide) {
+      const rate = this._config.slider.change_during_slide_rate | 300;
+      attr = 'transition';
+      data = {
+        ...data,
+        [attr]: rate / 1000.0
+      };
+    }
+
+    this.callService('light', service, {
       ...data
     });
   }

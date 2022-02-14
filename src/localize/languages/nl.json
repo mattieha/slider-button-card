@@ -28,7 +28,8 @@
       "use_brightness": "Gebruik helderheid?",
       "show_track": "Toon spoor?",
       "toggle_on_click": "Fungeren als een schakelaar (schuiven uitschakelen)",
-      "force_square": "Forceer vierkant?"
+      "force_square": "Forceer vierkant?",
+      "change_during_slide": "Wijzigen tijdens dia?"
     },
     "action_button": {
       "title": "Actie button",

@@ -28,7 +28,8 @@
       "use_brightness": "Helligkeit benutzen?",
       "show_track": "Spur anzeigen?",
       "toggle_on_click": "Als Schalter benutzen (schieben deaktivieren)",
-      "force_square": "Quadrat erzwingen?"
+      "force_square": "Quadrat erzwingen?",
+      "change_during_slide": "Wechsel während des Rutschens?"
     },
     "action_button": {
       "title": "Action-Knopf",

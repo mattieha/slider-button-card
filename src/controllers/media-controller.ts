@@ -16,12 +16,12 @@ export class MediaController extends Controller {
 
   set _value(value) {
     value = value / 100.0;
-    this._hass.callService('media_player', 'volume_set', {
+    this.callService('media_player', 'volume_set', {
       entity_id: this.stateObj.entity_id,
       volume_level: value,
     });
     if (value)
-      this._hass.callService('media_player', 'volume_mute', {
+      this.callService('media_player', 'volume_mute', {
         entity_id: this.stateObj.entity_id,
         is_volume_muted: false,
       });
