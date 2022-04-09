@@ -548,6 +548,7 @@ export class SliderButtonCard extends LitElement implements LovelaceCard {
       overflow: hidden;
       white-space: nowrap;
       text-shadow: var(--label-text-shadow, none);
+      font-weight: 500;
     }
     .off .name {
       color: var(--label-color-off, var(--primary-text-color, white));
