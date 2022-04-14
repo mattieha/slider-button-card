@@ -893,7 +893,7 @@ class Qt{constructor(t){this.classes=new Set,this.changed=!1,this.element=t;cons
       opacity: 1;            
     }
     .slider[data-show-track="true"] .slider-thumb:after {
-      opacity: 0.9;
+      opacity: 0.675;
     }
     .off .slider[data-show-track="true"] .slider-thumb:after {
       opacity: 1;
