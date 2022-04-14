@@ -1,5 +1,5 @@
 {
-    "name": "Slider Button Card",
+    "name": "Slider Button Card (Liz Sugar mods)",
     "render_readme": true,
     "filename": "slider-button-card.js",
     "domains": ["light", "fan", "cover", "switch", "input_boolean", "media_player"]
