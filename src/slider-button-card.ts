@@ -29,7 +29,7 @@ console.info(
 (window as any).customCards = (window as any).customCards || [];
 (window as any).customCards.push({
   type: 'slider-button-card',
-  name: 'Slider button Card',
+  name: 'Slider button Card (Liz Sugar mods)',
   description: 'A button card with slider',
   preview: true,
 });
@@ -377,6 +377,10 @@ export class SliderButtonCard extends LitElement implements LovelaceCard {
     }
     return color;
   }
+
+/*
+TODO: THIS IS WHERE I'M GOING TO BE ADDING TAP SUPPORT ON THE SLIDER I THINK
+*/
 
   private onPointerDown(event: PointerEvent): void {
     event.preventDefault();
