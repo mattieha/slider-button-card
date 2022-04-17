@@ -83,6 +83,7 @@ export enum Domain {
   MEDIA_PLAYER = 'media_player',
   CLIMATE = 'climate',
   LOCK = 'lock',
+  AUTOMATION = 'automation',
 }
 
 export const ActionButtonConfigDefault: ActionButtonConfig = {
@@ -143,6 +144,15 @@ export const SliderConfigDefaultDomain: Map<string, SliderConfig> = new Map([
     toggle_on_click: true,
     force_square: false,
     show_attribute: false,
+  }],
+  [Domain.AUTOMATION, {
+    direction: SliderDirections.LEFT_RIGHT,
+    background: SliderBackground.SOLID,
+    use_state_color: false,
+    use_percentage_bg_opacity: false,
+    show_track: false,
+    toggle_on_click: true,
+    force_square: false,
   }],
   [Domain.COVER, {
     direction: SliderDirections.TOP_BOTTOM,
