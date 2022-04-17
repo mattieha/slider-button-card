@@ -17,6 +17,7 @@ export class ControllerFactory {
       [Domain.LIGHT]: LightController,
       [Domain.FAN]: FanController,
       [Domain.SWITCH]: SwitchController,
+      [Domain.AUTOMATION]: SwitchController,
       [Domain.COVER]: CoverController,
       [Domain.INPUT_BOOLEAN]: InputBooleanController,
       [Domain.MEDIA_PLAYER]: MediaController,
