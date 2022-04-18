@@ -29,7 +29,7 @@ console.info(
 (window as any).customCards = (window as any).customCards || [];
 (window as any).customCards.push({
   type: 'slider-button-card',
-  name: 'Slider button Card (Liz Sugar mods)',
+  name: 'Slider button Card',
   description: 'A button card with slider',
   preview: true,
 });
