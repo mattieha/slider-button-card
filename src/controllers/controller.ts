@@ -292,7 +292,7 @@ export abstract class Controller {
   moveSlider(event: any, {left, top, width, height}): number {
     let percentage = this.calcMovementPercentage(event, {left, top, width, height});
     percentage = this.applyStep(percentage);
-    percentage = normalize(percentage, 0, 100);
+    //percentage = normalize(percentage, 0, 100);
     if (!this.isValuePercentage) {
       percentage = percentageToValue(percentage, this.min, this.max);
     }
