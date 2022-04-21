@@ -14,7 +14,7 @@ import { localize } from './localize/localize';
 
 import type { SliderButtonCardConfig } from './types';
 import { ActionButtonConfigDefault, ActionButtonMode, IconConfigDefault } from './types';
-import { getSliderDefaultForEntity } from './utils';
+import { getSliderDefaultForEntity, normalize } from './utils';
 
 /* eslint no-console: 0 */
 console.info(
@@ -378,10 +378,6 @@ export class SliderButtonCard extends LitElement implements LovelaceCard {
     return color;
   }
 
-/*
-TODO: THIS IS WHERE I'M GOING TO BE ADDING TAP SUPPORT ON THE SLIDER I THINK
-*/
-
   private onPointerDown(event: PointerEvent): void {
     event.preventDefault();
     event.stopPropagation();
@@ -389,6 +385,13 @@ TODO: THIS IS WHERE I'M GOING TO BE ADDING TAP SUPPORT ON THE SLIDER I THINK
       return;
     }
     this.slider.setPointerCapture(event.pointerId);
+
+    let oldPercentage;
+    if (this.ctrl.originalValueLock != true) {
+      this.ctrl.originalValue = this.ctrl.value;
+      this.ctrl.originalValueLock = true;
+    }
+    oldPercentage = this.ctrl.originalValue;
   }
 
   private onPointerUp(event: PointerEvent): void {
@@ -397,6 +400,8 @@ TODO: THIS IS WHERE I'M GOING TO BE ADDING TAP SUPPORT ON THE SLIDER I THINK
     }
     this.setStateValue(this.ctrl.targetValue);
     this.slider.releasePointerCapture(event.pointerId);
+    this.ctrl.originalValueLock = false;
+    this.ctrl.clickPositionLock = false;
   }
 
   private onPointerMove(event: any): void {
@@ -405,9 +410,29 @@ TODO: THIS IS WHERE I'M GOING TO BE ADDING TAP SUPPORT ON THE SLIDER I THINK
     }
     if (!this.slider.hasPointerCapture(event.pointerId)) return;
     const {left, top, width, height} = this.slider.getBoundingClientRect();
+    this.ctrl.log('event', event);
+
     const percentage = this.ctrl.moveSlider(event, {left, top, width, height});
+
+    let clickPosition;
+    if (this.ctrl.clickPositionLock != true)
+    {
+      this.ctrl.clickPosition = percentage;
+      this.ctrl.clickPositionLock = true;
+    }
+    clickPosition = this.ctrl.clickPosition;
+
+    let delta = this.ctrl.clickPosition - percentage;
+    let newPercentage = this.ctrl.originalValue - delta;
+    newPercentage = normalize(newPercentage, 0, 100)
+
+    this.ctrl.log('oldPercentage', this.ctrl.originalValue);
+    this.ctrl.log('clickPosition', this.ctrl.clickPosition);
     this.ctrl.log('onPointerMove', percentage);
-    this.updateValue(percentage);
+    this.ctrl.log('delta', delta);
+    this.ctrl.log('newPercentage', newPercentage)
+
+    this.updateValue(newPercentage);
   }
 
   connectedCallback(): void {
