@@ -1,5 +1,6 @@
 import { computeDomain } from 'custom-card-helpers';
 import { Domain, SliderButtonCardConfig } from '../types';
+import { AutomationController } from './automation-controller';
 import { ClimateController } from './climate-controller';
 import { Controller } from './controller';
 import { CoverController } from './cover-controller';
@@ -17,7 +18,7 @@ export class ControllerFactory {
       [Domain.LIGHT]: LightController,
       [Domain.FAN]: FanController,
       [Domain.SWITCH]: SwitchController,
-      [Domain.AUTOMATION]: SwitchController,
+      [Domain.AUTOMATION]: AutomationController,
       [Domain.COVER]: CoverController,
       [Domain.INPUT_BOOLEAN]: InputBooleanController,
       [Domain.MEDIA_PLAYER]: MediaController,
