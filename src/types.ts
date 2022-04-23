@@ -11,6 +11,7 @@ declare global {
 export interface SliderButtonCardConfig extends LovelaceCardConfig {
   type: string;
   entity: string;
+  attribute?: string;
   name?: string;
   show_name?: boolean;
   show_state?: boolean;
