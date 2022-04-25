@@ -13,6 +13,10 @@ export class LightController extends Controller {
   _step = 1;
   _targetValue;
   _invert = false;
+  _clickPosition;
+  _clickPositionLock;
+  _originalValue;
+  _originalValueLock;
 
   get attribute(): string {
     const attr = this._config.slider?.attribute as LightAttributes;
