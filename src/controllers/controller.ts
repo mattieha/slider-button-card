@@ -91,6 +91,13 @@ export abstract class Controller {
     return `${this.targetValue}`;
   }
 
+  get attributeLabel(): string {
+    if (this._config.attribute) {
+      return this.stateObj.attributes[this._config.attribute];
+    }
+    return '';
+  }
+
   get hidden(): boolean {
     return false;
   }

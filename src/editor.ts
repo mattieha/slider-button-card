@@ -62,12 +62,20 @@ export class SliderButtonCardEditor extends LitElement implements LovelaceCardEd
     return typeof this._config?.show_state === 'undefined' ? true : this._config?.show_state;
   }
 
+  get _show_attribute(): boolean {
+    return typeof this._config?.show_attribute === 'undefined' ? true : this._config?.show_attribute;
+  }
+
   get _compact(): boolean {
     return typeof this._config?.compact !== 'boolean' ? false : this._config?.compact;
   }
 
   get _entity(): string {
     return this._config?.entity || '';
+  }
+
+  get _attribute(): string {
+    return this._config?.attribute || '';
   }
 
   get _icon(): IconConfig {
@@ -112,6 +120,13 @@ export class SliderButtonCardEditor extends LitElement implements LovelaceCardEd
                 .configValue=${'name'}
                 @value-changed=${this._valueChanged}
               ></paper-input>
+              <paper-input
+                label="${localize('tabs.general.attribute')}"
+                .value=${this._attribute}
+                .placeholder=""
+                .configValue=${'attribute'}
+                @value-changed=${this._valueChanged}
+              ></paper-input>
               <div class="side-by-side">
                 <ha-formfield .label=${localize('tabs.general.show_name')}>
                   <ha-switch
@@ -124,6 +139,13 @@ export class SliderButtonCardEditor extends LitElement implements LovelaceCardEd
                   <ha-switch
                     .checked=${this._show_state}
                     .configValue=${'show_state'}
+                    @change=${this._valueChanged}
+                  ></ha-switch>
+                </ha-formfield>
+                <ha-formfield .label=${localize('tabs.general.show_attribute')}>
+                  <ha-switch
+                    .checked=${this._show_attribute}
+                    .configValue=${'show_attribute'}
                     @change=${this._valueChanged}
                   ></ha-switch>
                 </ha-formfield>
