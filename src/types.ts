@@ -15,6 +15,7 @@ export interface SliderButtonCardConfig extends LovelaceCardConfig {
   name?: string;
   show_name?: boolean;
   show_state?: boolean;
+  show_attribute?: boolean;
   icon?: IconConfig;
   action_button?: ActionButtonConfig;
   slider?: SliderConfig;
