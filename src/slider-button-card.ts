@@ -204,13 +204,14 @@ export class SliderButtonCard extends LitElement implements LovelaceCard {
                       ` : html`
                       ${this.ctrl.label}
                     `}
-                  </span>`
+                  </span>
+                  `
                   : ''}
 
               ${this.config.show_attribute
                 ? html`
                   <span class="attribute">
-                  ${this.config.show_state
+                  ${this.config.show_state && this.ctrl.attributeLabel
                     ? html `  ·  `
                     : ''}
                 ${this.ctrl.attributeLabel}
@@ -642,7 +643,6 @@ export class SliderButtonCard extends LitElement implements LovelaceCard {
       white-space: nowrap;
       text-shadow: var(--state-text-shadow);
       transition: font-size 0.1s ease-in-out;
-      max-width: calc(100% - 2em);
     }
     
     /* --- SLIDER --- */    
