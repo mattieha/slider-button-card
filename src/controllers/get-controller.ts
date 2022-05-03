@@ -9,6 +9,8 @@ import { LightController } from './light-controller';
 import { LockController } from './lock-controller';
 import { MediaController } from './media-controller';
 import { SwitchController } from './switch-controller';
+import { SensorController } from './sensor-controller';
+import { BinarySensorController } from './binary-sensor-controller';
 
 export class ControllerFactory {
   static getInstance(config: SliderButtonCardConfig): Controller {
@@ -22,6 +24,8 @@ export class ControllerFactory {
       [Domain.MEDIA_PLAYER]: MediaController,
       [Domain.CLIMATE]: ClimateController,
       [Domain.LOCK]: LockController,
+      [Domain.SENSOR]: SensorController,
+      [Domain.BINARY_SENSOR]: BinarySensorController,
     };
     if (typeof mapping[domain] === 'undefined') {
       throw new Error(`Unsupported entity type: ${domain}`)

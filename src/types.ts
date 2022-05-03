@@ -80,6 +80,8 @@ export enum Domain {
   MEDIA_PLAYER = 'media_player',
   CLIMATE = 'climate',
   LOCK = 'lock',
+  SENSOR = 'sensor',
+  BINARY_SENSOR = 'binary_sensor',
 }
 
 export const ActionButtonConfigDefault: ActionButtonConfig = {
@@ -182,6 +184,24 @@ export const SliderConfigDefaultDomain: Map<string, SliderConfig> = new Map([
     use_percentage_bg_opacity: false,
     show_track: true,
     toggle_on_click: false,
+    force_square: false,
+  }],
+  [Domain.SENSOR, {
+    direction: SliderDirections.LEFT_RIGHT,
+    background: SliderBackground.SOLID,
+    use_state_color: false,
+    use_percentage_bg_opacity: false,
+    show_track: false,
+    toggle_on_click: true,
+    force_square: false,
+  }],
+  [Domain.BINARY_SENSOR, {
+    direction: SliderDirections.LEFT_RIGHT,
+    background: SliderBackground.SOLID,
+    use_state_color: false,
+    use_percentage_bg_opacity: false,
+    show_track: false,
+    toggle_on_click: true,
     force_square: false,
   }],
 ]);
