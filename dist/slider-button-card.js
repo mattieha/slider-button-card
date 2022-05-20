@@ -7425,7 +7425,7 @@ let SliderButtonCard = class SliderButtonCard extends LitElement {
             // eslint-disable-next-line @typescript-eslint/camelcase
             show_state: true, compact: false, 
             // eslint-disable-next-line @typescript-eslint/camelcase
-            action_button: copy(ActionButtonConfigDefault), debug: true }, config);
+            action_button: copy(ActionButtonConfigDefault), debug: false }, config);
         this.ctrl = ControllerFactory.getInstance(this.config);
     }
     shouldUpdate(changedProps) {
