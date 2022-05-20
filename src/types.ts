@@ -77,6 +77,7 @@ export enum Domain {
   FAN = 'fan',
   COVER = 'cover',
   INPUT_BOOLEAN = 'input_boolean',
+  INPUT_NUMBER = 'input_number',
   MEDIA_PLAYER = 'media_player',
   CLIMATE = 'climate',
   LOCK = 'lock',
@@ -155,6 +156,15 @@ export const SliderConfigDefaultDomain: Map<string, SliderConfig> = new Map([
     use_percentage_bg_opacity: false,
     show_track: false,
     toggle_on_click: true,
+    force_square: false,
+  }],
+  [Domain.INPUT_NUMBER, {
+    direction: SliderDirections.LEFT_RIGHT,
+    background: SliderBackground.SOLID,
+    use_state_color: false,
+    use_percentage_bg_opacity: false,
+    show_track: false,
+    toggle_on_click: false,
     force_square: false,
   }],
   [Domain.MEDIA_PLAYER, {
