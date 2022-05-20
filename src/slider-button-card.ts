@@ -91,7 +91,7 @@ export class SliderButtonCard extends LitElement implements LovelaceCard {
       compact: false,
       // eslint-disable-next-line @typescript-eslint/camelcase
       action_button: copy(ActionButtonConfigDefault),
-      debug: true,
+      debug: false,
       ...config
     };
     this.ctrl = ControllerFactory.getInstance(this.config);
