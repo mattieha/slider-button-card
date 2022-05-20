@@ -5443,7 +5443,7 @@ class Controller {
     }
     moveSlider(event, { left, top, width, height }) {
         let percentage = this.calcMovementPercentage(event, { left, top, width, height });
-        percentage = this.applyStep(percentage);
+        //percentage = this.applyStep(percentage);
         percentage = normalize(percentage, 0, 100);
         if (!this.isValuePercentage) {
             percentage = percentageToValue(percentage, this.min, this.max);
@@ -5476,7 +5476,10 @@ class Controller {
         return percentage;
     }
     applyStep(value) {
-        return Math.round(value / this.step) * this.step;
+        this.log("applyStep value", value);
+        let rounded = Math.round(value / this.step) * this.step;
+        this.log("applyStep round", rounded);
+        return rounded;
     }
     log(name = '', value = '') {
         if (this._config.debug) {
@@ -7422,7 +7425,7 @@ let SliderButtonCard = class SliderButtonCard extends LitElement {
             // eslint-disable-next-line @typescript-eslint/camelcase
             show_state: true, compact: false, 
             // eslint-disable-next-line @typescript-eslint/camelcase
-            action_button: copy(ActionButtonConfigDefault), debug: false }, config);
+            action_button: copy(ActionButtonConfigDefault), debug: true }, config);
         this.ctrl = ControllerFactory.getInstance(this.config);
     }
     shouldUpdate(changedProps) {

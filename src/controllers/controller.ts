@@ -235,7 +235,7 @@ export abstract class Controller {
 
   moveSlider(event: any, {left, top, width, height}): number {
     let percentage = this.calcMovementPercentage(event, {left, top, width, height});
-    percentage = this.applyStep(percentage);
+    //percentage = this.applyStep(percentage);
     percentage = normalize(percentage, 0, 100);
     if (!this.isValuePercentage) {
       percentage = percentageToValue(percentage, this.min, this.max);
@@ -282,7 +282,10 @@ export abstract class Controller {
   }
 
   applyStep(value: number): number {
-    return  Math.round(value / this.step) * this.step;
+    this.log("applyStep value", value);
+    let rounded = Math.round(value / this.step) * this.step;
+    this.log("applyStep round", rounded);
+    return rounded;
   }
 
   log(name = '', value: string | number | object = ''): void {
