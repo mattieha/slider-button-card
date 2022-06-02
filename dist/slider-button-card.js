@@ -7698,6 +7698,7 @@ let SliderButtonCard = class SliderButtonCard extends LitElement {
             this.ctrl.originalValue = this.ctrl.value;
             this.ctrl.originalValueLock = true;
         }
+        // eslint-disable-next-line prefer-const
         this.ctrl.originalValue;
     }
     onPointerUp(event) {
@@ -7722,7 +7723,9 @@ let SliderButtonCard = class SliderButtonCard extends LitElement {
             this.ctrl.clickPosition = percentage;
             this.ctrl.clickPositionLock = true;
         }
+        // eslint-disable-next-line prefer-const
         this.ctrl.clickPosition;
+        // eslint-disable-next-line prefer-const
         let delta = this.ctrl.clickPosition - percentage;
         let newPercentage = this.ctrl.originalValue - delta;
         newPercentage = normalize(newPercentage, this.ctrl.min, this.ctrl.max);

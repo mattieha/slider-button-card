@@ -386,11 +386,13 @@ export class SliderButtonCard extends LitElement implements LovelaceCard {
     }
     this.slider.setPointerCapture(event.pointerId);
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     let oldPercentage;
     if (this.ctrl.originalValueLock != true) {
       this.ctrl.originalValue = this.ctrl.value;
       this.ctrl.originalValueLock = true;
     }
+    // eslint-disable-next-line prefer-const
     oldPercentage = this.ctrl.originalValue;
   }
 
@@ -414,14 +416,17 @@ export class SliderButtonCard extends LitElement implements LovelaceCard {
 
     const percentage = this.ctrl.moveSlider(event, {left, top, width, height});
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     let clickPosition;
     if (this.ctrl.clickPositionLock != true)
     {
       this.ctrl.clickPosition = percentage;
       this.ctrl.clickPositionLock = true;
     }
+    // eslint-disable-next-line prefer-const
     clickPosition = this.ctrl.clickPosition;
 
+    // eslint-disable-next-line prefer-const
     let delta = this.ctrl.clickPosition - percentage;
     let newPercentage = this.ctrl.originalValue - delta;
     newPercentage = normalize(newPercentage, this.ctrl.min, this.ctrl.max)
