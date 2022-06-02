@@ -7,6 +7,10 @@ export class CoverController extends Controller {
   _min = 0;
   _targetValue;
   _invert = true;
+  _clickPosition;
+  _clickPositionLock;
+  _originalValue;
+  _originalValueLock;
 
   get attribute(): string {
     if (this._config.slider?.attribute?.length && this.allowedAttributes.includes(this._config.slider?.attribute)) {

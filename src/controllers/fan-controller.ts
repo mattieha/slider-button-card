@@ -5,6 +5,10 @@ export class FanController extends Controller {
   _min = 0;
   _targetValue;
   _invert = false;
+  _clickPosition;
+  _clickPositionLock;
+  _originalValue;
+  _originalValueLock;
 
   get _value(): number {
     return this.isUnavailable || STATES_OFF.includes(this.state)

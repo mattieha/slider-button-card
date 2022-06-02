@@ -7,6 +7,10 @@ export class MediaController extends Controller {
   _step = 1;
   _targetValue;
   _invert = false;
+  _clickPosition;
+  _clickPositionLock;
+  _originalValue;
+  _originalValueLock;
 
   get _value(): number {
     return this.isUnavailable || this.stateObj?.attributes?.is_volume_muted

@@ -14,7 +14,7 @@ import { localize } from './localize/localize';
 
 import type { SliderButtonCardConfig } from './types';
 import { ActionButtonConfigDefault, ActionButtonMode, IconConfigDefault } from './types';
-import { getSliderDefaultForEntity } from './utils';
+import { getSliderDefaultForEntity, normalize } from './utils';
 
 /* eslint no-console: 0 */
 console.info(
@@ -385,6 +385,15 @@ export class SliderButtonCard extends LitElement implements LovelaceCard {
       return;
     }
     this.slider.setPointerCapture(event.pointerId);
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    let oldPercentage;
+    if (this.ctrl.originalValueLock != true) {
+      this.ctrl.originalValue = this.ctrl.value;
+      this.ctrl.originalValueLock = true;
+    }
+    // eslint-disable-next-line prefer-const
+    oldPercentage = this.ctrl.originalValue;
   }
 
   private onPointerUp(event: PointerEvent): void {
@@ -393,6 +402,8 @@ export class SliderButtonCard extends LitElement implements LovelaceCard {
     }
     this.setStateValue(this.ctrl.targetValue);
     this.slider.releasePointerCapture(event.pointerId);
+    this.ctrl.originalValueLock = false;
+    this.ctrl.clickPositionLock = false;
   }
 
   private onPointerMove(event: any): void {
@@ -401,9 +412,32 @@ export class SliderButtonCard extends LitElement implements LovelaceCard {
     }
     if (!this.slider.hasPointerCapture(event.pointerId)) return;
     const {left, top, width, height} = this.slider.getBoundingClientRect();
+    this.ctrl.log('event', event);
+
     const percentage = this.ctrl.moveSlider(event, {left, top, width, height});
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    let clickPosition;
+    if (this.ctrl.clickPositionLock != true)
+    {
+      this.ctrl.clickPosition = percentage;
+      this.ctrl.clickPositionLock = true;
+    }
+    // eslint-disable-next-line prefer-const
+    clickPosition = this.ctrl.clickPosition;
+
+    // eslint-disable-next-line prefer-const
+    let delta = this.ctrl.clickPosition - percentage;
+    let newPercentage = this.ctrl.originalValue - delta;
+    newPercentage = normalize(newPercentage, this.ctrl.min, this.ctrl.max)
+
+    this.ctrl.log('oldPercentage', this.ctrl.originalValue);
+    this.ctrl.log('clickPosition', this.ctrl.clickPosition);
     this.ctrl.log('onPointerMove', percentage);
-    this.updateValue(percentage);
+    this.ctrl.log('delta', delta);
+    this.ctrl.log('newPercentage', newPercentage)
+
+    this.updateValue(newPercentage);
   }
 
   connectedCallback(): void {
