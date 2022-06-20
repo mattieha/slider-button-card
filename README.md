@@ -724,6 +724,7 @@ This card supports translations. Please, help to add more translations and impro
 - Portuguese
 - Russian
 - Korean
+- Italian
 - [_Your language?_][add-translation]
 
 ## Credits

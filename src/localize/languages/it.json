@@ -1,0 +1,62 @@
+{
+  "common": {
+    "version": "v",
+    "invalid_configuration": "Configurazione non valida",
+    "show_warning": "Mostra Avvisi",
+    "show_error": "Mostra Errori"
+  },
+  "tabs": {
+    "general": {
+      "title": "Generale",
+      "entity": "Entità (Obbligatorio)",
+      "name": "Nome (Opzionale)",
+      "show_name": "Mostra nome?",
+      "show_state": "Mostra stato?",
+      "compact": "Compatto?"
+    },
+    "icon": {
+      "title": "Icona",
+      "icon": "Icona (Opzionale)",
+      "show_icon": "Mostra icona?",
+      "use_state_color": "Usa colore da stato?",
+      "tap_action": "Azione Tap"
+    },
+    "slider": {
+      "title": "Slider",
+      "direction": "Direzione",
+      "background": "Sfondo",
+      "use_brightness": "Usa luminosità?",
+      "show_track": "Mostra traccia?",
+      "toggle_on_click": "Agisci come alternato (disabilità sliding)",
+      "force_square": "Force square?"
+    },
+    "action_button": {
+      "title": "Bottone Azione",
+      "mode": "Modalità",
+      "icon": "Icona",
+      "show_button": "Mostra bottone?",
+      "show_spinner": "Mostra spinner?",
+      "tap_action": "Azione Tap"
+    }
+  },
+  "state": {
+    "off": "Spento",
+    "on": "Acceso"
+  },
+  "direction": {
+    "left-right": "Da sinistra a destra",
+    "top-bottom": "Da sopra a sotto",
+    "bottom-top": "Da sotto a sopra"
+  },
+  "background": {
+    "striped": "Strisce",
+    "gradient": "Gradiente",
+    "solid": "Solido",
+    "triangle": "Triangolo",
+    "custom": "Personalizzato"
+  },
+  "mode": {
+    "toggle": "Alternato",
+    "custom": "Personalizzato"
+  }
+}
