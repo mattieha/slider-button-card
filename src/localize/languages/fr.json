@@ -1,0 +1,62 @@
+ {
+  "common": {
+    "version": "v",
+    "invalid_configuration": "Configuration incorrecte",
+    "show_warning": "Afficher les avertissement",
+    "show_error": "Afficher les erreurs"
+  },
+  "tabs": {
+    "general": {
+      "title": "Général",
+      "entity": "Entité (Obligatoire)",
+      "name": "Nom (Optionnel)",
+      "show_name": "Afficher le nom ?",
+      "show_state": "Afficher l'état ?",
+      "compact": "Compact ?"
+    },
+    "icon": {
+      "title": "Icône",
+      "icon": "Icône (Optionnel)",
+      "show_icon": "Afficher l'icône ?",
+      "use_state_color": "Afficher la couleur d'état?",
+      "tap_action": "Action"
+    },
+    "slider": {
+      "title": "Curseur",
+      "direction": "Direction",
+      "background": "Fond",
+      "use_brightness": "Utiliser la luminosité ?",
+      "show_track": "Afficher le chemin ?",
+      "toggle_on_click": "Agir comme un bouton (désactive le curseur)",
+      "force_square": "Forcer carré ?"
+    },
+    "action_button": {
+      "title": "Bouton d'action",
+      "mode": "Mode",
+      "icon": "Icône",
+      "show_button": "Afficher le bouton ?",
+      "show_spinner": "Afficher spinner ?",
+      "tap_action": "Action"
+    }
+  },
+  "state": {
+    "off": "Inactif",
+    "on": "Actif"
+  },
+  "direction": {
+    "left-right": "gauche à droite",
+    "top-bottom": "haut à bas",
+    "bottom-top": "Bas à haut"
+  },
+  "background": {
+    "striped": "Rayures",
+    "gradient": "Dégradé",
+    "solid": "Uni",
+    "triangle": "Triangle",
+    "custom": "Personnalisé"
+  },
+  "mode": {
+    "toggle": "Bascule",
+    "custom": "Personnalisé"
+  }
+}
