@@ -169,7 +169,7 @@ Custom styles can be set by using [Card mod](https://github.com/thomasloven/love
 </td>
 </tr>
 <tr>
-<td><img src="https://raw.githubusercontent.com/mattieha/slider-button-card/main/assets/examples/general-minimal.png">  
+<td><img src="https://raw.githubusercontent.com/custom-cards/slider-button-card/main/assets/examples/general-minimal.png">  
 </td>
 <td valign="top">
 
@@ -200,7 +200,7 @@ action_button:
 </td>
 </tr>
 <tr>
-<td><img src="https://raw.githubusercontent.com/mattieha/slider-button-card/main/assets/examples/general-compact.png">  
+<td><img src="https://raw.githubusercontent.com/custom-cards/slider-button-card/main/assets/examples/general-compact.png">  
 </td>
 <td valign="top">
 
@@ -220,7 +220,7 @@ compact: true
 </td>
 </tr>
 <tr>
-<td><img src="https://raw.githubusercontent.com/mattieha/slider-button-card/main/assets/examples/icon-minimal.png">  
+<td><img src="https://raw.githubusercontent.com/custom-cards/slider-button-card/main/assets/examples/icon-minimal.png">  
 </td>
 <td valign="top">
 
@@ -240,7 +240,7 @@ icon:
 </td>
 </tr>
 <tr>
-<td><img src="https://raw.githubusercontent.com/mattieha/slider-button-card/main/assets/examples/icon-icon-override.png">  
+<td><img src="https://raw.githubusercontent.com/custom-cards/slider-button-card/main/assets/examples/icon-icon-override.png">  
 </td>
 <td valign="top">
 
@@ -264,7 +264,7 @@ icon:
 </td>
 </tr>
 <tr>
-<td><img src="https://raw.githubusercontent.com/mattieha/slider-button-card/main/assets/examples/action-minimal.png">  
+<td><img src="https://raw.githubusercontent.com/custom-cards/slider-button-card/main/assets/examples/action-minimal.png">  
 </td>
 <td valign="top">
 
@@ -284,7 +284,7 @@ action_button:
 </td>
 </tr>
 <tr>
-<td><img src="https://raw.githubusercontent.com/mattieha/slider-button-card/main/assets/examples/action-custom.png">  
+<td><img src="https://raw.githubusercontent.com/custom-cards/slider-button-card/main/assets/examples/action-custom.png">  
 </td>
 <td valign="top">
 
@@ -306,7 +306,7 @@ action_button:
 </td>
 </tr>
 <tr>
-<td><img src="https://raw.githubusercontent.com/mattieha/slider-button-card/main/assets/examples/action-custom-icon.png">  
+<td><img src="https://raw.githubusercontent.com/custom-cards/slider-button-card/main/assets/examples/action-custom-icon.png">  
 </td>
 <td valign="top">
 
@@ -334,7 +334,7 @@ action_button:
 </td>
 </tr>
 <tr>
-<td><img src="https://raw.githubusercontent.com/mattieha/slider-button-card/main/assets/examples/slider-minimal.png">  
+<td><img src="https://raw.githubusercontent.com/custom-cards/slider-button-card/main/assets/examples/slider-minimal.png">  
 </td>
 <td valign="top">
 
@@ -354,7 +354,7 @@ slider:
 </td>
 </tr>
 <tr>
-<td><img src="https://raw.githubusercontent.com/mattieha/slider-button-card/main/assets/examples/slider-state-color.png">  
+<td><img src="https://raw.githubusercontent.com/custom-cards/slider-button-card/main/assets/examples/slider-state-color.png">  
 </td>
 <td valign="top">
 
@@ -375,7 +375,7 @@ slider:
 </td>
 </tr>
 <tr>
-<td><img src="https://raw.githubusercontent.com/mattieha/slider-button-card/main/assets/examples/slider-show-track.png">  
+<td><img src="https://raw.githubusercontent.com/custom-cards/slider-button-card/main/assets/examples/slider-show-track.png">  
 </td>
 <td valign="top">
 
@@ -397,7 +397,7 @@ slider:
 </td>
 </tr>
 <tr>
-<td><img src="https://raw.githubusercontent.com/mattieha/slider-button-card/main/assets/examples/slider-force-square.png">  
+<td><img src="https://raw.githubusercontent.com/custom-cards/slider-button-card/main/assets/examples/slider-force-square.png">  
 </td>
 <td valign="top">
 
@@ -425,7 +425,7 @@ For fan entities the icon auto rotates based on the speed of the fan.
 </td>
 </tr>
 <tr>
-<td><img src="https://raw.githubusercontent.com/mattieha/slider-button-card/main/assets/examples/fan.gif">  
+<td><img src="https://raw.githubusercontent.com/custom-cards/slider-button-card/main/assets/examples/fan.gif">  
 </td>
 <td valign="top">
 
@@ -458,7 +458,7 @@ name: Fan
 </td>
 </tr>
 <tr>
-<td><img src="https://raw.githubusercontent.com/mattieha/slider-button-card/main/assets/examples/switch.gif">  
+<td><img src="https://raw.githubusercontent.com/custom-cards/slider-button-card/main/assets/examples/switch.gif">  
 </td>
 <td valign="top">
 
@@ -492,7 +492,7 @@ For most use cases: set `slider.direction: top-bottom` and `slider.background: s
 </td>
 </tr>
 <tr>
-<td><img src="https://raw.githubusercontent.com/mattieha/slider-button-card/main/assets/examples/cover.gif">  
+<td><img src="https://raw.githubusercontent.com/custom-cards/slider-button-card/main/assets/examples/cover.gif">  
 </td>
 <td valign="top">
 
@@ -527,7 +527,7 @@ In this example the action button is used to toggle play/pause.
 </td>
 </tr>
 <tr>
-<td><img src="https://raw.githubusercontent.com/mattieha/slider-button-card/main/assets/examples/media.gif">  
+<td><img src="https://raw.githubusercontent.com/custom-cards/slider-button-card/main/assets/examples/media.gif">  
 </td>
 <td valign="top">
 
@@ -565,7 +565,7 @@ Default behavior: slider is used to set target temperature, it doesn't alter sta
 </td>
 </tr>
 <tr>
-<td><img src="https://raw.githubusercontent.com/mattieha/slider-button-card/main/assets/examples/climate.gif">  
+<td><img src="https://raw.githubusercontent.com/custom-cards/slider-button-card/main/assets/examples/climate.gif">  
 </td>
 <td valign="top">
 
@@ -599,7 +599,7 @@ Default behavior: `slider.toggle_on_click: true`
 </td>
 </tr>
 <tr>
-<td><img src="https://raw.githubusercontent.com/mattieha/slider-button-card/main/assets/examples/lock.gif">  
+<td><img src="https://raw.githubusercontent.com/custom-cards/slider-button-card/main/assets/examples/lock.gif">  
 </td>
 <td valign="top">
 
@@ -631,7 +631,7 @@ name: Lock
 </td>
 </tr>
 <tr>
-<td valign="top"><img src="https://raw.githubusercontent.com/mattieha/slider-button-card/main/assets/preview.gif">  
+<td valign="top"><img src="https://raw.githubusercontent.com/custom-cards/slider-button-card/main/assets/preview.gif">  
 </td>
 <td valign="top">
 
@@ -709,7 +709,7 @@ Mixed `group` entities are not supported, if you want to control multiple
 - media players use [Media player group](https://www.home-assistant.io/integrations/media_player.group/)
 
 ## Known issues
-When you discover any bugs please open an [issue](https://github.com/mattieha/slider-button-card/issues).
+When you discover any bugs please open an [issue](https://github.com/custom-cards/slider-button-card/issues).
 
 ## Languages
 
@@ -727,20 +727,21 @@ This card supports translations. Please, help to add more translations and impro
 - [_Your language?_][add-translation]
 
 ## Credits
-- Inspired by [Slider entity row](https://github.com/thomasloven/lovelace-slider-entity-row)
+- Originally inspired by [Slider entity row](https://github.com/thomasloven/lovelace-slider-entity-row)
+- Forked from [Slider button card](https://github.com/mattieha/slider-button-card/) by [@mattieha](https://www.github.com/mattieha)
 
 ---
 [![beer](https://www.buymeacoffee.com/assets/img/custom_images/black_img.png)](https://www.buymeacoffee.com/mattijsha)
 
 <!-- References -->
 [hacs]: https://hacs.xyz
-[add-translation]: https://github.com/mattieha/slider-button-card/blob/main/CONTRIBUTE.md#adding-a-new-translation
-[visual-editor]: https://raw.githubusercontent.com/mattieha/slider-button-card/main/assets/card-editor.png
-[preview]: https://raw.githubusercontent.com/mattieha/slider-button-card/main/assets/preview.gif
-[preview-2]: https://raw.githubusercontent.com/mattieha/slider-button-card/main/assets/preview-2.gif
-[grid]: https://raw.githubusercontent.com/mattieha/slider-button-card/main/assets/grid-not-square.png
-[full-width]: https://raw.githubusercontent.com/mattieha/slider-button-card/main/assets/grid-full-width.png
-[latest-release]: https://github.com/mattieha/slider-button-card/releases/latest
-[releases-shield]: https://img.shields.io/github/release/mattieha/slider-button-card.svg?style=for-the-badge
-[releases]: https://github.com/mattieha/slider-button-card/releases
-[icon-minimal]: https://raw.githubusercontent.com/mattieha/slider-button-card/main/assets/grid-full-width.png
+[add-translation]: https://github.com/custom-cards/slider-button-card/blob/main/CONTRIBUTE.md#adding-a-new-translation
+[visual-editor]: https://raw.githubusercontent.com/custom-cards/slider-button-card/main/assets/card-editor.png
+[preview]: https://raw.githubusercontent.com/custom-cards/slider-button-card/main/assets/preview.gif
+[preview-2]: https://raw.githubusercontent.com/custom-cards/slider-button-card/main/assets/preview-2.gif
+[grid]: https://raw.githubusercontent.com/custom-cards/slider-button-card/main/assets/grid-not-square.png
+[full-width]: https://raw.githubusercontent.com/custom-cards/slider-button-card/main/assets/grid-full-width.png
+[latest-release]: https://github.com/custom-cards/slider-button-card/releases/latest
+[releases-shield]: https://img.shields.io/github/release/custom-cards/slider-button-card.svg?style=for-the-badge
+[releases]: https://github.com/custom-cards/slider-button-card/releases
+[icon-minimal]: https://raw.githubusercontent.com/custom-cards/slider-button-card/main/assets/grid-full-width.png
