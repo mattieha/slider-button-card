@@ -1,6 +1,6 @@
 {
   "name": "slider-button-card",
-  "version": "1.10.3",
+  "version": "1.10.9",
   "description": "Lovelace slider-button-card",
   "keywords": [
     "home-assistant",
@@ -12,7 +12,7 @@
   ],
   "module": "slider-button-card.js",
   "repository": {
-    "url": "https://github.com/mattieha/slider-button-card"
+    "url": "https://github.com/custom-cards/slider-button-card"
   },
   "author": "M Hoog Antink",
   "license": "MIT",
@@ -44,7 +44,6 @@
     "rollup-plugin-serve": "^1.1.0",
     "rollup-plugin-terser": "^5.3.1",
     "rollup-plugin-typescript2": "^0.24.3",
-    "rollup-plugin-uglify": "^6.0.4",
     "typescript": "^3.9.7"
   },
   "scripts": {
