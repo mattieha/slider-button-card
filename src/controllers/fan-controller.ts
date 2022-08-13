@@ -29,7 +29,7 @@ export class FanController extends Controller {
   }
 
   get _step(): number {
-    return this.stateObj.attributes.percentage_step;
+    return this.hasSlider ? this.stateObj.attributes.percentage_step : 1;
   }
 
   get label(): string {
@@ -44,7 +44,7 @@ export class FanController extends Controller {
   }
 
   get hasSlider(): boolean {
-    return 'speed' in this.stateObj.attributes;
+    return 'percentage' in this.stateObj.attributes;
   }
 
   get _max(): number {
@@ -53,9 +53,14 @@ export class FanController extends Controller {
 
   get iconRotateSpeed(): string {
     let speed = 0;
-    if (this.percentage > 0) {
-      speed = 3 - ((this.percentage / 100) * 2);
+    if (this.hasSlider) {
+      if (this.percentage > 0) {
+        speed = 3 - ((this.percentage / 100) * 2);
+      }
+    } else {
+      speed = this._value
     }
+    
     return `${speed}s`
   }
 
