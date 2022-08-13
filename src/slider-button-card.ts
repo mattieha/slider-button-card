@@ -162,6 +162,7 @@ export class SliderButtonCard extends LitElement implements LovelaceCard {
                @pointerdown=${this.onPointerDown}
                @pointermove=${this.onPointerMove}
                @pointerup=${this.onPointerUp}
+               @pointercancel=${this.onPointerCancel}
           >
             ${this.ctrl.hasToggle
               ? html`
@@ -394,6 +395,11 @@ export class SliderButtonCard extends LitElement implements LovelaceCard {
     }
     if (!this.slider.hasPointerCapture(event.pointerId)) return;
     this.setStateValue(this.ctrl.targetValue);
+    this.slider.releasePointerCapture(event.pointerId);
+  }
+
+  private onPointerCancel(event: PointerEvent): void {
+    this.updateValue(this.ctrl.value, false);
     this.slider.releasePointerCapture(event.pointerId);
   }
 
