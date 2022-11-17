@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { ActionHandlerEvent, applyThemesOnElement, computeStateDomain, handleAction, hasConfigOrEntityChanged, HomeAssistant, LovelaceCard, LovelaceCardEditor, STATES_OFF, toggleEntity } from 'custom-card-helpers';
 import copy from 'fast-copy';
-import { css, CSSResult, customElement, html, LitElement, property, PropertyValues, query, state, TemplateResult } from 'lit-element';
+import { css, CSSResult, customElement, eventOptions, html, LitElement, property, PropertyValues, query, state, TemplateResult } from 'lit-element';
 import { classMap } from 'lit-html/directives/class-map';
 import { ifDefined } from 'lit-html/directives/if-defined';
 import { styleMap } from 'lit-html/directives/style-map';
@@ -162,6 +162,7 @@ export class SliderButtonCard extends LitElement implements LovelaceCard {
                @pointerdown=${this.onPointerDown}
                @pointermove=${this.onPointerMove}
                @pointerup=${this.onPointerUp}
+               @pointercancel=${this.onPointerCancel}
           >
             ${this.ctrl.hasToggle
               ? html`
@@ -378,8 +379,8 @@ export class SliderButtonCard extends LitElement implements LovelaceCard {
     return color;
   }
 
+  @eventOptions({passive: true})
   private onPointerDown(event: PointerEvent): void {
-    event.preventDefault();
     event.stopPropagation();
     if (this.ctrl.isSliderDisabled) {
       return;
@@ -387,14 +388,22 @@ export class SliderButtonCard extends LitElement implements LovelaceCard {
     this.slider.setPointerCapture(event.pointerId);
   }
 
+  @eventOptions({passive: true})
   private onPointerUp(event: PointerEvent): void {
     if (this.ctrl.isSliderDisabled) {
       return;
     }
+    if (!this.slider.hasPointerCapture(event.pointerId)) return;
     this.setStateValue(this.ctrl.targetValue);
     this.slider.releasePointerCapture(event.pointerId);
   }
 
+  private onPointerCancel(event: PointerEvent): void {
+    this.updateValue(this.ctrl.value, false);
+    this.slider.releasePointerCapture(event.pointerId);
+  }
+
+  @eventOptions({passive: true})
   private onPointerMove(event: any): void {
     if (this.ctrl.isSliderDisabled) {
       return;
@@ -424,7 +433,7 @@ export class SliderButtonCard extends LitElement implements LovelaceCard {
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      touch-action: none;
+      touch-action: pan-y;
       overflow: hidden;      
       --mdc-icon-size: 2.2em;
     }
@@ -468,9 +477,9 @@ export class SliderButtonCard extends LitElement implements LovelaceCard {
       min-height: 7rem;
       width: 100%;
       display: block;
-      overflow: hidden;           
+      overflow: hidden;
       transition: all 0.2s ease-in-out;
-      touch-action: none;
+      touch-action: pan-y;
     }
     ha-card.compact .button {
       min-height: 3rem !important;
