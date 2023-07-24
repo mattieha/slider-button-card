@@ -1,0 +1,62 @@
+{
+  "common": {
+    "version": "v",
+    "invalid_configuration": "Nesprávna konfigurácia",
+    "show_warning": "Zobraziť upozornenia",
+    "show_error": "Zobraziť errory"
+  },
+  "tabs": {
+    "general": {
+      "title": "Všeobecné",
+      "entity": "Entita (požadované)",
+      "name": "Názov (voliteľné)",
+      "show_name": "Zobraziť mená?",
+      "show_state": "Zobraziť stavy?",
+      "compact": "Kompaktné?"
+    },
+    "icon": {
+      "title": "Ikona",
+      "icon": "Ikona (voliteľné)",
+      "show_icon": "Zobraziť ikonu?",
+      "use_state_color": "Použiť farbu stavu?",
+      "tap_action": "Akcia ťuknutia"
+    },
+    "slider": {
+      "title": "Posuvník",
+      "direction": "Smer",
+      "background": "Pozadie",
+      "use_brightness": "Použiť jas?",
+      "show_track": "Zobraziť skladbu?",
+      "toggle_on_click": "Pôsobiť ako prepínač (zakázať posúvanie)",
+      "force_square": "Silový štvorec?"
+    },
+    "action_button": {
+      "title": "Akčné tlačidlo",
+      "mode": "Režim",
+      "icon": "Ikona",
+      "show_button": "Zobraziť tlačidlo?",
+      "show_spinner": "Zobraziť spinner?",
+      "tap_action": "Akcia ťuknutia"
+    }
+  },
+  "state": {
+    "off": "Off",
+    "on": "On"
+  },
+  "direction": {
+    "left-right": "Zľava doprava",
+    "top-bottom": "Zhora dole",
+    "bottom-top": "Zdola hore"
+  },
+  "background": {
+    "striped": "Pruhované",
+    "gradient": "Gradient",
+    "solid": "Pevné",
+    "triangle": "Trojuholníkové",
+    "custom": "Voliteľné"
+  },
+  "mode": {
+    "toggle": "Prepnúť",
+    "custom": "Voliteľné"
+  }
+}
