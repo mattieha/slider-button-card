@@ -181,14 +181,14 @@ export class LightController extends Controller {
 
   get label(): string {
     if (this.isOff) {
-      return this._hass.localize('component.light.state._.off');
+      return this._hass.localize('component.light.entity_component._.state.off');
     }
     if (this.colorMode === LightColorModes.ON_OFF) {
-      return this._hass.localize('component.light.state._.on');
+      return this._hass.localize('component.light.entity_component._.state.on');
     }
     switch(this.attribute) {
       case LightAttributes.ON_OFF:
-        return this._hass.localize('component.light.state._.on');
+        return this._hass.localize('component.light.entity_component._.state.on');
       case LightAttributes.COLOR_TEMP:
       case LightAttributes.BRIGHTNESS:
         return `${this.targetValue}`;

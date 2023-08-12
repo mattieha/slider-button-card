@@ -37,10 +37,10 @@ export class FanController extends Controller {
       if (this.hasSlider) {
         return `${this.percentage}%`
       } else {
-        return this._hass.localize('component.fan.state._.on');
+        return this._hass.localize('component.fan.entity_component._.state.on');
       }
     }
-    return this._hass.localize('component.fan.state._.off');
+    return this._hass.localize('component.fan.entity_component._.state.off');
   }
 
   get hasSlider(): boolean {
