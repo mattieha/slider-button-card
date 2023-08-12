@@ -256,6 +256,16 @@ export abstract class Controller {
           percentage = 100 - percentage;
         }
         break
+      case SliderDirections.RIGHT_LEFT:
+        percentage = toPercentage(
+          event.clientX,
+          left,
+          width
+        );
+        if (!this.invert) {
+          percentage = 100 - percentage;
+        }
+        break
       case SliderDirections.TOP_BOTTOM:
         percentage = toPercentage(
           event.clientY,

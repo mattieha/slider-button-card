@@ -655,6 +655,9 @@ export class SliderButtonCard extends LitElement implements LovelaceCard {
       --slider-bg: linear-gradient(var(--slider-bg-direction), transparent 0%, transparent 50%, var(--slider-color) 50%, var(--slider-color) 100%);
       border-right: 0px solid;
     }    
+    .slider[data-background="triangle"][data-mode="right-left"] .slider-bg {
+      --slider-bg-direction: to bottom left;
+    }
     .slider[data-background="triangle"][data-mode="bottom-top"] .slider-bg {
       --slider-bg-direction: to top left;      
     }    
@@ -676,6 +679,9 @@ export class SliderButtonCard extends LitElement implements LovelaceCard {
     .slider[data-background="striped"][data-mode="top-bottom"] .slider-bg {      
       --slider-bg-size: 100% 4px;
     }    
+    .slider[data-mode="right-left"] .slider-bg {
+      --slider-bg-direction: to left;      
+    }    
     .slider[data-mode="bottom-top"] .slider-bg {
       --slider-bg-direction: to top;      
     }    
@@ -696,6 +702,9 @@ export class SliderButtonCard extends LitElement implements LovelaceCard {
     .changing .slider .slider-thumb {
       transition: none;
     }    
+    .slider[data-mode="right-left"] .slider-thumb {
+      transform: translateX(calc(var(--slider-value) * -1))  !important;
+    }
     .slider[data-mode="top-bottom"] .slider-thumb {
       transform: translateY(var(--slider-value)) !important;
     }
