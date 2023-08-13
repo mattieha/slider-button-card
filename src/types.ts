@@ -11,9 +11,11 @@ declare global {
 export interface SliderButtonCardConfig extends LovelaceCardConfig {
   type: string;
   entity: string;
+  attribute?: string;
   name?: string;
   show_name?: boolean;
   show_state?: boolean;
+  show_attribute?: boolean;
   icon?: IconConfig;
   action_button?: ActionButtonConfig;
   slider?: SliderConfig;
@@ -120,6 +122,7 @@ export const SliderConfigDefaultDomain: Map<string, SliderConfig> = new Map([
     show_track: false,
     toggle_on_click: false,
     force_square: false,
+    show_attribute: false,
   }],
   [Domain.FAN, {
     direction: SliderDirections.LEFT_RIGHT,
@@ -129,6 +132,7 @@ export const SliderConfigDefaultDomain: Map<string, SliderConfig> = new Map([
     show_track: false,
     toggle_on_click: false,
     force_square: false,
+    show_attribute: false,
   }],
   [Domain.SWITCH, {
     direction: SliderDirections.LEFT_RIGHT,
@@ -138,6 +142,7 @@ export const SliderConfigDefaultDomain: Map<string, SliderConfig> = new Map([
     show_track: false,
     toggle_on_click: true,
     force_square: false,
+    show_attribute: false,
   }],
   [Domain.COVER, {
     direction: SliderDirections.TOP_BOTTOM,
@@ -148,6 +153,7 @@ export const SliderConfigDefaultDomain: Map<string, SliderConfig> = new Map([
     show_track: false,
     force_square: false,
     invert: true,
+    show_attribute: false,
   }],
   [Domain.INPUT_BOOLEAN, {
     direction: SliderDirections.LEFT_RIGHT,
@@ -157,6 +163,7 @@ export const SliderConfigDefaultDomain: Map<string, SliderConfig> = new Map([
     show_track: false,
     toggle_on_click: true,
     force_square: false,
+    show_attribute: false,
   }],
   [Domain.MEDIA_PLAYER, {
     direction: SliderDirections.LEFT_RIGHT,
@@ -166,6 +173,8 @@ export const SliderConfigDefaultDomain: Map<string, SliderConfig> = new Map([
     show_track: true,
     toggle_on_click: false,
     force_square: false,
+    show_attribute: true,
+    attribute: "media_title",
   }],
   [Domain.LOCK, {
     direction: SliderDirections.LEFT_RIGHT,
@@ -175,6 +184,7 @@ export const SliderConfigDefaultDomain: Map<string, SliderConfig> = new Map([
     show_track: false,
     toggle_on_click: true,
     force_square: false,
+    show_attribute: false,
   }],
   [Domain.CLIMATE, {
     direction: SliderDirections.LEFT_RIGHT,
@@ -184,6 +194,7 @@ export const SliderConfigDefaultDomain: Map<string, SliderConfig> = new Map([
     show_track: true,
     toggle_on_click: false,
     force_square: false,
+    show_attribute: false,
   }],
 ]);
 
