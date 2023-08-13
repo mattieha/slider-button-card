@@ -73,9 +73,11 @@ Slider Button Card supports Lovelace's Visual Editor.
 | type              | string  | **Required** | `custom:slider-button-card`                   |
 | entity            | string  | **Required** | HA entity ID from domain `light, switch, fan, cover, input_boolean, media_player, climate, lock`                   |               |
 | name              | string  | **Optional** | Name                                   | `entity.friendly_name`       |
+| show_attribute        | boolean | **Optional** | Show attribute  | `false` (except for `media_player` entities)            |
 | show_name        | boolean | **Optional** | Show name  | `true`             |
 | show_state        | boolean | **Optional** | Show state  | `true`             |
 | compact        | boolean | **Optional** | Compact mode, display name and state inline with icon. Useful for full width cards.   | `false`             |
+| attribute     | string  | **Optional** | Name of the attribute to display if `show_attribute` is `true`.
 | icon        | object  | **Optional** |  [Icon options](#icon-options)                      |  |
 | slider        | object  | **Optional** | [Slider options](#slider-options)                      |  |
 | action_button        | object  | **Optional** | [Action button options](#action-button-options)                     |  |
