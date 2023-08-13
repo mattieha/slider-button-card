@@ -13,7 +13,7 @@ import './editor';
 import { localize } from './localize/localize';
 
 import type { SliderButtonCardConfig } from './types';
-import { ActionButtonConfigDefault, ActionButtonMode, IconConfigDefault } from './types';
+import { ActionButtonConfigDefault, ActionButtonMode, IconConfigDefault, SliderDirections } from './types';
 import { getSliderDefaultForEntity } from './utils';
 
 /* eslint no-console: 0 */
@@ -144,15 +144,18 @@ export class SliderButtonCard extends LitElement implements LovelaceCard {
         tabindex="0"
         .label=${`SliderButton: ${this.config.entity || 'No Entity Defined'}`}
         class="${classMap({ 'square': this.config.slider?.force_square || false, 'hide-name': !this.config.show_name, 'hide-state': !this.config.show_state, 'hide-action': !this.config.action_button?.show , 'compact': this.config.compact === true })}"
+        data-mode="${this.config.slider?.direction}"
       >
-        <div class="button ${classMap({ off: this.ctrl.isOff, unavailable: this.ctrl.isUnavailable })}"
-             style=${styleMap({
-               '--slider-value': `${this.ctrl.percentage}%`,
-               '--slider-bg-filter': this.ctrl.style.slider.filter,
-               '--slider-color': this.ctrl.style.slider.color,
-               '--icon-filter': this.ctrl.style.icon.filter,
-               '--icon-color': this.ctrl.style.icon.color,
-             })}
+        <div class="button
+              ${classMap({ off: this.ctrl.isOff, unavailable: this.ctrl.isUnavailable })}"
+              data-mode="${this.config.slider?.direction}"
+              style=${styleMap({
+                '--slider-value': `${this.ctrl.percentage}%`,
+                '--slider-bg-filter': this.ctrl.style.slider.filter,
+                '--slider-color': this.ctrl.style.slider.color,
+                '--icon-filter': this.ctrl.style.icon.filter,
+                '--icon-color': this.ctrl.style.icon.color,
+              })}
              >
           <div class="slider"
                data-show-track="${this.config.slider?.show_track}"
@@ -381,6 +384,10 @@ export class SliderButtonCard extends LitElement implements LovelaceCard {
 
   @eventOptions({passive: true})
   private onPointerDown(event: PointerEvent): void {
+    if (this.config.slider?.direction === SliderDirections.TOP_BOTTOM
+      || this.config.slider?.direction === SliderDirections.BOTTOM_TOP) {
+        event.preventDefault();
+      }
     event.stopPropagation();
     if (this.ctrl.isSliderDisabled) {
       return;
@@ -393,12 +400,26 @@ export class SliderButtonCard extends LitElement implements LovelaceCard {
     if (this.ctrl.isSliderDisabled) {
       return;
     }
-    if (!this.slider.hasPointerCapture(event.pointerId)) return;
+    
+    if (this.config.slider?.direction === SliderDirections.TOP_BOTTOM
+      || this.config.slider?.direction === SliderDirections.BOTTOM_TOP) {
+        this.setStateValue(this.ctrl.targetValue);
+        this.slider.releasePointerCapture(event.pointerId);
+      }
+
+    if (!this.slider.hasPointerCapture(event.pointerId)) {
+       return;
+    }
+
     this.setStateValue(this.ctrl.targetValue);
     this.slider.releasePointerCapture(event.pointerId);
   }
 
   private onPointerCancel(event: PointerEvent): void {
+    if (this.config.slider?.direction === SliderDirections.TOP_BOTTOM
+      || this.config.slider?.direction === SliderDirections.BOTTOM_TOP) {
+        return;
+      }
     this.updateValue(this.ctrl.value, false);
     this.slider.releasePointerCapture(event.pointerId);
   }
@@ -436,6 +457,10 @@ export class SliderButtonCard extends LitElement implements LovelaceCard {
       touch-action: pan-y;
       overflow: hidden;      
       --mdc-icon-size: 2.2em;
+    }
+    ha-card[data-mode="top-bottom"],
+    ha-card[data-mode="bottom-top"] {
+      touch-action: none;
     }
     ha-card.square {
       aspect-ratio: 1 / 1;
@@ -480,6 +505,10 @@ export class SliderButtonCard extends LitElement implements LovelaceCard {
       overflow: hidden;
       transition: all 0.2s ease-in-out;
       touch-action: pan-y;
+    }
+    .button[data-mode="top-bottom"],
+    .button[data-mode="bottom-top"] {
+      touch-action: none;
     }
     ha-card.compact .button {
       min-height: 3rem !important;
