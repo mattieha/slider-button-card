@@ -59,6 +59,7 @@ export enum ActionButtonMode {
 
 export enum SliderDirections {
   LEFT_RIGHT = 'left-right',
+  RIGHT_LEFT = 'right-left',
   TOP_BOTTOM = 'top-bottom',
   BOTTOM_TOP = 'bottom-top',
 }

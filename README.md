@@ -93,7 +93,7 @@ Slider Button Card supports Lovelace's Visual Editor.
 
 | Name              | Type    | Requirement  | Description                                 | Default             |
 | ----------------- | ------- | ------------ | ------------------------------------------- | ------------------- |
-| direction              | string  | **Optional** | Direction `left-right, top-bottom, bottom-top`                                   | `left-right`       |
+| direction              | string  | **Optional** | Direction `left-right, right-left, top-bottom, bottom-top`                                   | `left-right`       |
 | background        | string | **Optional** | Background `solid, gradient, triangle, striped, custom`  | `gradient`             |
 | use_state_color        | boolean | **Optional** | Use state color  | `true`             |
 | use_percentage_bg_opacity        | boolean | **Optional** | Apply opacity to background based on percentage  | `true`             |
