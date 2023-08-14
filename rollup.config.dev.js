@@ -3,6 +3,7 @@ import typescript from "rollup-plugin-typescript2";
 import babel from "rollup-plugin-babel";
 import serve from "rollup-plugin-serve";
 import { terser } from "rollup-plugin-terser";
+import ignoreWrapper  from './rollup-plugins/ignoreWrapper';
 import json from '@rollup/plugin-json';
 
 export default {
@@ -28,5 +29,6 @@ export default {
         "Access-Control-Allow-Origin": "*",
       },
     }),
+    ignoreWrapper()
   ],
 };
