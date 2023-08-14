@@ -2,25 +2,32 @@
 /* eslint-disable @typescript-eslint/camelcase */
 import copy from 'fast-copy';
 import {
-  LitElement,
-  html,
-  customElement,
-  property,
-  TemplateResult,
   CSSResult,
+  LitElement,
+  TemplateResult,
   css,
-  state
-} from 'lit-element';
-import { HomeAssistant, fireEvent, LovelaceCardEditor, stateIcon, computeDomain } from 'custom-card-helpers';
+  html
+} from 'lit';
+import { customElement, property, state } from 'lit/decorators.js';
+
+import { formfieldDefinition } from '../elements/formfield';
+import { selectDefinition } from '../elements/select';
+import { switchDefinition } from '../elements/switch';
+import { textfieldDefinition } from '../elements/textfield';
+
+import { ScopedRegistryHost } from '@lit-labs/scoped-registry-mixin';
+import { HomeAssistant, LovelaceCardEditor, computeDomain, fireEvent, stateIcon } from 'custom-card-helpers';
 import { localize } from './localize/localize';
 import { ActionButtonConfig, ActionButtonConfigDefault, ActionButtonMode, Domain, IconConfig, IconConfigDefault, SliderBackground, SliderButtonCardConfig, SliderConfig, SliderConfigDefault, SliderDirections } from './types';
 import { applyPatch, getEnumValues, getSliderDefaultForEntity } from './utils';
 
 @customElement('slider-button-card-editor')
-export class SliderButtonCardEditor extends LitElement implements LovelaceCardEditor {
+export class SliderButtonCardEditor extends ScopedRegistryHost(LitElement) implements LovelaceCardEditor {
   @property({ attribute: false }) public hass?: HomeAssistant;
+  
   @state() private _config?: SliderButtonCardConfig;
   @state() private _helpers?: any;
+
   private _initialized = false;
   private directions = getEnumValues(SliderDirections);
   private backgrounds = getEnumValues(SliderBackground);
@@ -34,11 +41,18 @@ export class SliderButtonCardEditor extends LitElement implements LovelaceCardEd
     "none",
   ];
 
+  static elementDefinitions = {
+    ...formfieldDefinition,
+    ...selectDefinition,
+    ...switchDefinition,
+    ...textfieldDefinition,
+  }
 
   public async setConfig(config: SliderButtonCardConfig): Promise<void> {
     this._config = config;
     if (this._helpers === undefined) {
       await this.loadCardHelpers();
+      this._helpers.load
     }
   }
 
@@ -90,12 +104,24 @@ export class SliderButtonCardEditor extends LitElement implements LovelaceCardEd
     return this._config?.action_button || ActionButtonConfigDefault;
   }
 
+  get entityList(){
+    if (!this.hass) {
+      return [];
+    }
+    return Object.keys(this.hass.states).filter(eid => getEnumValues(Domain).includes(eid.substr(0, eid.indexOf('.')))).sort();
+  }
+
+  get entityAttributes() {
+    if (!this.hass || !this._entity) {
+      return [];
+    }
+    return Object.keys(this.hass.states[this._entity].attributes).sort();
+  }
+
   protected render(): TemplateResult | void {
     if (!this.hass || !this._helpers) {
       return html``;
     }
-    // The climate more-info has ha-switch and paper-dropdown-menu elements that are lazy loaded unless explicitly done here
-    this._helpers.importMoreInfoControl('climate');
 
     return html`
       <div class="card-config">
@@ -104,58 +130,58 @@ export class SliderButtonCardEditor extends LitElement implements LovelaceCardEd
             <input type="checkbox" id="entity" class="tab-checkbox">
             <label class="tab-label" for="entity">${localize('tabs.general.title')}</label>
             <div class="tab-content">
-              <ha-entity-picker
-                .hass=${this.hass}
-                .includeDomains=${getEnumValues(Domain)}
-                .value=${this._entity}
-                .configValue=${'entity'}
+              <mwc-select
                 label="${localize('tabs.general.entity')}"
-                allow-custom-entity
-                @value-changed=${this._valueChangedEntity}
-              ></ha-entity-picker>
-              <paper-input
+                @selected=${this._valueChangedEntity} 
+                @closed="${e => e.stopPropagation()}" 
+                .configValue=${'entity'}
+              >
+                ${this.entityList.map(entity => html`<mwc-list-item value="${entity}" ?selected=${entity === this._entity}>${entity}</mwc-list-item>`)}
+              </mwc-select>
+              <mwc-textfield
                 label="${localize('tabs.general.name')}"
                 .value=${this._name}
                 .placeholder=${this._name || this.hass.states[this._entity]?.attributes?.friendly_name}
                 .configValue=${'name'}
-                @value-changed=${this._valueChanged}
-              ></paper-input>
-              <paper-input
+                @input=${this._valueChanged}
+              ></mwc-textfield>
+              <mwc-select
                 label="${localize('tabs.general.attribute')}"
-                .value=${this._attribute}
-                .placeholder=""
+                @selected=${this._valueChangedSelect} 
+                @closed="${e => e.stopPropagation()}" 
                 .configValue=${'attribute'}
-                @value-changed=${this._valueChanged}
-              ></paper-input>
+              >
+                ${this.entityAttributes.map(attribute => html`<mwc-list-item value="${attribute}" ?selected=${attribute === this._attribute}>${attribute}</mwc-list-item>`)}
+              </mwc-select>
               <div class="side-by-side">
-                <ha-formfield .label=${localize('tabs.general.show_name')}>
-                  <ha-switch
+                <mwc-formfield .label=${localize('tabs.general.show_name')}>
+                  <mwc-switch
                     .checked=${this._show_name}
                     .configValue=${'show_name'}
                     @change=${this._valueChanged}
-                  ></ha-switch>
-                </ha-formfield>
-                <ha-formfield .label=${localize('tabs.general.show_state')}>
-                  <ha-switch
+                  ></mwc-switch>
+                </mwc-formfield>
+                <mwc-formfield .label=${localize('tabs.general.show_state')}>
+                  <mwc-switch
                     .checked=${this._show_state}
                     .configValue=${'show_state'}
                     @change=${this._valueChanged}
-                  ></ha-switch>
-                </ha-formfield>
-                <ha-formfield .label=${localize('tabs.general.show_attribute')}>
-                  <ha-switch
+                  ></mwc-switch>
+                </mwc-formfield>
+                <mwc-formfield .label=${localize('tabs.general.show_attribute')}>
+                  <mwc-switch
                     .checked=${this._show_attribute}
                     .configValue=${'show_attribute'}
                     @change=${this._valueChanged}
-                  ></ha-switch>
-                </ha-formfield>
-                <ha-formfield .label=${localize('tabs.general.compact')}>
-                  <ha-switch
+                  ></mwc-switch>
+                </mwc-formfield>
+                <mwc-formfield .label=${localize('tabs.general.compact')}>
+                  <mwc-switch
                     .checked=${this._compact}
                     .configValue=${'compact'}
                     @change=${this._valueChanged}
-                  ></ha-switch>
-                </ha-formfield>
+                  ></mwc-switch>
+                </mwc-formfield>
               </div>
             </div>
           </div>
@@ -164,32 +190,36 @@ export class SliderButtonCardEditor extends LitElement implements LovelaceCardEd
             <input type="checkbox" id="icon" class="tab-checkbox">
             <label class="tab-label" for="icon">${localize('tabs.icon.title')}</label>
             <div class="tab-content">
-              <ha-icon-input
+              <mwc-textfield
               label="${localize('tabs.icon.icon')}"
               .value=${this._icon.icon}
               .placeholder=${this._icon.icon || stateIcon(this.hass.states[this._entity])}
               .configValue=${'icon.icon'}
-              @value-changed=${this._valueChanged}
+              @input=${this._valueChanged}
               >
-              </ha-icon-input>
+              </mwc-textfield>
               <div class="side-by-side">
-                <ha-formfield label="${localize('tabs.icon.show_icon')}">
-                  <ha-switch
+                <mwc-formfield label="${localize('tabs.icon.show_icon')}">
+                  <mwc-switch
                     .checked=${this._icon.show}
                     .configValue=${'icon.show'}
                     @change=${this._valueChanged}
-                  ></ha-switch>
-                </ha-formfield>
+                  ></mwc-switch>
+                </mwc-formfield>
                 ${this.renderStateColor('icon')}
               </div>
-              <hui-action-editor
-                label="${localize('tabs.icon.tap_action')}"
-                .hass=${this.hass}
-                .config=${this._icon.tap_action}
-                .actions=${this.actions}
-                .configValue=${"icon.tap_action"}
-                @value-changed=${this._valueChanged}
-              ></hui-action-editor>
+              ${
+              //   <mwc-select
+              //   label="${localize('tabs.icon.tap_action')}"
+              //   .config=${this._icon.tap_action}
+              //   .configValue=${"icon.tap_action"}
+              //   @selected=${this._valueChangedSelect} 
+              //   @closed="${e => e.stopPropagation()}" 
+              // >
+              //   ${this.actions.map(action => html`<mwc-list-item value="${action}" ?selected=${action === this._icon.tap_action?.action}>${action}</mwc-list-item>`)}
+              // </mwc-select> 
+              ''
+              }
             </div>
           </div>
           
@@ -237,27 +267,27 @@ export class SliderButtonCardEditor extends LitElement implements LovelaceCardEd
               <div class="side-by-side">
                 ${this.renderBrightness('slider')}
                 ${this.renderStateColor('slider')}
-                <ha-formfield .label=${localize('tabs.slider.show_track')}>
-                  <ha-switch
+                <mwc-formfield .label=${localize('tabs.slider.show_track')}>
+                  <mwc-switch
                     .checked=${this._slider.show_track}
                     .configValue=${'slider.show_track'}
                     @change=${this._valueChanged}
-                  ></ha-switch>
-                </ha-formfield>
-                <ha-formfield .label=${localize('tabs.slider.toggle_on_click')}>
-                  <ha-switch
+                  ></mwc-switch>
+                </mwc-formfield>
+                <mwc-formfield .label=${localize('tabs.slider.toggle_on_click')}>
+                  <mwc-switch
                     .checked=${this._slider.toggle_on_click}
                     .configValue=${'slider.toggle_on_click'}
                     @change=${this._valueChanged}
-                  ></ha-switch>
-                </ha-formfield>
-                <ha-formfield .label=${localize('tabs.slider.force_square')}>
-                  <ha-switch
+                  ></mwc-switch>
+                </mwc-formfield>
+                <mwc-formfield .label=${localize('tabs.slider.force_square')}>
+                  <mwc-switch
                     .checked=${this._slider.force_square}
                     .configValue=${'slider.force_square'}
                     @change=${this._valueChanged}
-                  ></ha-switch>
-                </ha-formfield>
+                  ></mwc-switch>
+                </mwc-formfield>
               </div>
             </div>
           </div>
@@ -285,48 +315,48 @@ export class SliderButtonCardEditor extends LitElement implements LovelaceCardEd
               </paper-dropdown-menu>              
               ${this._action_button.mode === ActionButtonMode.CUSTOM 
               ? html`
-                  <ha-icon-input
+                  <mwc-textfield
                     label="${localize('tabs.action_button.icon')}"
                     .value=${this._action_button.icon}
                     .placeholder=${this._action_button.icon || 'mdi:power'}
                     .configValue=${'action_button.icon'}
                     @value-changed=${this._valueChanged}
                   >
-                  </ha-icon-input>
+                  </mwc-textfield>
                 ` 
                 : 
                 ''}
               <div class="side-by-side">
-                <ha-formfield .label=${localize('tabs.action_button.show_button')}>
-                  <ha-switch
+                <mwc-formfield .label=${localize('tabs.action_button.show_button')}>
+                  <mwc-switch
                     .checked=${this._action_button.show}
                     .configValue=${'action_button.show'}
                     @change=${this._valueChanged}
-                  ></ha-switch>
-                </ha-formfield>
+                  ></mwc-switch>
+                </mwc-formfield>
                 ${this._action_button.mode === ActionButtonMode.CUSTOM
                   ? html`
-                    <ha-formfield .label=${localize('tabs.action_button.show_spinner')}>
-                      <ha-switch
+                    <mwc-formfield .label=${localize('tabs.action_button.show_spinner')}>
+                      <mwc-switch
                         .checked=${this._action_button.show_spinner}
                         .configValue=${'action_button.show_spinner'}
                         @change=${this._valueChanged}
-                      ></ha-switch>
-                    </ha-formfield>
+                      ></mwc-switch>
+                    </mwc-formfield>
                 `
                   :
                   ''}
               </div>
               ${this._action_button.mode === ActionButtonMode.CUSTOM
                 ? html`
-                  <hui-action-editor
+                  <mwc-select
                     label="${localize('tabs.action_button.tap_action')}"
                     .hass=${this.hass}
                     .config=${this._action_button.tap_action}
                     .actions=${this.actions}
                     .configValue=${"action_button.tap_action"}
                     @value-changed=${this._valueChanged}
-                  ></hui-action-editor>
+                  ></mwc-select>
                 `
                 :
                 ''}
@@ -340,26 +370,26 @@ export class SliderButtonCardEditor extends LitElement implements LovelaceCardEd
   protected renderBrightness(path: string): TemplateResult | void {
     const item = this[`_${path}`];
     return html`
-      <ha-formfield .label=${localize('tabs.slider.use_brightness')}>
-        <ha-switch
+      <mwc-formfield .label=${localize('tabs.slider.use_brightness')}>
+        <mwc-switch
           .checked=${item.use_percentage_bg_opacity}
           .configValue="${path}.use_percentage_bg_opacity"
           @change=${this._valueChanged}
-        ></ha-switch>
-      </ha-formfield>
+        ></mwc-switch>
+      </mwc-formfield>
     `;
   }
 
   protected renderStateColor(path: string): TemplateResult | void {
     const item = this[`_${path}`];
     return html`
-      <ha-formfield .label=${localize('tabs.icon.use_state_color')}>
-        <ha-switch
+      <mwc-formfield .label=${localize('tabs.icon.use_state_color')}>
+        <mwc-switch
           .checked=${item.use_state_color}
           .configValue="${path}.use_state_color"
           @change=${this._valueChanged}
-        ></ha-switch>
-      </ha-formfield>
+        ></mwc-switch>
+      </mwc-formfield>
     `;
   }
 
@@ -375,20 +405,25 @@ export class SliderButtonCardEditor extends LitElement implements LovelaceCardEd
   }
 
   private _valueChangedSelect(ev): void {
-    const value = ev.detail.value;
+    const target = ev.target;
+    const value = target.value;
     if (!value) {
       return;
     }
-    this._changeValue(value.parentElement?.configValue, value.itemValue);
+    this._changeValue(target.configValue, value);
   }
 
   private _valueChangedEntity(ev): void {
     const target = ev.target;
-    const value = ev.detail?.value;
+    const value = ev.target?.value;
+    if (!value) {
+      return;
+    }
     const updateDefaults = computeDomain(value) !== computeDomain(this._config?.entity || 'light.dummy');
-    this._changeValue('name', '');
-    this._changeValue('icon.icon', '');
     this._changeValue(target.configValue, value);
+    this._changeValue('name', '');
+    this._changeValue('attribute', '');
+    this._changeValue('icon.icon', '');
     if (updateDefaults) {
       const cfg = copy(this._config);
       applyPatch(cfg, ['slider'], getSliderDefaultForEntity(value));
@@ -399,23 +434,31 @@ export class SliderButtonCardEditor extends LitElement implements LovelaceCardEd
 
   private _valueChanged(ev): void {
     const target = ev.target;
-    const value = ev.detail?.value;
+    const value = ev.target?.value;
     this._changeValue(target.configValue, target.checked !== undefined ? target.checked : value);
   }
 
   private _changeValue(configValue: string, value: string | boolean | number): void {
+    console.log("INFO DUMP");
+    console.log('configValue: ' + configValue);
+    console.log('value: ' + value);
+    console.log('this[`_${configValue}`]: ' + this[`_${configValue}`]);
     if (!this._config || !this.hass) {
+      console.log('skipped, 1');
       return;
     }
     if (this[`_${configValue}`] !== undefined && this[`_${configValue}`] === value) {
+      console.log('skipped, 2');
       return;
     }
     if (configValue) {
       const cfg = copy(this._config);
       applyPatch(cfg, [...configValue.split('.')], value);
       this._config = cfg;
+      console.log('updated cfg');
       if (value === '') {
         delete this._config[configValue];
+        console.log('result ' + configValue);
       }
     }
     fireEvent(this, 'config-changed', { config: this._config });
@@ -423,7 +466,11 @@ export class SliderButtonCardEditor extends LitElement implements LovelaceCardEd
 
   static get styles(): CSSResult {
     return css`
-      ha-switch {
+      mwc-select,
+      mwc-textfield {
+        width: 100%;
+      }
+      mwc-switch {
         padding: 16px 6px;
       }
       .side-by-side {
