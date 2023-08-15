@@ -16,7 +16,7 @@ import { switchDefinition } from '../elements/switch';
 import { textfieldDefinition } from '../elements/textfield';
 
 import { ScopedRegistryHost } from '@lit-labs/scoped-registry-mixin';
-import { HomeAssistant, LovelaceCardEditor, computeDomain, fireEvent, stateIcon } from 'custom-card-helpers';
+import { ActionConfig, HomeAssistant, LovelaceCardEditor, computeDomain, fireEvent } from 'custom-card-helpers';
 import { localize } from './localize/localize';
 import { ActionButtonConfig, ActionButtonConfigDefault, ActionButtonMode, Domain, IconConfig, IconConfigDefault, SliderBackground, SliderButtonCardConfig, SliderConfig, SliderConfigDefault, SliderDirections } from './types';
 import { applyPatch, getEnumValues, getSliderDefaultForEntity } from './utils';
@@ -32,14 +32,6 @@ export class SliderButtonCardEditor extends ScopedRegistryHost(LitElement) imple
   private directions = getEnumValues(SliderDirections);
   private backgrounds = getEnumValues(SliderBackground);
   private actionModes = getEnumValues(ActionButtonMode);
-  private actions = [
-    "more-info",
-    "toggle",
-    "navigate",
-    "url",
-    "call-service",
-    "none",
-  ];
 
   static elementDefinitions = {
     ...formfieldDefinition,
@@ -50,22 +42,22 @@ export class SliderButtonCardEditor extends ScopedRegistryHost(LitElement) imple
 
   firstUpdated() {
     // Use HA elements when using ScopedRegistry. Reference: https://gist.github.com/thomasloven/5f965bd26e5f69876890886c09dd9ba8
-    this.loadEntityPicker();
+    this._loadHomeAssistantComponent("ha-entity-picker", { type: "entities", entities: [] });
+    this._loadHomeAssistantComponent("ha-icon-picker", { type: "entities", entities: [] });
+    this._loadHomeAssistantComponent("ha-selector", { type: "entities", entities: [] });
   }
 
-  async loadEntityPicker() {
+  async _loadHomeAssistantComponent(component: string, card: {}): Promise<void> {
     const registry = (this.shadowRoot as any)?.customElements;
-    if (!registry && registry.get("ha-entity-picker") && registry.get("ha-icon-picker") && registry.get("ha-selector")) {
+    if (!registry || registry.get(component)) {
       return;
     } 
 
     const ch = await (window as any).loadCardHelpers();
-    const c = await ch.createCardElement({ type: "entities", entities: [] });
+    const c = await ch.createCardElement(card);
     await c.constructor.getConfigElement();
     
-    registry.define("ha-entity-picker", window.customElements.get("ha-entity-picker"));
-    registry.define("ha-icon-picker", window.customElements.get("ha-icon-picker"));
-    registry.define("ha-selector", window.customElements.get("ha-selector"));
+    registry.define(component, window.customElements.get(component));
   }
 
   public async setConfig(config: SliderButtonCardConfig): Promise<void> {
@@ -131,7 +123,7 @@ export class SliderButtonCardEditor extends ScopedRegistryHost(LitElement) imple
     configValue: string,
     options: string[] | { value: string; label: string }[] = [],
     label: string,
-    value: string,
+    value: string | ActionConfig | undefined,
 
   ): TemplateResult | void {
     if (!this._config) {
@@ -308,35 +300,26 @@ export class SliderButtonCardEditor extends ScopedRegistryHost(LitElement) imple
             <input type="checkbox" id="action" class="tab-checkbox">
             <label class="tab-label" for="action">${localize('tabs.action_button.title')}</label>
             <div class="tab-content">
-              <paper-dropdown-menu
-                label="${localize('tabs.action_button.mode')}"
-              >
-                <paper-listbox
-                  slot="dropdown-content"
-                  attr-for-selected="item-value"
-                  .configValue=${'action_button.mode'}
-                  @selected-item-changed=${this._valueChangedSelect}
-                  .selected=${this._action_button.mode}
-                >
-                  ${this.actionModes.map(mode => {
-                    return html`
-                        <paper-item .itemValue=${mode}>${localize(`mode.${mode}`)}</paper-item>
-                      `;
-                  })}
-                </paper-listbox>
-              </paper-dropdown-menu>              
+              ${this._renderOptionSelector(
+                `action_button.mode`,
+                this.actionModes.map(mode => {
+                  return {'value': mode, 'label': localize(`mode.${mode}`)}
+                }), localize('tabs.action_button.mode'),
+                this._action_button.mode || ''
+              )}
               ${this._action_button.mode === ActionButtonMode.CUSTOM 
               ? html`
-                  <mwc-textfield
-                    label="${localize('tabs.action_button.icon')}"
-                    .value=${this._action_button.icon}
-                    .placeholder=${this._action_button.icon || 'mdi:power'}
-                    .configValue=${'action_button.icon'}
-                    @value-changed=${this._valueChanged}
-                  >
-                  </mwc-textfield>
+                <ha-icon-picker
+                  .hass=${this.hass}
+                  .value=${this._action_button.icon}
+                  .placeholder=${this._action_button.icon || 'mdi:power'}
+                  .configValue=${"action_button.icon"}
+                  .label=${localize('tabs.action_button.icon')}
+                  @value-changed=${this._valueChanged}
+                >
+                </ha-icon-picker>
                 ` 
-                : 
+              : 
                 ''}
               <div class="side-by-side">
                 <mwc-formfield .label=${localize('tabs.action_button.show_button')}>
@@ -355,20 +338,23 @@ export class SliderButtonCardEditor extends ScopedRegistryHost(LitElement) imple
                         @change=${this._valueChanged}
                       ></mwc-switch>
                     </mwc-formfield>
-                `
+                  `
                   :
                   ''}
               </div>
               ${this._action_button.mode === ActionButtonMode.CUSTOM
                 ? html`
-                  <mwc-select
-                    label="${localize('tabs.action_button.tap_action')}"
+                  <ha-selector
                     .hass=${this.hass}
-                    .config=${this._action_button.tap_action}
-                    .actions=${this.actions}
+                    .selector=${{
+                      ui_action: {}
+                    }}
+                    .label="${localize('tabs.action_button.tap_action')}"
+                    .value=${this._action_button.tap_action}
+                    .required=${false}
                     .configValue=${"action_button.tap_action"}
-                    @value-changed=${this._valueChanged}
-                  ></mwc-select>
+                    @value-changed=${this._valueChangedSelect}
+                  ></ha-selector>
                 `
                 :
                 ''}
