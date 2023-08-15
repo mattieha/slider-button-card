@@ -652,6 +652,12 @@ export class SliderButtonCard extends LitElement implements LovelaceCard {
       */
     }
 
+    .compact .attribute {
+      display: inline-block;
+      max-width: calc(100% - 0em);
+      overflow: hidden;
+    }
+
     .oneliner {      
       color: var(--state-color-on, var(--label-badge-text-color, white));
       text-overflow: ellipsis;
