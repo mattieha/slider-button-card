@@ -431,26 +431,18 @@ export class SliderButtonCardEditor extends ScopedRegistryHost(LitElement) imple
   }
 
   private _changeValue(configValue: string, value: string | boolean | number): void {
-    console.log("INFO DUMP");
-    console.log('configValue: ' + configValue);
-    console.log('value: ' + value);
-    console.log('this[`_${configValue}`]: ' + this[`_${configValue}`]);
     if (!this._config || !this.hass) {
-      console.log('skipped, 1');
       return;
     }
     if (this[`_${configValue}`] !== undefined && this[`_${configValue}`] === value) {
-      console.log('skipped, 2');
       return;
     }
     if (configValue) {
       const cfg = copy(this._config);
       applyPatch(cfg, [...configValue.split('.')], value);
       this._config = cfg;
-      console.log('updated cfg');
       if (value === '') {
         delete this._config[configValue];
-        console.log('result ' + configValue);
       }
     }
     fireEvent(this, 'config-changed', { config: this._config });
