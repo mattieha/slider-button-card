@@ -233,18 +233,17 @@ export class SliderButtonCardEditor extends ScopedRegistryHost(LitElement) imple
                 </mwc-formfield>
                 ${this.renderStateColor('icon')}
               </div>
-              ${
-              //   <mwc-select
-              //   label="${localize('tabs.icon.tap_action')}"
-              //   .config=${this._icon.tap_action}
-              //   .configValue=${"icon.tap_action"}
-              //   @selected=${this._valueChangedSelect} 
-              //   @closed="${e => e.stopPropagation()}" 
-              // >
-              //   ${this.actions.map(action => html`<mwc-list-item value="${action}" ?selected=${action === this._icon.tap_action?.action}>${action}</mwc-list-item>`)}
-              // </mwc-select> 
-              ''
-              }
+              <ha-selector
+                .hass=${this.hass}
+                .selector=${{
+                  ui_action: {}
+                }}
+                .label="${localize('tabs.icon.tap_action')}"
+                .value=${this._icon.tap_action}
+                .required=${false}
+                .configValue=${"icon.tap_action"}
+                @value-changed=${this._valueChangedSelect}
+              ></ha-selector>
             </div>
           </div>
           
