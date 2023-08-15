@@ -11,7 +11,6 @@ import {
 import { customElement, property, state } from 'lit/decorators.js';
 
 import { formfieldDefinition } from '../elements/formfield';
-import { selectDefinition } from '../elements/select';
 import { switchDefinition } from '../elements/switch';
 import { textfieldDefinition } from '../elements/textfield';
 
@@ -35,7 +34,6 @@ export class SliderButtonCardEditor extends ScopedRegistryHost(LitElement) imple
 
   static elementDefinitions = {
     ...formfieldDefinition,
-    ...selectDefinition,
     ...switchDefinition,
     ...textfieldDefinition,
   }
