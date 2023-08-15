@@ -54,9 +54,8 @@ export class SliderButtonCardEditor extends ScopedRegistryHost(LitElement) imple
   }
 
   async loadEntityPicker() {
-    // Get the local customElement registry
     const registry = (this.shadowRoot as any)?.customElements;
-    if (!registry || registry.get("ha-entity-picker")) {
+    if (!registry && registry.get("ha-entity-picker") && registry.get("ha-icon-picker") && registry.get("ha-selector")) {
       return;
     } 
 
@@ -65,14 +64,12 @@ export class SliderButtonCardEditor extends ScopedRegistryHost(LitElement) imple
     await c.constructor.getConfigElement();
     
     registry.define("ha-entity-picker", window.customElements.get("ha-entity-picker"));
+    registry.define("ha-icon-picker", window.customElements.get("ha-icon-picker"));
+    registry.define("ha-selector", window.customElements.get("ha-selector"));
   }
 
   public async setConfig(config: SliderButtonCardConfig): Promise<void> {
     this._config = config;
-    if (this._helpers === undefined) {
-      await this.loadCardHelpers();
-      this._helpers.load
-    }
   }
 
   protected shouldUpdate(): boolean {
@@ -131,11 +128,9 @@ export class SliderButtonCardEditor extends ScopedRegistryHost(LitElement) imple
   }
 
   protected render(): TemplateResult | void {
-    if (!this.hass || !this._helpers) {
+    if (!this.hass) {
       return html``;
     }
-
-    console.log(getEnumValues(Domain));
 
     return html`
       <div class="card-config">
@@ -148,9 +143,6 @@ export class SliderButtonCardEditor extends ScopedRegistryHost(LitElement) imple
                 .hass=${this.hass}
                 .includeDomains=${getEnumValues(Domain)}
                 .value=${this._entity}
-                .label=${this.hass.localize(
-                  "ui.components.entity.entity-picker.entity"
-                )}
                 .configValue=${'entity'}
                 @change=${this._valueChangedEntity}
               ></ha-entity-picker>
@@ -162,14 +154,20 @@ export class SliderButtonCardEditor extends ScopedRegistryHost(LitElement) imple
                 .configValue=${'name'}
                 @input=${this._valueChanged}
               ></mwc-textfield>
-              <mwc-select
-                label="${localize('tabs.general.attribute')}"
-                @selected=${this._valueChangedSelect} 
-                @closed="${e => e.stopPropagation()}" 
+              <ha-selector
+                .hass=${this.hass}
+                .selector=${{
+                  select: {
+                    mode: 'dropdown',
+                    options: this.entityAttributes
+                  },
+                }}
+                .label="${localize('tabs.general.attribute')}"
+                .value=${this._attribute}
+                .required=${false}
                 .configValue=${'attribute'}
-              >
-                ${this.entityAttributes.map(attribute => html`<mwc-list-item value="${attribute}" ?selected=${attribute === this._attribute}>${attribute}</mwc-list-item>`)}
-              </mwc-select>
+                @value-changed=${this._valueChangedSelect}
+              ></ha-selector>
               <div class="side-by-side">
                 <mwc-formfield .label=${localize('tabs.general.show_name')}>
                   <mwc-switch
@@ -207,14 +205,15 @@ export class SliderButtonCardEditor extends ScopedRegistryHost(LitElement) imple
             <input type="checkbox" id="icon" class="tab-checkbox">
             <label class="tab-label" for="icon">${localize('tabs.icon.title')}</label>
             <div class="tab-content">
-              <mwc-textfield
-              label="${localize('tabs.icon.icon')}"
-              .value=${this._icon.icon}
-              .placeholder=${this._icon.icon || stateIcon(this.hass.states[this._entity])}
-              .configValue=${'icon.icon'}
-              @input=${this._valueChanged}
-              >
-              </mwc-textfield>
+              <ha-icon-picker
+                .hass=${this.hass}
+                .value=${this._icon.icon}
+                .configValue=${"icon.icon"}
+                .label=${this.hass.localize(
+                  "ui.dialogs.helper_settings.generic.icon"
+                )}      
+                @value-changed=${this._valueChanged}
+              ></ha-icon-picker>
               <div class="side-by-side">
                 <mwc-formfield label="${localize('tabs.icon.show_icon')}">
                   <mwc-switch
@@ -413,17 +412,12 @@ export class SliderButtonCardEditor extends ScopedRegistryHost(LitElement) imple
   private _initialize(): void {
     if (this.hass === undefined) return;
     if (this._config === undefined) return;
-    if (this._helpers === undefined) return;
     this._initialized = true;
-  }
-
-  private async loadCardHelpers(): Promise<void> {
-    this._helpers = await (window as any).loadCardHelpers();
   }
 
   private _valueChangedSelect(ev): void {
     const target = ev.target;
-    const value = target.value;
+    const value = ev.detail.value;
     if (!value) {
       return;
     }
@@ -483,7 +477,6 @@ export class SliderButtonCardEditor extends ScopedRegistryHost(LitElement) imple
 
   static get styles(): CSSResult {
     return css`
-      mwc-select,
       mwc-textfield {
         width: 100%;
       }
