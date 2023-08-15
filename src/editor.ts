@@ -120,11 +120,41 @@ export class SliderButtonCardEditor extends ScopedRegistryHost(LitElement) imple
     return this._config?.action_button || ActionButtonConfigDefault;
   }
 
-  get entityAttributes() {
+  get _entityAttributes() {
     if (!this.hass || !this._entity) {
       return [];
     }
     return Object.keys(this.hass.states[this._entity].attributes).sort();
+  }
+
+  protected _renderOptionSelector(
+    configValue: string,
+    options: string[] | { value: string; label: string }[] = [],
+    label: string,
+    value: string,
+
+  ): TemplateResult | void {
+    if (!this._config) {
+      return;
+    }
+
+    return html`
+      <ha-selector
+        .hass=${this.hass}
+        .selector=${{
+          select: {
+            mode: 'dropdown',
+            options: options
+          },
+        }}
+        .label="${label}"
+        .value=${value}
+        .required=${false}
+        .configValue=${configValue}
+        @value-changed=${this._valueChangedSelect}
+      >
+      </ha-selector>
+    `;
   }
 
   protected render(): TemplateResult | void {
@@ -154,20 +184,7 @@ export class SliderButtonCardEditor extends ScopedRegistryHost(LitElement) imple
                 .configValue=${'name'}
                 @input=${this._valueChanged}
               ></mwc-textfield>
-              <ha-selector
-                .hass=${this.hass}
-                .selector=${{
-                  select: {
-                    mode: 'dropdown',
-                    options: this.entityAttributes
-                  },
-                }}
-                .label="${localize('tabs.general.attribute')}"
-                .value=${this._attribute}
-                .required=${false}
-                .configValue=${'attribute'}
-                @value-changed=${this._valueChangedSelect}
-              ></ha-selector>
+              ${this._renderOptionSelector(`attribute`, this._entityAttributes, localize('tabs.general.attribute'), this._attribute)}
               <div class="side-by-side">
                 <mwc-formfield .label=${localize('tabs.general.show_name')}>
                   <mwc-switch
@@ -211,7 +228,7 @@ export class SliderButtonCardEditor extends ScopedRegistryHost(LitElement) imple
                 .configValue=${"icon.icon"}
                 .label=${this.hass.localize(
                   "ui.dialogs.helper_settings.generic.icon"
-                )}      
+                )}
                 @value-changed=${this._valueChanged}
               ></ha-icon-picker>
               <div class="side-by-side">
@@ -244,41 +261,20 @@ export class SliderButtonCardEditor extends ScopedRegistryHost(LitElement) imple
             <label class="tab-label" for="slider">${localize('tabs.slider.title')}</label>
             <div class="tab-content">
               <div class="side-by-side">
-                <paper-dropdown-menu
-                  label="${localize('tabs.slider.direction')}"
-                >
-                  <paper-listbox 
-                    slot="dropdown-content" 
-                    attr-for-selected="item-value"
-                    .configValue=${'slider.direction'}
-                    @selected-item-changed=${this._valueChangedSelect}
-                    .selected=${this._slider.direction}
-                  >
-                    ${this.directions.map(direction => {
-                      return html`
-                        <paper-item .itemValue=${direction}>${localize(`direction.${direction}`)}</paper-item>
-                      `;
-                      })}
-                  </paper-listbox>
-                </paper-dropdown-menu>
-                <paper-dropdown-menu
-                  label="${localize('tabs.slider.background')}"
-                >
-                  <paper-listbox
-                    slot="dropdown-content"
-                    attr-for-selected="item-value"
-                    .configValue=${'slider.background'}
-                    @selected-item-changed=${this._valueChangedSelect}
-                    .selected=${this._slider.background}
-                  >
-                    ${this.backgrounds.map(background => {
-                      return html`
-                        <paper-item .itemValue=${background}>${localize(`background.${background}`)}</paper-item>
-                      `;
-                    })}
-                  </paper-listbox>
-                </paper-dropdown-menu>
-
+                ${this._renderOptionSelector(
+                  `slider.direction`,
+                  this.directions.map(direction => {
+                    return {'value': direction, 'label': localize(`direction.${direction}`)}
+                  }), localize('tabs.slider.direction'),
+                  this._slider.direction || ''
+                )}
+                ${this._renderOptionSelector(
+                  `slider.background`,
+                  this.backgrounds.map(background => {
+                    return {'value': background, 'label': localize(`background.${background}`)}
+                  }), localize('tabs.slider.background'),
+                  this._slider.background || ''
+                )}
               </div>
               <div class="side-by-side">
                 ${this.renderBrightness('slider')}
