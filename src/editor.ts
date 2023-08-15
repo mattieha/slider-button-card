@@ -48,6 +48,25 @@ export class SliderButtonCardEditor extends ScopedRegistryHost(LitElement) imple
     ...textfieldDefinition,
   }
 
+  firstUpdated() {
+    // Use HA elements when using ScopedRegistry. Reference: https://gist.github.com/thomasloven/5f965bd26e5f69876890886c09dd9ba8
+    this.loadEntityPicker();
+  }
+
+  async loadEntityPicker() {
+    // Get the local customElement registry
+    const registry = (this.shadowRoot as any)?.customElements;
+    if (!registry || registry.get("ha-entity-picker")) {
+      return;
+    } 
+
+    const ch = await (window as any).loadCardHelpers();
+    const c = await ch.createCardElement({ type: "entities", entities: [] });
+    await c.constructor.getConfigElement();
+    
+    registry.define("ha-entity-picker", window.customElements.get("ha-entity-picker"));
+  }
+
   public async setConfig(config: SliderButtonCardConfig): Promise<void> {
     this._config = config;
     if (this._helpers === undefined) {
@@ -104,13 +123,6 @@ export class SliderButtonCardEditor extends ScopedRegistryHost(LitElement) imple
     return this._config?.action_button || ActionButtonConfigDefault;
   }
 
-  get entityList(){
-    if (!this.hass) {
-      return [];
-    }
-    return Object.keys(this.hass.states).filter(eid => getEnumValues(Domain).includes(eid.substr(0, eid.indexOf('.')))).sort();
-  }
-
   get entityAttributes() {
     if (!this.hass || !this._entity) {
       return [];
@@ -123,6 +135,8 @@ export class SliderButtonCardEditor extends ScopedRegistryHost(LitElement) imple
       return html``;
     }
 
+    console.log(getEnumValues(Domain));
+
     return html`
       <div class="card-config">
         <div class="tabs">
@@ -130,14 +144,17 @@ export class SliderButtonCardEditor extends ScopedRegistryHost(LitElement) imple
             <input type="checkbox" id="entity" class="tab-checkbox">
             <label class="tab-label" for="entity">${localize('tabs.general.title')}</label>
             <div class="tab-content">
-              <mwc-select
-                label="${localize('tabs.general.entity')}"
-                @selected=${this._valueChangedEntity} 
-                @closed="${e => e.stopPropagation()}" 
+              <ha-entity-picker
+                .hass=${this.hass}
+                .includeDomains=${getEnumValues(Domain)}
+                .value=${this._entity}
+                .label=${this.hass.localize(
+                  "ui.components.entity.entity-picker.entity"
+                )}
                 .configValue=${'entity'}
-              >
-                ${this.entityList.map(entity => html`<mwc-list-item value="${entity}" ?selected=${entity === this._entity}>${entity}</mwc-list-item>`)}
-              </mwc-select>
+                @change=${this._valueChangedEntity}
+              ></ha-entity-picker>
+              
               <mwc-textfield
                 label="${localize('tabs.general.name')}"
                 .value=${this._name}
