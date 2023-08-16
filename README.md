@@ -2,7 +2,7 @@
 [![GitHub Release][releases-shield]][releases]
 [![hacs_badge](https://img.shields.io/badge/HACS-default-orange.svg?style=for-the-badge)](https://github.com/custom-components/hacs)
 
-A button card with integrated slider for `automation, light, switch, fan, cover, input_boolean, input_number, media_player, climate, lock` entities.
+A button card with integrated slider for `automation, light, switch, fan, cover, input_boolean, input_number, media_player, number, climate, lock` entities.
 
 ![Preview][preview]
 ![Preview 2][preview-2]
@@ -71,7 +71,7 @@ Slider Button Card supports Lovelace's Visual Editor.
 | Name              | Type    | Requirement  | Description                                 | Default             |
 | ----------------- | ------- | ------------ | ------------------------------------------- | ------------------- |
 | type              | string  | **Required** | `custom:slider-button-card`                   |
-| entity            | string  | **Required** | HA entity ID from domain `automation, light, switch, fan, cover, input_boolean, input_number, media_player, climate, lock`                   |               |
+| entity            | string  | **Required** | HA entity ID from domain `automation, light, switch, fan, cover, input_boolean, input_number, media_player, number climate, lock`                   |               |
 | name              | string  | **Optional** | Name                                   | `entity.friendly_name`       |
 | show_attribute        | boolean | **Optional** | Show attribute  | `false` (except for `media_player` entities)            |
 | show_name        | boolean | **Optional** | Show name  | `true`             |
@@ -713,8 +713,9 @@ Mixed `group` entities are not supported, if you want to control multiple
 ## Known issues
 When you discover any bugs please open an [issue](https://github.com/custom-cards/slider-button-card/issues).
 
-### Input Numbers
+### Input Number & Number entities
 - If the `input_number.entity.min value` is not cleanly divisible by the `input_number.entity.step value`, then the slider card is off by an amount. If your `input_number` has `min = 5`, `max = 25`, `step = 5` then it will work just fine. But if the `step` is 2, then it will be off. This also has the side effect of changing the `input_number` to an "out of bounds" value when modified via this card. Using `step = 1` avoids this problem.
+- The same limitation applies to `number` entities.
 
 ## Languages
 
