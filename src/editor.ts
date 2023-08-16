@@ -38,7 +38,7 @@ export class SliderButtonCardEditor extends ScopedRegistryHost(LitElement) imple
     ...textfieldDefinition,
   }
 
-  firstUpdated() {
+  firstUpdated(): void {
     // Use HA elements when using ScopedRegistry. Reference: https://gist.github.com/thomasloven/5f965bd26e5f69876890886c09dd9ba8
     this._loadHomeAssistantComponent("ha-entity-picker", { type: "entities", entities: [] });
     this._loadHomeAssistantComponent("ha-icon-picker", { type: "entities", entities: [] });
@@ -110,7 +110,7 @@ export class SliderButtonCardEditor extends ScopedRegistryHost(LitElement) imple
     return this._config?.action_button || ActionButtonConfigDefault;
   }
 
-  get _entityAttributes() {
+  get _entityAttributes(): string[] {
     if (!this.hass || !this._entity) {
       return [];
     }
