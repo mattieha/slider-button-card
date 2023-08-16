@@ -91,6 +91,13 @@ export abstract class Controller {
     return `${this.targetValue}`;
   }
 
+  get attributeLabel(): string {
+    if (this._config.attribute) {
+      return this.stateObj.attributes[this._config.attribute];
+    }
+    return '';
+  }
+
   get hidden(): boolean {
     return false;
   }
@@ -253,6 +260,16 @@ export abstract class Controller {
           width
         );
         if (this.invert) {
+          percentage = 100 - percentage;
+        }
+        break
+      case SliderDirections.RIGHT_LEFT:
+        percentage = toPercentage(
+          event.clientX,
+          left,
+          width
+        );
+        if (!this.invert) {
           percentage = 100 - percentage;
         }
         break

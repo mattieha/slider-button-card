@@ -11,9 +11,11 @@ declare global {
 export interface SliderButtonCardConfig extends LovelaceCardConfig {
   type: string;
   entity: string;
+  attribute?: string;
   name?: string;
   show_name?: boolean;
   show_state?: boolean;
+  show_attribute?: boolean;
   icon?: IconConfig;
   action_button?: ActionButtonConfig;
   slider?: SliderConfig;
@@ -59,6 +61,7 @@ export enum ActionButtonMode {
 
 export enum SliderDirections {
   LEFT_RIGHT = 'left-right',
+  RIGHT_LEFT = 'right-left',
   TOP_BOTTOM = 'top-bottom',
   BOTTOM_TOP = 'bottom-top',
 }
@@ -77,9 +80,12 @@ export enum Domain {
   FAN = 'fan',
   COVER = 'cover',
   INPUT_BOOLEAN = 'input_boolean',
+  INPUT_NUMBER = 'input_number',
   MEDIA_PLAYER = 'media_player',
+  NUMBER = 'number',
   CLIMATE = 'climate',
   LOCK = 'lock',
+  AUTOMATION = 'automation',
 }
 
 export const ActionButtonConfigDefault: ActionButtonConfig = {
@@ -119,6 +125,7 @@ export const SliderConfigDefaultDomain: Map<string, SliderConfig> = new Map([
     show_track: false,
     toggle_on_click: false,
     force_square: false,
+    show_attribute: false,
   }],
   [Domain.FAN, {
     direction: SliderDirections.LEFT_RIGHT,
@@ -128,8 +135,19 @@ export const SliderConfigDefaultDomain: Map<string, SliderConfig> = new Map([
     show_track: false,
     toggle_on_click: false,
     force_square: false,
+    show_attribute: false,
   }],
   [Domain.SWITCH, {
+    direction: SliderDirections.LEFT_RIGHT,
+    background: SliderBackground.SOLID,
+    use_state_color: false,
+    use_percentage_bg_opacity: false,
+    show_track: false,
+    toggle_on_click: true,
+    force_square: false,
+    show_attribute: false,
+  }],
+  [Domain.AUTOMATION, {
     direction: SliderDirections.LEFT_RIGHT,
     background: SliderBackground.SOLID,
     use_state_color: false,
@@ -147,6 +165,7 @@ export const SliderConfigDefaultDomain: Map<string, SliderConfig> = new Map([
     show_track: false,
     force_square: false,
     invert: true,
+    show_attribute: false,
   }],
   [Domain.INPUT_BOOLEAN, {
     direction: SliderDirections.LEFT_RIGHT,
@@ -155,6 +174,16 @@ export const SliderConfigDefaultDomain: Map<string, SliderConfig> = new Map([
     use_percentage_bg_opacity: false,
     show_track: false,
     toggle_on_click: true,
+    force_square: false,
+    show_attribute: false,
+  }],
+  [Domain.INPUT_NUMBER, {
+    direction: SliderDirections.LEFT_RIGHT,
+    background: SliderBackground.SOLID,
+    use_state_color: false,
+    use_percentage_bg_opacity: false,
+    show_track: false,
+    toggle_on_click: false,
     force_square: false,
   }],
   [Domain.MEDIA_PLAYER, {
@@ -165,6 +194,8 @@ export const SliderConfigDefaultDomain: Map<string, SliderConfig> = new Map([
     show_track: true,
     toggle_on_click: false,
     force_square: false,
+    show_attribute: true,
+    attribute: "media_title",
   }],
   [Domain.LOCK, {
     direction: SliderDirections.LEFT_RIGHT,
@@ -174,6 +205,7 @@ export const SliderConfigDefaultDomain: Map<string, SliderConfig> = new Map([
     show_track: false,
     toggle_on_click: true,
     force_square: false,
+    show_attribute: false,
   }],
   [Domain.CLIMATE, {
     direction: SliderDirections.LEFT_RIGHT,
@@ -183,6 +215,7 @@ export const SliderConfigDefaultDomain: Map<string, SliderConfig> = new Map([
     show_track: true,
     toggle_on_click: false,
     force_square: false,
+    show_attribute: false,
   }],
 ]);
 

@@ -27,9 +27,9 @@ export class LockController extends Controller {
 
   get label(): string {
     if (this.percentage > 0) {
-      return this._hass.localize('component.lock.state._.unlocked');
+      return this._hass.localize('component.lock.entity_component._.state.unlocked');
     }
-    return this._hass.localize('component.lock.state._.locked');
+    return this._hass.localize('component.lock.entity_component._.state.locked');
   }
 
 }

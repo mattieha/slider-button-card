@@ -27,9 +27,9 @@ export class SwitchController extends Controller {
 
   get label(): string {
     if (this.percentage > 0) {
-      return this._hass.localize('component.switch.state._.on');
+      return this._hass.localize('component.switch.entity_component._.state.on');
     }
-    return this._hass.localize('component.switch.state._.off');
+    return this._hass.localize('component.switch.entity_component._.state.off');
   }
 
 }

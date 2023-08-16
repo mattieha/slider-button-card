@@ -72,9 +72,9 @@ export class CoverController extends Controller {
   }
 
   get label(): string {
-    const defaultLabel = this._hass.localize(`component.cover.state._.${this.state}`);
-    const closedLabel = this._hass.localize('component.cover.state._.closed');
-    const openLabel = this._hass.localize('component.cover.state._.open');
+    const defaultLabel = this._hass.localize(`component.cover.entity_component._.state.${this.state}`);
+    const closedLabel = this._hass.localize('component.cover.entity_component._.state.closed');
+    const openLabel = this._hass.localize('component.cover.entity_component._.state.open');
     if (!this.hasSlider) {
       return defaultLabel;
     }

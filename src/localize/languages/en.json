@@ -9,9 +9,11 @@
     "general": {
       "title": "General",
       "entity": "Entity (Required)",
+      "attribute": "Attribute (Optional)",
       "name": "Name (Optional)",
       "show_name": "Show name?",
       "show_state": "Show state?",
+      "show_attribute": "Show attribute?",
       "compact": "Compact?"
     },
     "icon": {
@@ -45,6 +47,7 @@
   },
   "direction": {
     "left-right": "Left to right",
+    "right-left": "Right to left",
     "top-bottom": "Top to bottom",
     "bottom-top": "Bottom to top"
   },

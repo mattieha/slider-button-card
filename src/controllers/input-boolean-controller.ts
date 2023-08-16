@@ -27,9 +27,9 @@ export class InputBooleanController extends Controller {
 
   get label(): string {
     if (this.percentage > 0) {
-      return this._hass.localize('component.input_boolean.state._.on');
+      return this._hass.localize('component.input_boolean.entity_component._.state.on');
     }
-    return this._hass.localize('component.input_boolean.state._.off');
+    return this._hass.localize('component.input_boolean.entity_component._.state.off');
   }
 
 }

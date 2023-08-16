@@ -3,6 +3,7 @@ import commonjs from 'rollup-plugin-commonjs';
 import nodeResolve from 'rollup-plugin-node-resolve';
 import babel from 'rollup-plugin-babel';
 import { terser } from 'rollup-plugin-terser';
+import ignoreWrapper from './rollup-plugins/ignoreWrapper';
 import serve from 'rollup-plugin-serve';
 import json from '@rollup/plugin-json';
 
@@ -28,6 +29,7 @@ const plugins = [
   }),
   dev && serve(serveopts),
   !dev && terser(),
+  ignoreWrapper()
 ];
 
 export default [
