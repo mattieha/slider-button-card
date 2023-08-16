@@ -713,6 +713,9 @@ Mixed `group` entities are not supported, if you want to control multiple
 ## Known issues
 When you discover any bugs please open an [issue](https://github.com/custom-cards/slider-button-card/issues).
 
+### Input Numbers
+- If the `input_number.entity.min value` is not cleanly divisible by the `input_number.entity.step value`, then the slider card is off by an amount. If your `input_number` has `min = 5`, `max = 25`, `step = 5` then it will work just fine. But if the `step` is 2, then it will be off. This also has the side effect of changing the `input_number` to an "out of bounds" value when modified via this card. Using `step = 1` avoids this problem.
+
 ## Languages
 
 This card supports translations. Please, help to add more translations and improve existing ones. Here's a list of supported languages:
