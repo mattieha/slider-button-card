@@ -1,6 +1,4 @@
 import { Controller } from './controller';
-import { normalize, percentageToValue, toPercentage } from '../utils';
-import { SliderConfig } from '../types';
 
 export class InputNumberController extends Controller {
   _targetValue;
