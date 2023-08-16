@@ -11,6 +11,7 @@ import { LightController } from './light-controller';
 import { LockController } from './lock-controller';
 import { MediaController } from './media-controller';
 import { SwitchController } from './switch-controller';
+import { NumberController } from './number-controller';
 
 export class ControllerFactory {
   static getInstance(config: SliderButtonCardConfig): Controller {
@@ -24,6 +25,7 @@ export class ControllerFactory {
       [Domain.INPUT_BOOLEAN]: InputBooleanController,
       [Domain.INPUT_NUMBER]: InputNumberController,
       [Domain.MEDIA_PLAYER]: MediaController,
+      [Domain.NUMBER]: NumberController,
       [Domain.CLIMATE]: ClimateController,
       [Domain.LOCK]: LockController,
     };

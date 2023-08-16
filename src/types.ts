@@ -82,6 +82,7 @@ export enum Domain {
   INPUT_BOOLEAN = 'input_boolean',
   INPUT_NUMBER = 'input_number',
   MEDIA_PLAYER = 'media_player',
+  NUMBER = 'number',
   CLIMATE = 'climate',
   LOCK = 'lock',
   AUTOMATION = 'automation',
